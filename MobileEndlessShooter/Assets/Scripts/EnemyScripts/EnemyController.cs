@@ -45,7 +45,7 @@ public class EnemyController : MonoBehaviour
         HandleHorizontalMovement();
 
        
-        if (player != null && player.transform.position.y > (transform.position.y + 6f))
+        if (player != null && player.transform.position.z > (transform.position.z + 20f))
         {
             RecycleEnemy();
         }
