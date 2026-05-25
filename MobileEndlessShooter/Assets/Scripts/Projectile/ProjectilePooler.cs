@@ -45,7 +45,7 @@ public class ProjectilePooler : MonoBehaviour
         Projectile projectile = Instantiate(projectilePrefab, spawnPoint.position, spawnPoint.rotation);
         
         projectile.SetProjectilePooler(this);
-        projectile.SetProjectilePreab(projectilePrefab);
+        projectile.SetProjectilePrefab(projectilePrefab);
         projectile.gameObject.SetActive(false);
         projectilePool[projectilePrefab].Enqueue(projectile);
         
