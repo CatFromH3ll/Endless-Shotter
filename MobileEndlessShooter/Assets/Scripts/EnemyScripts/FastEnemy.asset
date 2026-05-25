@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6491e259649556343b2f213dab8f122a, type: 3}
-  m_Name: EnemyTank
+  m_Name: FastEnemy
   m_EditorClassIdentifier: 
-  enemyPrefab: {fileID: 1353701779475507803, guid: 09da57413bc9572419894251e8b506ec, type: 3}
-  enemyType: Tank
-  movementSpeed: 2
-  health: 20
+  enemyPrefab: {fileID: 6235774065858562773, guid: 48b46e15c46ef4f479e930f7817f2580, type: 3}
+  enemyType: Fast
+  movementSpeed: 8
+  health: 5
   damageToPlayer: 1
-  scoreValue: 200
+  scoreValue: 150
