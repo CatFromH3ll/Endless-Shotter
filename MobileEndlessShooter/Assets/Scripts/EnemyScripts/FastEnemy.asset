@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6491e259649556343b2f213dab8f122a, type: 3}
   m_Name: FastEnemy
   m_EditorClassIdentifier: 
-  enemyPrefab: {fileID: 6235774065858562773, guid: 48b46e15c46ef4f479e930f7817f2580, type: 3}
+  enemyPrefab: {fileID: 244272449494653117, guid: ef90169a0e074d340a492a6db050ac8b, type: 3}
   enemyType: Fast
-  movementSpeed: 8
+  movementSpeed: 20
   health: 5
   damageToPlayer: 1
   scoreValue: 150
