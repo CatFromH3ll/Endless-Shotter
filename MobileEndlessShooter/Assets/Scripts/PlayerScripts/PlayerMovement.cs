@@ -4,60 +4,48 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     private Rigidbody rb;
-    [SerializeField] public float speed = 8.0f;
-    [SerializeField] public float sideSpeed = 4.0f;
-    private bool canMoveLeft;
-    private bool canMoveRight;
+    [SerializeField] private float speed = 8.0f;
+    [SerializeField] private float sideSpeed = 4.0f;
+    private float sideInput;
     [SerializeField] private float minX = -17f;
     [SerializeField] private float maxX = 12f;
+    Vector3 moveDirection = Vector3.zero;
 
     private void Start()
     {
-        rb = GameObject.FindWithTag("Player").GetComponent<Rigidbody>();
+        rb = GetComponent<Rigidbody>();
     }
 
     private void FixedUpdate()
     {
-        Vector3 moveDirection = Vector3.zero;
+        
 
         // Always move forward
-        moveDirection += transform.forward * speed;
+         moveDirection = transform.forward * speed;
+        
+       
 
         // Move left only while button is held
-        if (canMoveLeft)
-        {
-            moveDirection += -transform.right * sideSpeed;
-        }
-
-        // Move right only while button is held
-        if (canMoveRight)
-        {
-            moveDirection += transform.right * sideSpeed;
-        }
-
+        moveDirection += transform.right * (sideInput * sideSpeed);
         Vector3 nextPosition = rb.position + moveDirection * Time.fixedDeltaTime;
         nextPosition.x = Mathf.Clamp(nextPosition.x, minX, maxX); // makes sure the player's x pos is between values
         rb.MovePosition(nextPosition);
+        
     }
 
     public void MoveRight()
     {
-        canMoveRight = true;
-    }
-    public void StopMoveRight()
-    {
-        canMoveRight = false;
+        sideInput = 1f;
     }
 
-    
-    public void StopMoveLeft()
+    public void StopMove()
     {
-        canMoveLeft = false;
+        sideInput = 0f;
     }
     
     public void MoveLeft()
     {
-        canMoveLeft = true;
+        sideInput = -1f;
     }
     
 }
