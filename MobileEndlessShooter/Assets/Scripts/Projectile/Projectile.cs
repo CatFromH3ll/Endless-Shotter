@@ -39,7 +39,7 @@ public class Projectile : MonoBehaviour
 
     public void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "Player") return;
+        if (collision.gameObject.CompareTag("Player")) return;
         ReturnToProjectilePool();
     }
 
