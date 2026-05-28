@@ -8,6 +8,8 @@ public class Projectile : MonoBehaviour
     [SerializeField]private float projectileTimer;
     [SerializeField]private float time = 3f;
     public Projectile projectilePrefab { get; private set; }
+    private Vector3 spinSpeed =  new Vector3(0f, 800f, 0f);
+    [SerializeField]private Transform rocketModel;
     
 
     void Awake()
@@ -24,6 +26,10 @@ public class Projectile : MonoBehaviour
     public void Update()
     {
         projectileTimer += Time.deltaTime;
+        if (rocketModel != null)
+        {
+            rocketModel.Rotate(spinSpeed * Time.deltaTime);
+        }
         if (projectileTimer >= time)
         {
             ReturnToProjectilePool();
@@ -55,6 +61,7 @@ public class Projectile : MonoBehaviour
     public void LaunchProjectile(Vector3 direction, float speed)
     {
         rbProjectile.linearVelocity = direction.normalized * speed;
+        
         rbProjectile.angularVelocity = Vector3.zero;
         //rbProjectile.AddForce(direction.normalized * speed, ForceMode.Impulse);
     }

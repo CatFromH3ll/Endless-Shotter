@@ -133,6 +133,7 @@ MonoBehaviour:
   damage: 0
   projectileTimer: 0
   time: 3
+  rocketModel: {fileID: 7563772708710204276}
 --- !u!136 &-8101396772694564731
 CapsuleCollider:
   m_ObjectHideFlags: 0
