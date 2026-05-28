@@ -5,7 +5,6 @@ public class WeaponSpawner : MonoBehaviour
     [SerializeField] private ProjectilePooler projectilePool;
     [SerializeField] private Transform spawnPoint;
     [SerializeField] private WeaponData currentWeapon;
-    
     private float fireTimer;
 
 
@@ -28,12 +27,8 @@ public class WeaponSpawner : MonoBehaviour
 
     private void Shoot()
     {
-        Debug.Log("FIRE");
-        Debug.Log("projectilePooler = " + projectilePool);
-        Debug.Log("currentWeapon = " + currentWeapon);
-        Debug.Log("spawnPoint = " + spawnPoint);
+        
         Projectile projectile = projectilePool.GetProjectile(currentWeapon.projectilePrefab);
-        Debug.Log("Got projectile: " + projectile);
         projectile.transform.position = spawnPoint.position;
         projectile.transform.rotation = spawnPoint.rotation;
         projectile.SetDamage(currentWeapon.projectileDamage);

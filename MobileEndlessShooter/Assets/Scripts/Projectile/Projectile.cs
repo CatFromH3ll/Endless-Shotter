@@ -8,7 +8,9 @@ public class Projectile : MonoBehaviour
     [SerializeField]private float projectileTimer;
     [SerializeField]private float time = 3f;
     public Projectile projectilePrefab { get; private set; }
-    Vector3 projectileDirection = Vector3.zero;
+    private Vector3 spinSpeed =  new Vector3(0f, 800f, 0f);
+    [SerializeField]private Transform rocketModel;
+    
 
     void Awake()
     {
@@ -17,13 +19,17 @@ public class Projectile : MonoBehaviour
 
     private void OnEnable()
     {
-        Debug.Log("Projectile enabled: " + gameObject.name);
-        projectileTimer += Time.deltaTime;
+        
+        projectileTimer = 0f;
     }
 
     public void Update()
     {
         projectileTimer += Time.deltaTime;
+        if (rocketModel != null)
+        {
+            rocketModel.Rotate(spinSpeed * Time.deltaTime);
+        }
         if (projectileTimer >= time)
         {
             ReturnToProjectilePool();
@@ -33,7 +39,7 @@ public class Projectile : MonoBehaviour
 
     public void OnCollisionEnter(Collision collision)
     {
-        Debug.Log("Projectile hit: " + collision.gameObject.name);
+        if (collision.gameObject.tag == "Player") return;
         ReturnToProjectilePool();
     }
 
@@ -42,7 +48,7 @@ public class Projectile : MonoBehaviour
         pooler = newPooler;
     }
 
-    public void SetProjectilePreab(Projectile newProjectile)
+    public void SetProjectilePrefab(Projectile newProjectile)
     {
         projectilePrefab = newProjectile;
     }
@@ -54,13 +60,14 @@ public class Projectile : MonoBehaviour
 
     public void LaunchProjectile(Vector3 direction, float speed)
     {
-        projectileDirection = transform.forward * speed * Time.deltaTime;
-        rbProjectile.AddForce(direction * speed, ForceMode.Impulse);
+        rbProjectile.linearVelocity = direction.normalized * speed;
+        
+        rbProjectile.angularVelocity = Vector3.zero;
+        //rbProjectile.AddForce(direction.normalized * speed, ForceMode.Impulse);
     }
 
-    public void ReturnToProjectilePool()
+    private void ReturnToProjectilePool()
     {
-        Debug.Log("Projectile returned to pool: " + gameObject.name);
         rbProjectile.linearVelocity = Vector3.zero;
         rbProjectile.angularVelocity = Vector3.zero;
         pooler.ReturnProjectile(this);

@@ -10,10 +10,16 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float minX = -17f;
     [SerializeField] private float maxX = 12f;
     Vector3 moveDirection = Vector3.zero;
+    private float moveRotation = 25f;
+    private float moveRotationSpeed = 40f;
+    Quaternion startRotation;
+    Quaternion targetRotation;
 
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
+        startRotation = transform.rotation;
+        targetRotation = transform.rotation;
     }
 
     private void FixedUpdate()
@@ -21,31 +27,39 @@ public class PlayerMovement : MonoBehaviour
         
 
         // Always move forward
-         moveDirection = transform.forward * speed;
+         moveDirection = Vector3.forward * speed;
         
        
 
-        // Move left only while button is held
-        moveDirection += transform.right * (sideInput * sideSpeed);
+        // Move left or right, and stay between minX and maxX
+        moveDirection += Vector3.right * (sideInput * sideSpeed);
         Vector3 nextPosition = rb.position + moveDirection * Time.fixedDeltaTime;
         nextPosition.x = Mathf.Clamp(nextPosition.x, minX, maxX); // makes sure the player's x pos is between values
         rb.MovePosition(nextPosition);
         
     }
+    private void Update()
+    {
+        transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * moveRotationSpeed );
+    }
 
     public void MoveRight()
     {
         sideInput = 1f;
+        targetRotation = Quaternion.Euler(0f, 0f, -moveRotation);
     }
 
     public void StopMove()
     {
         sideInput = 0f;
+        targetRotation = startRotation;
     }
     
     public void MoveLeft()
     {
         sideInput = -1f;
+        targetRotation = Quaternion.Euler(0f, 0f, moveRotation);
+        
     }
     
 }
