@@ -90,13 +90,6 @@ public class PlayerMovement : MonoBehaviour
 
         isGrounded = false;
     }
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("Floor"))
-        {
-            isGrounded = true;
-        }
-    }
 
     private void OnCollisionEnter(Collision other)
     {
@@ -105,6 +98,10 @@ public class PlayerMovement : MonoBehaviour
             Coins coins = other.gameObject.GetComponent<Coins>();
             score.UpdateScore(coins.coinValue);
             coins.RecycleCoin();
+        }
+        if (other.gameObject.CompareTag("Floor"))
+        {
+            isGrounded = true;
         }
     }
 }

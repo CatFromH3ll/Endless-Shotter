@@ -38,7 +38,7 @@ public class Projectile : MonoBehaviour
 
     public void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Player")) return;
+        if (collision.gameObject.CompareTag("Player") || collision.gameObject.CompareTag("Floor")) return;
         if (collision.gameObject.tag == "Enemy")
         {
             EnemyController enemyController = collision.gameObject.GetComponent<EnemyController>();

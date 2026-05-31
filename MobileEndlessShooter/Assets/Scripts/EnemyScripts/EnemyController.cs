@@ -16,7 +16,7 @@ public class EnemyController : MonoBehaviour
     private Vector3 pointA;
     private Vector3 pointB;
     private Vector3 targetPoint;
-    private Collider collider;
+    private Collider colliderEnemy;
     
     private Vector3 startingLocalPosition;
     private Quaternion startingLocalRotation;
@@ -26,7 +26,7 @@ public class EnemyController : MonoBehaviour
         player = FindFirstObjectByType<PlayerMovement>();
         coinSpawnerScript = FindFirstObjectByType<CoinSpawner>();
         animator = GetComponentInChildren<Animator>();
-        collider = GetComponent<Collider>();
+        colliderEnemy = GetComponent<Collider>();
         
         startingLocalPosition = animator.transform.localPosition;
         startingLocalRotation = animator.transform.localRotation;
@@ -49,7 +49,7 @@ public class EnemyController : MonoBehaviour
         if  (randomDirection == 0) targetPoint = pointA;
         else targetPoint = pointB;
        
-       collider.enabled = true;
+       colliderEnemy.enabled = true;
     }
 
     private void Update()
@@ -94,7 +94,7 @@ public class EnemyController : MonoBehaviour
         isDead = true;
        animator.SetTrigger(DeadHash);
        coinSpawnerScript.DropCoins(scoreValue, transform.position);
-       collider.enabled = false;
+       colliderEnemy.enabled = false;
        Debug.Log("dead");
     }
 
@@ -104,5 +104,9 @@ public class EnemyController : MonoBehaviour
         gameObject.SetActive(false);
         Debug.Log("recycled");
     }
-    
+
+    private void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.CompareTag("Player") && !isDead) RecycleEnemy();
+    }
 }
