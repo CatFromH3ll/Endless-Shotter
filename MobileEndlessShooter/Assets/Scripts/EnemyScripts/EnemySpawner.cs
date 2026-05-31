@@ -68,7 +68,8 @@ public class EnemySpawner : MonoBehaviour
         //randomize the x value of the position that the enemy will spawn in
         float randomX = Random.Range(-2.5f, 2.5f);
         // set the spawn point to the randomized x and the z is the position of the player + distanse to spawn from the player
-        Vector3 spawnPosition = new Vector3(randomX, 0f, player.transform.position.z + distanceFromPlayer);
+        float yOffset = 3.5f;
+        Vector3 spawnPosition = new Vector3(randomX, yOffset, player.transform.position.z + distanceFromPlayer);
 
         // requese the poold object from the large pool
         GameObject spawnedEnemy = GenericObjectPooler.Instance.GetFromPool(
