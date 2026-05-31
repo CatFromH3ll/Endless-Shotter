@@ -6,6 +6,8 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody rb;
     [SerializeField] private float speed = 8.0f;
     [SerializeField] private float sideSpeed = 4.0f;
+    [SerializeField] private float jumpheight = 8f;
+    private bool isGrounded = true;
     private float sideInput;
     [SerializeField] private float minX = -17f;
     [SerializeField] private float maxX = 12f;
@@ -33,16 +35,18 @@ public class PlayerMovement : MonoBehaviour
     private void FixedUpdate()
     {
         
-        if(playerHealth.IsDead)return;
-        //move forward
-        moveDirection = Vector3.forward * speed;
-        
-        
-        // Move left or right, and stay between minX and maxX
-        moveDirection += Vector3.right * (sideInput * sideSpeed);
-        Vector3 nextPosition = rb.position + moveDirection * Time.fixedDeltaTime;
-        nextPosition.x = Mathf.Clamp(nextPosition.x, minX, maxX); // makes sure the player's x pos is between values
-        rb.MovePosition(nextPosition);
+        if (playerHealth.IsDead) return;
+
+        Vector3 velocity = rb.linearVelocity;
+
+        velocity.z = speed;
+        velocity.x = sideInput * sideSpeed;
+
+        rb.linearVelocity = velocity;
+
+        Vector3 clampedPosition = rb.position;
+        clampedPosition.x = Mathf.Clamp(clampedPosition.x, minX, maxX);
+        rb.position = clampedPosition;
        
         
     }
@@ -69,7 +73,29 @@ public class PlayerMovement : MonoBehaviour
         if(playerHealth.IsDead)return;
         sideInput = -1f;
         targetRotation = Quaternion.Euler(0f, 0f, moveRotation);
-        
+    }
+
+    public void Jump()
+    {
+        if (playerHealth.IsDead) return;
+        if (!isGrounded) return;
+
+        sideInput = 0f;
+
+        Vector3 velocity = rb.linearVelocity;
+        velocity.y = 0f;
+        rb.linearVelocity = velocity;
+
+        rb.AddForce(Vector3.up * jumpheight, ForceMode.Impulse);
+
+        isGrounded = false;
+    }
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Floor"))
+        {
+            isGrounded = true;
+        }
     }
 
     private void OnCollisionEnter(Collision other)
