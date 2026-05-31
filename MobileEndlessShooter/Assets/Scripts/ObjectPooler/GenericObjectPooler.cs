@@ -25,7 +25,7 @@ public class GenericObjectPooler : MonoBehaviour
 
     /*this method will check if there is a pool for a specific object
      and if there isn't create a pool for it */
-    public void SetupPool(string poolKey, GameObject prefab, int initialSize)
+    private void SetupPool(string poolKey, GameObject prefab, int initialSize)
     {
         if (poolDictionary.ContainsKey(poolKey)) return; //check if there is a pool for the object
 

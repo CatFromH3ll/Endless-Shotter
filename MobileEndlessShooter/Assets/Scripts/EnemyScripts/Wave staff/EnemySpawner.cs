@@ -75,7 +75,7 @@ public class EnemySpawner : MonoBehaviour
             selectedEnemyData.enemyType, 
             selectedEnemyData.enemyPrefab, 
             spawnPosition, 
-            Quaternion.identity
+            Quaternion.Euler(0,90,0)
         );
 
         //  set the enemy script data to the disierd enemy settings

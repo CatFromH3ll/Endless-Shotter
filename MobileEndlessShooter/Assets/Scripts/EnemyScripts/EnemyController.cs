@@ -1,4 +1,6 @@
+using System;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class EnemyController : MonoBehaviour
 {
@@ -8,14 +10,18 @@ public class EnemyController : MonoBehaviour
     private const string DeadHash = "Dead";
     private PlayerMovement player;
     private Animator animator;
+    private CoinSpawner coinSpawnerScript;
+    private int scoreValue;
 
     private Vector3 pointA;
     private Vector3 pointB;
     private Vector3 targetPoint;
     
+   
     private void Awake()
     {
         player = FindFirstObjectByType<PlayerMovement>();
+        coinSpawnerScript = FindFirstObjectByType<CoinSpawner>();
         animator = GetComponentInChildren<Animator>();
     }
 
@@ -24,6 +30,7 @@ public class EnemyController : MonoBehaviour
         //takes the data from the scriptable object and sets the enemy to it
         this.data = data;
         currentHealth = data.health;
+        scoreValue = data.scoreValue;
         isDead = false;
 
         //sets the pointA and pointB
@@ -80,6 +87,7 @@ public class EnemyController : MonoBehaviour
     {
         isDead = true;
        animator.SetBool(DeadHash, true);
+       coinSpawnerScript.DropCoins(scoreValue, transform.position);
        Debug.Log("dead");
     }
 
@@ -89,4 +97,5 @@ public class EnemyController : MonoBehaviour
         gameObject.SetActive(false);
         Debug.Log("recycled");
     }
+    
 }
