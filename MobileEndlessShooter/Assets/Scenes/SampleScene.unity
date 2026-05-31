@@ -816,7 +816,6 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
-  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -968,7 +967,6 @@ MonoBehaviour:
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
-  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -1513,7 +1511,6 @@ MonoBehaviour:
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
-  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -1640,6 +1637,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1173928932}
   - component: {fileID: 1173928933}
+  - component: {fileID: 1173928934}
   m_Layer: 0
   m_Name: Spawner
   m_TagString: Untagged
@@ -1680,6 +1678,19 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 0c0a9144b458c2d4c8ac400ffde70d39, type: 2}
   - {fileID: 11400000, guid: fdb959c4271592143a62bd4ff9247ebf, type: 2}
   distanceFromPlayer: 250
+--- !u!114 &1173928934
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1173928931}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6d5d3b1dfc684b4aabf124e2faeca88, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CoinDropPrefab: {fileID: 4820562234704036475, guid: 14ccb4eddcb81e349aa8dff55eedc601, type: 3}
 --- !u!1 &1454855742
 GameObject:
   m_ObjectHideFlags: 0
@@ -1778,7 +1789,6 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
-  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -2451,8 +2461,7 @@ PrefabInstance:
       propertyPath: m_Center.z
       value: 1.11
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 7132442261670006023, guid: 9b82d009bc8d22f41b7c75c20afb08ba, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 848218704963372392, guid: 9b82d009bc8d22f41b7c75c20afb08ba, type: 3}

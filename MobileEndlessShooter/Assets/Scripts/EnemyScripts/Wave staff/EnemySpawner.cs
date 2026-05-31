@@ -75,7 +75,7 @@ public class EnemySpawner : MonoBehaviour
             selectedEnemyData.enemyType, 
             selectedEnemyData.enemyPrefab, 
             spawnPosition, 
-            Quaternion.Euler(0,90,0)
+            selectedEnemyData.enemyPrefab.transform.rotation
         );
 
         //  set the enemy script data to the disierd enemy settings
