@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
-    private ProjectilePooler pooler;
     [SerializeField] private Rigidbody rbProjectile;
     [SerializeField]private float damage;
     [SerializeField]private float projectileTimer;
@@ -47,16 +46,7 @@ public class Projectile : MonoBehaviour
         }
         ReturnToProjectilePool();
     }
-
-    public void SetProjectilePooler(ProjectilePooler newPooler)
-    {
-        pooler = newPooler;
-    }
-
-    public void SetProjectilePrefab(Projectile newProjectile)
-    {
-        projectilePrefab = newProjectile;
-    }
+    
     
     public void SetDamage(float newDamage)
     {
@@ -68,13 +58,12 @@ public class Projectile : MonoBehaviour
         rbProjectile.linearVelocity = direction.normalized * speed;
         
         rbProjectile.angularVelocity = Vector3.zero;
-        //rbProjectile.AddForce(direction.normalized * speed, ForceMode.Impulse);
     }
 
     public void ReturnToProjectilePool()
     {
         rbProjectile.linearVelocity = Vector3.zero;
         rbProjectile.angularVelocity = Vector3.zero;
-        pooler.ReturnProjectile(this);
+        gameObject.SetActive(false);
     }
 }

@@ -365,6 +365,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &276895416
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 276895417}
+  m_Layer: 0
+  m_Name: World
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &276895417
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 276895416}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 209.386, y: 168.62396, z: -581.5934}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &302208062
 GameObject:
   m_ObjectHideFlags: 0
@@ -409,6 +440,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 083b702f2176c014f8a1c2425496ddf2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  worldObject: {fileID: 276895417}
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -816,6 +848,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -967,6 +1000,7 @@ MonoBehaviour:
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -1147,7 +1181,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 1465997472}
+        - m_Target: {fileID: 1173928935}
           m_TargetAssemblyTypeName: WeaponSpawner, Assembly-CSharp
           m_MethodName: ShootTimer
           m_Mode: 1
@@ -1511,6 +1545,7 @@ MonoBehaviour:
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -1638,6 +1673,7 @@ GameObject:
   - component: {fileID: 1173928932}
   - component: {fileID: 1173928933}
   - component: {fileID: 1173928934}
+  - component: {fileID: 1173928935}
   m_Layer: 0
   m_Name: Spawner
   m_TagString: Untagged
@@ -1691,6 +1727,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CoinDropPrefab: {fileID: 4820562234704036475, guid: 14ccb4eddcb81e349aa8dff55eedc601, type: 3}
+--- !u!114 &1173928935
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1173928931}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5696faea4b3b35439b51a9abd503a1b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawnPoint: {fileID: 933065377}
+  currentWeapon: {fileID: 11400000, guid: 4bdd2d02e6a2fd14a94eb80914e09535, type: 2}
+  projectilePrefab: {fileID: 7157361695242897671, guid: 52a4d8cc33fccd24a85ad4cb2217a0b0, type: 3}
 --- !u!1 &1454855742
 GameObject:
   m_ObjectHideFlags: 0
@@ -1789,6 +1840,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -1839,17 +1891,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 78056b3346e552749bfce4b05a311fe0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1465997472 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7348672574783565915, guid: 9b82d009bc8d22f41b7c75c20afb08ba, type: 3}
-  m_PrefabInstance: {fileID: 908377183710080637}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c5696faea4b3b35439b51a9abd503a1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!4 &1465997474 stripped
@@ -2144,52 +2185,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1760014019}
   m_CullTransparentMesh: 1
---- !u!1 &1988307767
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1988307769}
-  - component: {fileID: 1988307768}
-  m_Layer: 0
-  m_Name: ProjectilePooler
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1988307768
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1988307767}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee967221d4860a044be47320fdaad693, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  projectilePoolSize: 10
-  spawnPoint: {fileID: 933065377}
---- !u!4 &1988307769
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1988307767}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 126.97914, y: 82.297874, z: 43.699547}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2095533090
 GameObject:
   m_ObjectHideFlags: 0
@@ -2434,6 +2429,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1734415799}
     - target: {fileID: 7348672574783565915, guid: 9b82d009bc8d22f41b7c75c20afb08ba, type: 3}
+      propertyPath: projectile
+      value: 
+      objectReference: {fileID: 6993006707701002996, guid: 52a4d8cc33fccd24a85ad4cb2217a0b0, type: 3}
+    - target: {fileID: 7348672574783565915, guid: 9b82d009bc8d22f41b7c75c20afb08ba, type: 3}
       propertyPath: spawnPoint
       value: 
       objectReference: {fileID: 933065377}
@@ -2444,7 +2443,7 @@ PrefabInstance:
     - target: {fileID: 7348672574783565915, guid: 9b82d009bc8d22f41b7c75c20afb08ba, type: 3}
       propertyPath: projectilePool
       value: 
-      objectReference: {fileID: 1988307768}
+      objectReference: {fileID: 0}
     - target: {fileID: 8349237980088678012, guid: 9b82d009bc8d22f41b7c75c20afb08ba, type: 3}
       propertyPath: m_Constraints
       value: 4
@@ -2489,7 +2488,7 @@ SceneRoots:
   - {fileID: 882201892}
   - {fileID: 1633425264}
   - {fileID: 330585546}
-  - {fileID: 1988307769}
   - {fileID: 1173928932}
   - {fileID: 302208063}
   - {fileID: 908377183710080637}
+  - {fileID: 276895417}

@@ -4,6 +4,7 @@ using UnityEngine;
 public class GenericObjectPooler : MonoBehaviour
 {
     public static GenericObjectPooler Instance { get; private set; }
+    [SerializeField] private Transform worldObject;
 
     // the dictionary tracks the different pools and by assingnig an ID knows what to poll out of the object pooler
     private Dictionary<string, Queue<GameObject>> poolDictionary = new Dictionary<string, Queue<GameObject>>();
@@ -34,6 +35,10 @@ public class GenericObjectPooler : MonoBehaviour
         for (int i = 0; i < initialSize; i++)
         {
             GameObject obj = Instantiate(prefab);
+            if (worldObject != null)
+            {
+                obj.transform.SetParent(worldObject);
+            }
             obj.SetActive(false); // Keep them hidden
             newObjectQueue.Enqueue(obj);
         }
@@ -63,6 +68,8 @@ public class GenericObjectPooler : MonoBehaviour
             //if there isn't create a new object to increase the pool size
             objectToSpawn = Instantiate(prefab);
         }
+
+        
 
         //unhid it in the desired position
         objectToSpawn.transform.position = position;

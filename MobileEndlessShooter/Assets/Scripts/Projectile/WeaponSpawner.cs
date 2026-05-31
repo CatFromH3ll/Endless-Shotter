@@ -3,10 +3,11 @@ using UnityEngine;
 
 public class WeaponSpawner : MonoBehaviour
 {
-    [SerializeField] private ProjectilePooler projectilePool;
-    [SerializeField] private Projectile projectile;
     [SerializeField] private Transform spawnPoint;
+    
     [SerializeField] private WeaponData currentWeapon;
+    [SerializeField] private GameObject projectilePrefab;
+    private const string projectileHash = "Projectile";
     PlayerHealth playerHealth;
     private float fireTimer;
 
@@ -19,7 +20,6 @@ public class WeaponSpawner : MonoBehaviour
     {
         fireTimer += Time.deltaTime;
     }
-
     public void ShootTimer()
     {
         if (fireTimer < currentWeapon.fireRate)
@@ -31,16 +31,16 @@ public class WeaponSpawner : MonoBehaviour
         Shoot();
         fireTimer = 0;
     }
-
-    private void Shoot()
+    
+    public void Shoot()
     {
         if(playerHealth.IsDead) return;
-        Projectile projectile = projectilePool.GetProjectile(currentWeapon.projectilePrefab);
-        projectile.ReturnToProjectilePool();
-        projectile.transform.position = spawnPoint.position;
-        projectile.transform.rotation = spawnPoint.rotation;
-        projectile.gameObject.SetActive(true);
-        projectile.SetDamage(currentWeapon.projectileDamage);
-        projectile.LaunchProjectile(spawnPoint.forward, currentWeapon.projectileSpeed);
+        GameObject projectile = GenericObjectPooler.Instance.GetFromPool(projectileHash, projectilePrefab, spawnPoint.position, Quaternion.identity);
+        Projectile projectileScript = projectile.GetComponent<Projectile>();
+        projectileScript.SetDamage(currentWeapon.projectileDamage);
+        projectileScript.LaunchProjectile(spawnPoint.forward, currentWeapon.projectileSpeed);
     }
+
+    
+    
 }
