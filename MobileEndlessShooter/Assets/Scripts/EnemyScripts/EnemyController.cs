@@ -3,18 +3,20 @@ using UnityEngine;
 public class EnemyController : MonoBehaviour
 {
     private EnemyData data;
-    private int currentHealth;
+    private float currentHealth;
     private bool isDead = false;
-    
+    private const string DeadHash = "Dead";
     private PlayerMovement player;
+    private Animator animator;
 
     private Vector3 pointA;
     private Vector3 pointB;
     private Vector3 targetPoint;
-
+    
     private void Awake()
     {
         player = FindFirstObjectByType<PlayerMovement>();
+        animator = GetComponentInChildren<Animator>();
     }
 
     public void Initialize(EnemyData data) 
@@ -33,6 +35,7 @@ public class EnemyController : MonoBehaviour
         if  (randomDirection == 0) targetPoint = pointA;
         else targetPoint = pointB;
 
+        animator.SetBool(DeadHash, false);
         gameObject.SetActive(true);
     }
 
@@ -64,23 +67,26 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-    public void TakeDamage(int amount)
+    public void TakeDamage(float amount)
     {
         if (isDead) return;
 
         currentHealth -= amount;
         if (currentHealth <= 0) Die();
+        Debug.Log(currentHealth);
     }
 
     private void Die() 
     {
         isDead = true;
-        RecycleEnemy();
+       animator.SetBool(DeadHash, true);
+       Debug.Log("dead");
     }
 
-    private void RecycleEnemy() // will return the enemy to the pool
+    public void RecycleEnemy()
     {
         isDead = true;
         gameObject.SetActive(false);
+        Debug.Log("recycled");
     }
 }

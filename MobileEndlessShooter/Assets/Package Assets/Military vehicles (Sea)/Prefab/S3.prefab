@@ -700,7 +700,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4426115891764702806}
   - component: {fileID: 2801539266344799836}
-  - component: {fileID: 5059405162336680902}
   m_Layer: 0
   m_Name: S3
   m_TagString: Untagged
@@ -757,18 +756,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 10.4420805, y: 22.356537, z: 92.44271}
   m_Center: {x: 0.36489987, y: 10.678265, z: -2.6132424}
---- !u!114 &5059405162336680902
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3902202361214989548}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 047ef661fa732b5469237491bbe7485d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &4111605818996641130
 GameObject:
   m_ObjectHideFlags: 0
