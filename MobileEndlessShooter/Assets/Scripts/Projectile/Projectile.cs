@@ -1,17 +1,16 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
     private ProjectilePooler pooler;
     [SerializeField] private Rigidbody rbProjectile;
-    [SerializeField] private float damage;
-    [SerializeField] private float projectileTimer;
-    [SerializeField] private float time = 3f;
+    [SerializeField]private float damage;
+    [SerializeField]private float projectileTimer;
+    [SerializeField]private float time = 3f;
     public Projectile projectilePrefab { get; private set; }
-    private Vector3 spinSpeed = new Vector3(0f, 800f, 0f);
-    [SerializeField] private Transform rocketModel;
-
+    private Vector3 spinSpeed = new (0f, 800f, 0f);
+    [SerializeField]private Transform rocketModel;
+    
 
     void Awake()
     {
@@ -20,7 +19,7 @@ public class Projectile : MonoBehaviour
 
     private void OnEnable()
     {
-
+        
         projectileTimer = 0f;
     }
 
@@ -31,7 +30,6 @@ public class Projectile : MonoBehaviour
         {
             rocketModel.Rotate(spinSpeed * Time.deltaTime);
         }
-
         if (projectileTimer >= time)
         {
             ReturnToProjectilePool();
@@ -41,14 +39,12 @@ public class Projectile : MonoBehaviour
 
     public void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "Player") return;
+        if (collision.gameObject.CompareTag("Player")) return;
         if (collision.gameObject.tag == "Enemy")
         {
             EnemyController enemyController = collision.gameObject.GetComponent<EnemyController>();
             enemyController.TakeDamage(damage);
         }
-        
-        
         ReturnToProjectilePool();
     }
 
@@ -61,7 +57,7 @@ public class Projectile : MonoBehaviour
     {
         projectilePrefab = newProjectile;
     }
-
+    
     public void SetDamage(float newDamage)
     {
         damage = newDamage;
@@ -70,18 +66,15 @@ public class Projectile : MonoBehaviour
     public void LaunchProjectile(Vector3 direction, float speed)
     {
         rbProjectile.linearVelocity = direction.normalized * speed;
-
+        
         rbProjectile.angularVelocity = Vector3.zero;
         //rbProjectile.AddForce(direction.normalized * speed, ForceMode.Impulse);
     }
 
-    private void ReturnToProjectilePool()
+    public void ReturnToProjectilePool()
     {
         rbProjectile.linearVelocity = Vector3.zero;
         rbProjectile.angularVelocity = Vector3.zero;
         pooler.ReturnProjectile(this);
     }
-
-
-    
 }
