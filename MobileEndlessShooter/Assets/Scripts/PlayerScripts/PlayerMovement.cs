@@ -10,14 +10,20 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float minX = -17f;
     [SerializeField] private float maxX = 12f;
     Vector3 moveDirection = Vector3.zero;
+    
     private float moveRotation = 25f;
     private float moveRotationSpeed = 40f;
     Quaternion startRotation;
     Quaternion targetRotation;
+    
+    [SerializeField] PlayerHealth playerHealth;
+    
 
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
+        playerHealth = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerHealth>();
+        
         startRotation = transform.rotation;
         targetRotation = transform.rotation;
     }
@@ -25,26 +31,27 @@ public class PlayerMovement : MonoBehaviour
     private void FixedUpdate()
     {
         
-
-        // Always move forward
-         moveDirection = Vector3.forward * speed;
+        if(playerHealth.IsDead)return;
+        //move forward
+        moveDirection = Vector3.forward * speed;
         
-       
-
+        
         // Move left or right, and stay between minX and maxX
         moveDirection += Vector3.right * (sideInput * sideSpeed);
         Vector3 nextPosition = rb.position + moveDirection * Time.fixedDeltaTime;
         nextPosition.x = Mathf.Clamp(nextPosition.x, minX, maxX); // makes sure the player's x pos is between values
         rb.MovePosition(nextPosition);
+       
         
     }
-    private void Update()
+    private void LateUpdate()
     {
         transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * moveRotationSpeed );
     }
 
     public void MoveRight()
     {
+        if(playerHealth.IsDead)return;
         sideInput = 1f;
         targetRotation = Quaternion.Euler(0f, 0f, -moveRotation);
     }
@@ -57,6 +64,7 @@ public class PlayerMovement : MonoBehaviour
     
     public void MoveLeft()
     {
+        if(playerHealth.IsDead)return;
         sideInput = -1f;
         targetRotation = Quaternion.Euler(0f, 0f, moveRotation);
         

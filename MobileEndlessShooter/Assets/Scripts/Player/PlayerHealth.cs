@@ -5,35 +5,48 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] private float maxHealth = 100f;
     [SerializeField] private float currentHealth;
     [SerializeField] private PlayerHealthBar playerHealthBar;
-    [SerializeField] private float deathSpinSpeedY = 360f;
-    [SerializeField] private float deathSpinSpeedZ = 720f;
-    [SerializeField] private float deathAnimationTime = 2f;
-    private bool _isDead;
+    [SerializeField] private Animator playerAnimator;
+    private bool isDead;
 
     void Start()
     {
         currentHealth = maxHealth;
         if(playerHealthBar != null)playerHealthBar.SetMaxHealth(maxHealth);
+        playerAnimator = GetComponentInChildren<Animator>();
         
+    }
+
+    public bool IsDead
+    {
+        get
+        { 
+            return isDead;
+        }
+        private  set
+        {
+            isDead = value;
+        }
     }
 
     public void TakeDamage(float damage)
     {
-        if(_isDead) return;
+        if(isDead) return;
         Debug.Log("DAMGED " + damage);
         currentHealth -= damage;
         currentHealth = Mathf.Clamp(currentHealth, 0f, maxHealth);
         playerHealthBar.SetCurrentHealth(currentHealth);
+        playerAnimator.SetTrigger("Hit");
 
         if (currentHealth <= 0)
         {
+            IsDead = true;
             Die();
         }
     }
 
     public void Heal(float healAmount)
     {
-        if(_isDead) return;
+        if(IsDead) return;
         currentHealth += healAmount;
         currentHealth = Mathf.Clamp(currentHealth, 0f, maxHealth);
         playerHealthBar.SetCurrentHealth(currentHealth);
@@ -41,8 +54,9 @@ public class PlayerHealth : MonoBehaviour
 
     public void Die()
     {
-        _isDead = true;
-        Destroy(gameObject);
+        playerAnimator.SetTrigger("Death");
+        Debug.Log("DEAD");
+        
     }
 
     public void OnCollisionEnter(Collision collision)

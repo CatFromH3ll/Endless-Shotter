@@ -8,7 +8,7 @@ public class Projectile : MonoBehaviour
     [SerializeField]private float projectileTimer;
     [SerializeField]private float time = 3f;
     public Projectile projectilePrefab { get; private set; }
-    private Vector3 spinSpeed =  new Vector3(0f, 800f, 0f);
+    private Vector3 spinSpeed = new (0f, 800f, 0f);
     [SerializeField]private Transform rocketModel;
     
 
@@ -40,6 +40,11 @@ public class Projectile : MonoBehaviour
     public void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Player")) return;
+        if (collision.gameObject.tag == "Enemy")
+        {
+            EnemyController enemyController = collision.gameObject.GetComponent<EnemyController>();
+            enemyController.TakeDamage(damage);
+        }
         ReturnToProjectilePool();
     }
 
@@ -66,7 +71,7 @@ public class Projectile : MonoBehaviour
         //rbProjectile.AddForce(direction.normalized * speed, ForceMode.Impulse);
     }
 
-    private void ReturnToProjectilePool()
+    public void ReturnToProjectilePool()
     {
         rbProjectile.linearVelocity = Vector3.zero;
         rbProjectile.angularVelocity = Vector3.zero;

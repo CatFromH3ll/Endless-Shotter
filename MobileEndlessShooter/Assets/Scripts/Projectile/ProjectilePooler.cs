@@ -25,7 +25,6 @@ public class ProjectilePooler : MonoBehaviour
         }
         
         Projectile projectile = pool.Dequeue();
-        projectile.gameObject.SetActive(true);
         
         return projectile;
     }

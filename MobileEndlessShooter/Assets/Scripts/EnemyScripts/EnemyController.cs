@@ -3,7 +3,7 @@ using UnityEngine;
 public class EnemyController : MonoBehaviour
 {
     private EnemyData data;
-    private int currentHealth;
+    private float currentHealth;
     private bool isDead = false;
     
     private PlayerMovement player;
@@ -64,7 +64,7 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-    public void TakeDamage(int amount)
+    public void TakeDamage(float amount)
     {
         if (isDead) return;
 
