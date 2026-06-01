@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Coins : MonoBehaviour
 {
-    private int coinValue;
+    public int coinValue { get; private set; }
     private GameObject player;
 
     void Awake()
@@ -33,7 +33,7 @@ public class Coins : MonoBehaviour
         }
     }
     
-    private void RecycleCoin()
+    public void RecycleCoin()
     {
         gameObject.SetActive(false);
     }

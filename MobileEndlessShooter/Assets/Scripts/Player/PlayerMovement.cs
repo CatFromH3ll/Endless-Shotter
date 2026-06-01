@@ -17,8 +17,10 @@ public class PlayerMovement : MonoBehaviour
     private float moveRotationSpeed = 40f;
     Quaternion startRotation;
     Quaternion targetRotation;
+    private const string coinsHush = "Coins";
     
     [SerializeField] PlayerHealth playerHealth;
+    [SerializeField] Score score;
     
 
     private void Start()
@@ -88,12 +90,18 @@ public class PlayerMovement : MonoBehaviour
 
         isGrounded = false;
     }
-    private void OnCollisionEnter(Collision collision)
+
+    private void OnCollisionEnter(Collision other)
     {
-        if (collision.gameObject.CompareTag("Floor"))
+        if (other.gameObject.tag == coinsHush)
+        {
+            Coins coins = other.gameObject.GetComponent<Coins>();
+            score.UpdateScore(coins.coinValue);
+            coins.RecycleCoin();
+        }
+        if (other.gameObject.CompareTag("Floor"))
         {
             isGrounded = true;
         }
     }
-    
 }
