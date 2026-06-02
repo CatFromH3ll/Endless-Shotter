@@ -6,6 +6,7 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] private float currentHealth;
     [SerializeField] private PlayerHealthBar playerHealthBar;
     [SerializeField] private Animator playerAnimator;
+    [SerializeField] private UIControler uIControler;
     private bool isDead;
 
     void Start()
@@ -55,6 +56,7 @@ public class PlayerHealth : MonoBehaviour
     public void Die()
     {
         playerAnimator.SetTrigger("Death");
+        uIControler.Death();
         Debug.Log("DEAD");
         
     }

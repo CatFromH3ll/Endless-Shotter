@@ -11,7 +11,6 @@ public class PlayerMovement : MonoBehaviour
     private float sideInput;
     [SerializeField] private float minX = -17f;
     [SerializeField] private float maxX = 12f;
-    Vector3 moveDirection = Vector3.zero;
     
     private float moveRotation = 25f;
     private float moveRotationSpeed = 40f;
@@ -21,7 +20,6 @@ public class PlayerMovement : MonoBehaviour
     
     [SerializeField] PlayerHealth playerHealth;
     [SerializeField] Score score;
-    
 
     private void Start()
     {
