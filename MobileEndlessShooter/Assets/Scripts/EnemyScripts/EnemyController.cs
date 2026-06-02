@@ -17,9 +17,6 @@ public class EnemyController : MonoBehaviour
     private Vector3 pointB;
     private Vector3 targetPoint;
     private Collider colliderEnemy;
-    
-    private Vector3 startingLocalPosition;
-    private Quaternion startingLocalRotation;
    
     private void Awake()
     {
@@ -27,9 +24,6 @@ public class EnemyController : MonoBehaviour
         coinSpawnerScript = FindFirstObjectByType<CoinSpawner>();
         animator = GetComponentInChildren<Animator>();
         colliderEnemy = GetComponent<Collider>();
-        
-        startingLocalPosition = animator.transform.localPosition;
-        startingLocalRotation = animator.transform.localRotation;
     }
 
     public void Initialize(EnemyData data) 
@@ -69,14 +63,16 @@ public class EnemyController : MonoBehaviour
 
     private void HandleHorizontalMovement()
     {
-        //moves the enemy to target (pointA/pointB)
-        transform.position = Vector3.MoveTowards(transform.position, targetPoint, data.movementSpeed * Time.deltaTime); 
-        
+        // Move ONLY the X axis value towards the target's X value
+        float newX = Mathf.MoveTowards(transform.position.x, targetPoint.x, data.movementSpeed * Time.deltaTime); 
+    
+        // Apply the new X, but keep the current Y and Z exactly as they are right now!
+        transform.position = new Vector3(newX, transform.position.y, transform.position.z);
 
-       
-        if (Mathf.Approximately(transform.position.x, targetPoint.x)) // will check if the enemy (approximately) arrive at the point destination
+        // Check if the enemy arrived at the destination X
+        if (Mathf.Approximately(transform.position.x, targetPoint.x)) 
         {
-            targetPoint = (targetPoint == pointB) ? pointA : pointB; // will switch the point to move to
+            targetPoint = (targetPoint == pointB) ? pointA : pointB; // switch points
         }
     }
 
