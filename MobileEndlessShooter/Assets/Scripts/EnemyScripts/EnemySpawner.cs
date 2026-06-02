@@ -13,6 +13,7 @@ public class EnemySpawner : MonoBehaviour
     private float spawnTimer = 0f;
     private int currentActiveEnemies = 0;
     [SerializeField] private float distanceFromPlayer = 60f;
+    [SerializeField] private UIControler uiControler;
     
     //a short way (using the lambda) to set the current difficulty to the desired difficulty by time
     private DifficultyLevelData CurrentDifficulty => difficultyTimeline[currentDifficultyIndex];
@@ -23,6 +24,7 @@ public class EnemySpawner : MonoBehaviour
 
         HandleProgressionTimeline();
         HandleSpawningIntervals();
+        
     }
 
     private void HandleProgressionTimeline()
@@ -37,7 +39,14 @@ public class EnemySpawner : MonoBehaviour
                 currentDifficultyIndex++;
                 levelTimer = 0f;
                 Debug.Log($"Difficulty scaled up automatically to: {CurrentDifficulty.difficultyName}");
+                
             }
+        }
+
+        if (levelTimer >= CurrentDifficulty.durationInSeconds &&
+            currentDifficultyIndex == difficultyTimeline.Length - 1)
+        {
+            uiControler.Finish();
         }
     }
 
@@ -106,11 +115,5 @@ public class EnemySpawner : MonoBehaviour
             }
         }
         return CurrentDifficulty.allowedEnemies[0].enemyData; // return the first enemy in the array in case of a floating point error
-    }
-
-    // currentActiveEnemies-- but with protection incase of a bug
-    public void EnemyRecycled()
-    {
-        currentActiveEnemies = Mathf.Max(0, currentActiveEnemies - 1);
     }
 }

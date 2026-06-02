@@ -4,6 +4,9 @@ using UnityEngine.SceneManagement;
 
 public class UIControler : MonoBehaviour
 {
+   [SerializeField] private GameObject mainHUD;
+   [SerializeField] private GameObject deathPanel;
+   [SerializeField] private GameObject victoryPanel;
    public void StartGame()
    {
       SceneManager.LoadScene(1);
@@ -38,5 +41,17 @@ public class UIControler : MonoBehaviour
    public void LoadMenu()
    {
       SceneManager.LoadScene(0);
+   }
+
+   public void Death()
+   {
+      mainHUD.SetActive(false);
+      deathPanel.SetActive(true);
+   }
+
+   public void Finish()
+   {
+      mainHUD.SetActive(false);
+      victoryPanel.SetActive(true);
    }
 }
