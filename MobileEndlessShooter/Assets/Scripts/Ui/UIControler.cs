@@ -7,6 +7,8 @@ public class UIControler : MonoBehaviour
    [SerializeField] private GameObject mainHUD;
    [SerializeField] private GameObject deathPanel;
    [SerializeField] private GameObject victoryPanel;
+   
+   
    public void StartGame()
    {
       SceneManager.LoadScene(1);
