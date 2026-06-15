@@ -1,18 +1,33 @@
 
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class UIControler : MonoBehaviour
 {
    [SerializeField] private GameObject mainHUD;
    [SerializeField] private GameObject deathPanel;
    [SerializeField] private GameObject victoryPanel;
-   
-   
+   [SerializeField] private GameObject loadingPanel;
+   [SerializeField] private Slider loadingSlider;
    public void StartGame()
    {
-      SceneManager.LoadScene(1);
+      loadingPanel.SetActive(true); 
+      StartCoroutine(LoadLevelAsync());
       Time.timeScale = 1;
+   }
+   IEnumerator LoadLevelAsync()
+   {
+      AsyncOperation op = SceneManager.LoadSceneAsync(1);
+      while (!op.isDone)
+      {
+         float progress = Mathf.Clamp01(op.progress / 0.9f);
+            
+         if (loadingSlider != null)
+            loadingSlider.value = progress;
+         yield return null;
+      }
    }
 
    public void QuitGame()
