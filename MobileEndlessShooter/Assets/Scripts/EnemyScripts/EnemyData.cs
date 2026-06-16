@@ -4,7 +4,8 @@ using UnityEngine;
 public class EnemyData : ScriptableObject
 {
     [Header("Visuals")] public GameObject enemyPrefab; 
-    public string enemyType; 
+    public string enemyType;
+    public bool isFollower;
 
     [Header("Movement")] public float movementSpeed = 4f;
 

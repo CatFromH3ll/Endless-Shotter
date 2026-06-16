@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 93b16797dd64f2742a03409a0b7f0231, type: 3}
-  m_Name: Easy
+  m_Name: Easy - Begining
   m_EditorClassIdentifier: 
-  difficultyName: Easy
+  difficultyName: Easy - begining
   durationInSeconds: 20
-  spawnInterval: 3
+  spawnInterval: 4
   maxActiveEnemies: 30
   allowedEnemies:
   - enemyData: {fileID: 11400000, guid: a0f0d5d2ad514144fbda5fb65204aa0d, type: 2}

@@ -24,10 +24,8 @@ public class WeaponSpawner : MonoBehaviour
     {
         if (fireTimer < currentWeapon.fireRate)
         {
-            Debug.Log("cooldown");
             return;
         }
-        Debug.Log("ready to fire");
         Shoot();
         fireTimer = 0;
     }
