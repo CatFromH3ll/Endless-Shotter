@@ -8,7 +8,8 @@ public class EnemyController : MonoBehaviour
     private float currentHealth;
     private bool isDead = false;
     private const string DeadHash = "Dead";
-    private PlayerMovement player;
+    private PlayerMovement playerScript;
+    private GameObject player;
     private Animator animator;
     private CoinSpawner coinSpawnerScript;
     private int scoreValue;
@@ -17,10 +18,12 @@ public class EnemyController : MonoBehaviour
     private Vector3 pointB;
     private Vector3 targetPoint;
     private Collider colliderEnemy;
+    private bool isFollower;
    
     private void Awake()
     {
-        player = FindFirstObjectByType<PlayerMovement>();
+        player =  GameObject.FindGameObjectWithTag("Player");
+        playerScript = player.GetComponent<PlayerMovement>();
         coinSpawnerScript = FindFirstObjectByType<CoinSpawner>();
         animator = GetComponentInChildren<Animator>();
         colliderEnemy = GetComponent<Collider>();
@@ -33,17 +36,21 @@ public class EnemyController : MonoBehaviour
         currentHealth = data.health;
         scoreValue = data.scoreValue;
         isDead = false;
+        isFollower = data.isFollower;
 
-        //sets the pointA and pointB
-        pointA = new Vector3(30f, transform.position.y, transform.position.z);   
-        pointB = new Vector3(-30f, transform.position.y, transform.position.z);   
-        
-        //randomize starting position to move to
-        int randomDirection = Random.Range(0, 2);
-        if  (randomDirection == 0) targetPoint = pointA;
-        else targetPoint = pointB;
-       
-       colliderEnemy.enabled = true;
+        if (!isFollower)
+        {
+            //sets the pointA and pointB
+            pointA = new Vector3(30f, transform.position.y, transform.position.z);
+            pointB = new Vector3(-30f, transform.position.y, transform.position.z);
+
+            //randomize starting position to move to
+            int randomDirection = Random.Range(0, 2);
+            if (randomDirection == 0) targetPoint = pointA;
+            else targetPoint = pointB;
+        }
+        else transform.rotation = Quaternion.LookRotation(player.transform.position);
+        colliderEnemy.enabled = true;
     }
 
     private void Update()
@@ -52,10 +59,11 @@ public class EnemyController : MonoBehaviour
         
         if (data == null) return;
         
-        HandleHorizontalMovement();
-
-       
-        if (player != null && (player.transform.position.z) > (transform.position.z + 20f))// check if the player passed the enemy
+        if (!isFollower)   HandleHorizontalMovement();
+        else HandleFollowMovement();
+        
+        
+        if (playerScript != null && (playerScript.transform.position.z) > (transform.position.z + 20f))// check if the player passed the enemy
         {
             RecycleEnemy();
         }
@@ -74,6 +82,13 @@ public class EnemyController : MonoBehaviour
         {
             targetPoint = (targetPoint == pointB) ? pointA : pointB; // switch points
         }
+    }
+
+    private void HandleFollowMovement()
+    {
+        float targetX = Mathf.MoveTowards(transform.position.x, player.transform.position.x, data.movementSpeed * Time.deltaTime);
+        float targetZ = Mathf.MoveTowards(transform.position.z, player.transform.position.z, data.movementSpeed * Time.deltaTime);
+        transform.position = new Vector3(targetX, transform.position.y, targetZ);
     }
 
     public void TakeDamage(float amount)
@@ -98,7 +113,6 @@ public class EnemyController : MonoBehaviour
     {
         isDead = true;
         gameObject.SetActive(false);
-        Debug.Log("recycled");
     }
 
     private void OnCollisionEnter(Collision other)
