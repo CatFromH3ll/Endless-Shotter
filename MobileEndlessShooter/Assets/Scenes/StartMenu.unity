@@ -741,6 +741,7 @@ MonoBehaviour:
   victoryPanel: {fileID: 0}
   loadingPanel: {fileID: 677157794}
   loadingSlider: {fileID: 735318289}
+  GameWidth: 0
 --- !u!1 &346706345
 GameObject:
   m_ObjectHideFlags: 0

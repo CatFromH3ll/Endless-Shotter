@@ -1,4 +1,6 @@
+using System;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class EnemySpawner : MonoBehaviour
 {
@@ -9,9 +11,10 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private DifficultyLevelData[] difficultyTimeline;
 
     private int currentDifficultyIndex = 0;
-    private float levelTimer = 0f;
+   // private float levelTimer = 0f;
     private float spawnTimer = 0f;
     private int currentActiveEnemies = 0;
+    private int stage;
     [SerializeField] private float distanceFromPlayer = 60f;
     [SerializeField] private UIControler uiControler;
     
@@ -29,25 +32,36 @@ public class EnemySpawner : MonoBehaviour
 
     private void HandleProgressionTimeline()
     {
-        levelTimer += Time.deltaTime; // 
-
-        // check if enaght time passed to move into a next faze 
-        if (levelTimer >= CurrentDifficulty.durationInSeconds)
+        if (currentActiveEnemies <= 0)
         {
-            if (currentDifficultyIndex < difficultyTimeline.Length - 1)
-            {
-                currentDifficultyIndex++;
-                levelTimer = 0f;
-                Debug.Log($"Difficulty scaled up automatically to: {CurrentDifficulty.difficultyName}");
-                
-            }
+            currentDifficultyIndex++;
         }
 
-        if (levelTimer >= CurrentDifficulty.durationInSeconds &&
-            currentDifficultyIndex == difficultyTimeline.Length - 1)
+        if (currentDifficultyIndex >= difficultyTimeline.Length && currentActiveEnemies > 0)
         {
-            uiControler.Finish();
+            currentDifficultyIndex = 0;
+            stage++;
+            Console.WriteLine("stage " + stage);
         }
+        
+        //levelTimer += Time.deltaTime; 
+       // // check if enaght time passed to move into a next faze 
+       // if (levelTimer >= CurrentDifficulty.durationInSeconds)
+       // {
+       //     if (currentDifficultyIndex < difficultyTimeline.Length - 1)
+       //     {
+       //         currentDifficultyIndex++;
+       //         levelTimer = 0f;
+       //         Debug.Log($"Difficulty scaled up automatically to: {CurrentDifficulty.difficultyName}");
+       //         
+       //     }
+       // }
+//
+       // if (levelTimer >= CurrentDifficulty.durationInSeconds &&
+       //     currentDifficultyIndex == difficultyTimeline.Length - 1)
+       // {
+       //     uiControler.Finish();
+       // }
     }
 
     private void HandleSpawningIntervals()
@@ -59,7 +73,7 @@ public class EnemySpawner : MonoBehaviour
             spawnTimer = 0f;
 
             // only spawn enemy's if there are less then the maximum amount of enemy's
-            if (currentActiveEnemies < CurrentDifficulty.maxActiveEnemies)
+            //for (int i = 0; i < CurrentDifficulty.EnemiesToSpawn ; i++)
             {
                 SpawnRandomEnemy();
             }

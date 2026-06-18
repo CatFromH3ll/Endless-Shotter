@@ -44,6 +44,7 @@ public class PlayerMovement : MonoBehaviour
         playerHealth = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerHealth>();
         mainCamera =  GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
         targetRotation = transform.rotation;
+        
     }
 
     private void Update()
@@ -98,6 +99,9 @@ public class PlayerMovement : MonoBehaviour
         
         groundPlane.Raycast(leftRay, out float leftDistance);
         groundPlane.Raycast(rightRay, out float rightDistance);
+        
+        //Vector3 leftEdge = new Vector3(screenWidth, transform.position.y, transform.position.z);
+        //Vector3 rightEdge = new Vector3(screenWidth, transform.position.y, transform.position.z);
         
         Vector3 leftEdge = leftRay.GetPoint(leftDistance);
         Vector3 rightEdge = rightRay.GetPoint(rightDistance);

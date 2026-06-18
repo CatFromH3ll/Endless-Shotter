@@ -2641,6 +2641,7 @@ MonoBehaviour:
   victoryPanel: {fileID: 2019900365}
   loadingPanel: {fileID: 0}
   loadingSlider: {fileID: 0}
+  GameWidth: 0
 --- !u!1 &894157642
 GameObject:
   m_ObjectHideFlags: 0
@@ -3588,11 +3589,6 @@ MonoBehaviour:
   difficultyTimeline:
   - {fileID: 11400000, guid: 7761fe77a676ab34f9a5f80342889379, type: 2}
   - {fileID: 11400000, guid: 63cb94060cfff5046bd208b39b53d6d8, type: 2}
-  - {fileID: 11400000, guid: eba44c51df3242342895077fb2cd0002, type: 2}
-  - {fileID: 11400000, guid: 815982e4a8aedf84b84d86ce0a4fc4bb, type: 2}
-  - {fileID: 11400000, guid: fdb959c4271592143a62bd4ff9247ebf, type: 2}
-  - {fileID: 11400000, guid: 7761fe77a676ab34f9a5f80342889379, type: 2}
-  - {fileID: 11400000, guid: 4d97d4b47f3021143b9ad58254ba507b, type: 2}
   distanceFromPlayer: 250
   uiControler: {fileID: 882201893}
 --- !u!114 &1173928934

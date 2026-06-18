@@ -1,4 +1,5 @@
 
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -11,6 +12,7 @@ public class UIControler : MonoBehaviour
    [SerializeField] private GameObject victoryPanel;
    [SerializeField] private GameObject loadingPanel;
    [SerializeField] private Slider loadingSlider;
+   [SerializeField] private float GameWidth;
    public void StartGame()
    {
       loadingPanel.SetActive(true); 
@@ -28,6 +30,11 @@ public class UIControler : MonoBehaviour
             loadingSlider.value = progress;
          yield return null;
       }
+   }
+
+   private void Update()
+   {
+      GameWidth = Screen.width;
    }
 
    public void QuitGame()
