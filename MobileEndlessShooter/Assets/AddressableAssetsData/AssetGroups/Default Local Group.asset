@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Default Local Group
+  m_EditorClassIdentifier: 
+  m_GroupName: Default Local Group
+  m_GUID: 416c1d374a1cca14997340aebe5bc530
+  m_SerializeEntries:
+  - m_GUID: b1200532b210e1a408571b10af77d653
+    m_Address: Assets/Prefabs/FastEnemyPrefub.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - RemoteContent
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ecde475dea833114e999e12f0281e66c
+    m_Address: Assets/Prefabs/BasicEnemyPrefub.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - RemoteContent
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 0d7edb206fcacdb48b02592f861334f6, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: ddd1d0202ef4f544c96d012344aef526, type: 2}
+    - {fileID: 11400000, guid: 417c2f6d8e76fad41816720285dca42d, type: 2}

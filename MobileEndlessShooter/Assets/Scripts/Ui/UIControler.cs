@@ -17,6 +17,7 @@ public class UIControler : MonoBehaviour
    {
       loadingPanel.SetActive(true); 
       StartCoroutine(LoadLevelAsync());
+      ;
       Time.timeScale = 1;
    }
    IEnumerator LoadLevelAsync()
@@ -28,8 +29,12 @@ public class UIControler : MonoBehaviour
             
          if (loadingSlider != null)
             loadingSlider.value = progress;
+         AudioManager.instance.GameMusic();
+         AudioManager.instance.PlayerEngineMotor();
          yield return null;
       }
+
+      
    }
 
    private void Update()
@@ -49,6 +54,8 @@ public class UIControler : MonoBehaviour
    public void RestartGame()
    {
       SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+      AudioManager.instance.GameMusic();
+      AudioManager.instance.PlayerEngineMotor();
       Time.timeScale = 1;
    }
 
@@ -71,6 +78,7 @@ public class UIControler : MonoBehaviour
    {
       mainHUD.SetActive(false);
       deathPanel.SetActive(true);
+      AudioManager.instance.GameOver();
    }
 
    public void Finish()
