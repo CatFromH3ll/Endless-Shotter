@@ -9,11 +9,12 @@ TagManager:
   - Floor
   - Coins
   - Canvas
+  - Spawner
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Enemy
   - Water
   - UI
   - 

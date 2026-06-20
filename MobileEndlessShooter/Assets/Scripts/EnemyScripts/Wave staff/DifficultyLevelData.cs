@@ -4,7 +4,6 @@ public enum WaveType
 {
     Patrol,
     Kamikaze,
-    BigVersion,
     Shooting
 }
 [System.Serializable] // makes it so the inspector can show this struct 
@@ -25,8 +24,11 @@ public class DifficultyLevelData : ScriptableObject
     
     public WaveType chosenWaveType;
     public bool bossWave;
+    public bool bigVersion;
     public float spawnInterval = 2f; //how much time passes between enemy spawns
-    public int EnemiesToSpawn = 10; //check that there are no more than X enemy's active
+    public int EnemiesToSpawn = 10;
+    public int amountToSpawnEachSpawning;
+
 
 
 }
