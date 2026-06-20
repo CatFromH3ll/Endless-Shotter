@@ -9,6 +9,7 @@ TagManager:
   - Floor
   - Coins
   - Canvas
+  - Heal
   layers:
   - Default
   - TransparentFX

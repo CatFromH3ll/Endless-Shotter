@@ -20,14 +20,19 @@ public class PlayerHealth : MonoBehaviour
     public bool IsDead
     {
         get
-        { 
+        {
             return isDead;
         }
-        private  set
+        set
         {
             isDead = value;
         }
     }
+    
+    public float CurrentHealth => currentHealth;
+
+    public float MaxHealth => maxHealth;
+    
 
     public void TakeDamage(float damage)
     {
@@ -36,6 +41,7 @@ public class PlayerHealth : MonoBehaviour
         currentHealth -= damage;
         currentHealth = Mathf.Clamp(currentHealth, 0f, maxHealth);
         playerHealthBar.SetCurrentHealth(currentHealth);
+        AudioManager.instance.PlayerHit();
         playerAnimator.SetTrigger("Hit");
 
         if (currentHealth <= 0)
@@ -55,6 +61,7 @@ public class PlayerHealth : MonoBehaviour
 
     public void Die()
     {
+        AudioManager.instance.PlayerDeath();
         playerAnimator.SetTrigger("Death");
         uIControler.Death();
         Debug.Log("DEAD");
@@ -67,6 +74,7 @@ public class PlayerHealth : MonoBehaviour
         {
             TakeDamage(25);
         }
+        
     }
     
    

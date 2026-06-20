@@ -37,6 +37,7 @@ public class WeaponSpawner : MonoBehaviour
         Projectile projectileScript = projectile.GetComponent<Projectile>();
         projectileScript.SetDamage(currentWeapon.projectileDamage);
         projectileScript.LaunchProjectile(spawnPoint.forward, currentWeapon.projectileSpeed);
+        AudioManager.instance.PlayerBasicShotSound();
     }
 
     

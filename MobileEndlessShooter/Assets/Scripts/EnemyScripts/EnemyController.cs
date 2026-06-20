@@ -96,6 +96,7 @@ public class EnemyController : MonoBehaviour
         if (isDead) return;
 
         currentHealth -= amount;
+        AudioManager.instance.PlayerProjectileHitSound();
         if (currentHealth <= 0) Die();
         Debug.Log(currentHealth);
     }

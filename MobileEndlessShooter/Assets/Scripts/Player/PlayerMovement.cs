@@ -129,6 +129,7 @@ public class PlayerMovement : MonoBehaviour
         {
             sideInput = 0f;
         }
+        AudioManager.instance.SetEngineThrottle(sideInput);
 
         // Calculate horizontal movement speed
         float xVelocity = sideInput * sideSpeed;
@@ -183,6 +184,7 @@ public class PlayerMovement : MonoBehaviour
         rb.linearVelocity = velocity;
 
         rb.AddForce(Vector3.up * jumpHeight, ForceMode.Impulse);
+        AudioManager.instance.PlayerJump();
 
         isGrounded = false;
     }
@@ -193,9 +195,10 @@ public class PlayerMovement : MonoBehaviour
         {
             Coins coins = other.gameObject.GetComponent<Coins>();
             score.UpdateScore(coins.coinValue);
+            AudioManager.instance.CollectCoinSound();
             coins.RecycleCoin();
         }
-        if (other.gameObject.CompareTag("Floor"))
+        if (other.gameObject.CompareTag("Floor") && !isGrounded)
         {
             isGrounded = true;
         }

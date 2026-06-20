@@ -6,6 +6,7 @@ public class CoinSpawner : MonoBehaviour
     [SerializeField]private GameObject CoinDropPrefab;
     private const string coinHash = "CoinPila";
     
+    
     public void DropCoins(int scoreValue, Vector3 spawnPosition)
     {
         float yOffset = 3.5f;
