@@ -21,7 +21,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float slowSpeed = 8.0f;
     [SerializeField] private float sideSpeed = 4.0f;
     [SerializeField] private float jumpHeight = 8.0f;
-    //[SerializeField] private float screenMargin = 1.5f;
+    [SerializeField] private float screenMargin = 1.5f;
     
     private bool isGrounded = true;
     private bool requestJump;
@@ -30,8 +30,6 @@ public class PlayerMovement : MonoBehaviour
     private float sideInput;
     private float moveRotation = 25f;
     private float moveRotationSpeed = 40f;
-    
-    
     
     Quaternion startRotation;
     Quaternion targetRotation;
@@ -46,6 +44,7 @@ public class PlayerMovement : MonoBehaviour
         playerHealth = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerHealth>();
         mainCamera =  GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
         targetRotation = transform.rotation;
+        
     }
 
     private void Update()
@@ -88,83 +87,70 @@ public class PlayerMovement : MonoBehaviour
         
     }
     
-    
-/* Shoots a raycast from the camera and plane to the left and right side,
- then makes clamp variables to use in the player movement */
+
     private void MovementClamp(out float minX, out float maxX)
     {
-        // Set the left and right screen margins
-        float leftPlayerMargin = 0.1f;
-        float rightPlayerMargin = 0.9f;
-
-        // Get the player's distance from the camera
-        float distanceFromCamera =
-            mainCamera.WorldToViewportPoint(rb.position).z;
-
-        // Convert the left and right viewport limit into a world position
-        Vector3 leftPoint = mainCamera.ViewportToWorldPoint(
-            new Vector3(leftPlayerMargin, 0.5f, distanceFromCamera)
-        );
-
-        Vector3 rightPoint = mainCamera.ViewportToWorldPoint(
-            new Vector3(rightPlayerMargin, 0.5f, distanceFromCamera)
-        );
-
-        // Store the minimum and maximum allowed X positions
-        minX = leftPoint.x;
-        maxX = rightPoint.x;
+        Plane groundPlane = new Plane(Vector3.up, Vector3.zero);
+        
+        float playerScreenY = mainCamera.WorldToViewportPoint(transform.position).y;
+        
+        Ray leftRay = mainCamera.ViewportPointToRay(new Vector3(0f, playerScreenY, 0));
+        Ray rightRay = mainCamera.ViewportPointToRay(new Vector3(1f, playerScreenY, 0));
+        
+        groundPlane.Raycast(leftRay, out float leftDistance);
+        groundPlane.Raycast(rightRay, out float rightDistance);
+        
+        //Vector3 leftEdge = new Vector3(screenWidth, transform.position.y, transform.position.z);
+        //Vector3 rightEdge = new Vector3(screenWidth, transform.position.y, transform.position.z);
+        
+        Vector3 leftEdge = leftRay.GetPoint(leftDistance);
+        Vector3 rightEdge = rightRay.GetPoint(rightDistance);
+        
+        minX = leftEdge.x + screenMargin;
+        maxX = rightEdge.x - screenMargin;
         
     }
 
     public void Movement()
     {
-        // Get the minimum and maximum X positions of the player, this is where he can go
+        //calculate how far the player can go on X axis
         MovementClamp(out float minX, out float maxX);
-
-        // Get horizontal joystick input
         sideInput = joystick.Horizontal;
-
-        // Ignore very small joystick movement
+        
         if (Mathf.Abs(sideInput) < joyStickDeadzone)
         {
             sideInput = 0f;
         }
-        AudioManager.instance.SetEngineThrottle(sideInput);
-
-        // Calculate horizontal movement speed
         float xVelocity = sideInput * sideSpeed;
 
-        // Calculate the player's next X position
-        float nextX =
-            rb.position.x + xVelocity * Time.fixedDeltaTime;
+        float nextX = rb.position.x + xVelocity * Time.fixedDeltaTime;
 
-        // Keep the next X position inside the screen limits
-        float clampedX = Mathf.Clamp(nextX, minX, maxX);
-
-        // Convert the clamped position back into velocity
-        xVelocity =
-            (clampedX - rb.position.x) / Time.fixedDeltaTime;
-
-        // Get the current Rigidbody velocity
+        // If next frame would go outside edge, stop X movement
+        if (nextX < minX)
+        {
+            xVelocity = (minX - rb.position.x) / Time.fixedDeltaTime;
+        }
+        else if (nextX > maxX)
+        {
+            xVelocity = (maxX - rb.position.x) / Time.fixedDeltaTime;
+        }
+        
+        //calculate speed
         Vector3 velocity = rb.linearVelocity;
-
-        // Slow the player when pulling the joystick down
+            
         if (joystick.Vertical < slowThreshold && isGrounded)
         {
             velocity.z = slowSpeed;
         }
         else
         {
-            // Move forward at normal speed
             velocity.z = speed;
         }
-
-        // Apply horizontal movement
         velocity.x = xVelocity;
         
-        //Apply final movement
         rb.linearVelocity = velocity;
-
+        
+        //Condition to jump calculated from Update input
         if (requestJump)
         {
             Jump();
@@ -184,7 +170,6 @@ public class PlayerMovement : MonoBehaviour
         rb.linearVelocity = velocity;
 
         rb.AddForce(Vector3.up * jumpHeight, ForceMode.Impulse);
-        AudioManager.instance.PlayerJump();
 
         isGrounded = false;
     }
@@ -195,10 +180,9 @@ public class PlayerMovement : MonoBehaviour
         {
             Coins coins = other.gameObject.GetComponent<Coins>();
             score.UpdateScore(coins.coinValue);
-            AudioManager.instance.CollectCoinSound();
             coins.RecycleCoin();
         }
-        if (other.gameObject.CompareTag("Floor") && !isGrounded)
+        if (other.gameObject.CompareTag("Floor"))
         {
             isGrounded = true;
         }

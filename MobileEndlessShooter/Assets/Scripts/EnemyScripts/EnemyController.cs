@@ -19,6 +19,8 @@ public class EnemyController : MonoBehaviour
     private Vector3 targetPoint;
     private Collider colliderEnemy;
     private bool isFollower;
+    
+    private float screenWidth = Screen.width;
    
     private void Awake()
     {
@@ -27,6 +29,9 @@ public class EnemyController : MonoBehaviour
         coinSpawnerScript = FindFirstObjectByType<CoinSpawner>();
         animator = GetComponentInChildren<Animator>();
         colliderEnemy = GetComponent<Collider>();
+        
+        
+        
     }
 
     public void Initialize(EnemyData data) 
@@ -41,15 +46,29 @@ public class EnemyController : MonoBehaviour
         if (!isFollower)
         {
             //sets the pointA and pointB
-            pointA = new Vector3(30f, transform.position.y, transform.position.z);
-            pointB = new Vector3(-30f, transform.position.y, transform.position.z);
+            
+            
+            float leftMargin = 0.3f;
+            float rightMargin = 0.7f;
+            
+            Vector3 leftPoint = Camera.main.ViewportToWorldPoint
+                (new Vector3(leftMargin,0.5f, transform.position.z - Camera.main.transform.position.z));
+            
+            Vector3 rightPoint = Camera.main.ViewportToWorldPoint
+                (new Vector3(rightMargin ,0.5f , transform.position.z - Camera.main.transform.position.z));
 
+            pointA = new Vector3(rightPoint.x, transform.position.y, transform.position.z);
+            pointB = new Vector3(leftPoint.x, transform.position.y, transform.position.z);
+            
             //randomize starting position to move to
-            int randomDirection = Random.Range(0, 2);
-            if (randomDirection == 0) targetPoint = pointA;
-            else targetPoint = pointB;
+            targetPoint = (Random.Range(0, 2) == 0) ? pointA : pointB;
+           
         }
-        else transform.rotation = Quaternion.LookRotation(player.transform.position);
+        else
+        {
+            transform.rotation = Quaternion.LookRotation(player.transform.position);
+            data.movementSpeed *= 3;
+        }
         colliderEnemy.enabled = true;
     }
 

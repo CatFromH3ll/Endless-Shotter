@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 93b16797dd64f2742a03409a0b7f0231, type: 3}
-  m_Name: Easy - Begining
+  m_Name: Patrol-Fast
   m_EditorClassIdentifier: 
-  difficultyName: Easy - begining
-  durationInSeconds: 20
-  spawnInterval: 4
+  difficultyName: Easy - end
+  durationInSeconds: 5
+  spawnInterval: 2
   maxActiveEnemies: 30
   allowedEnemies:
-  - enemyData: {fileID: 11400000, guid: a0f0d5d2ad514144fbda5fb65204aa0d, type: 2}
+  - enemyData: {fileID: 11400000, guid: 3939e9f310eed47459529ec3392419d9, type: 2}
     weight: 1
