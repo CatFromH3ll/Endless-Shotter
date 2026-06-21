@@ -13,8 +13,9 @@ public class EnemySpawner : MonoBehaviour
     private int currentDifficultyIndex = 0;
    // private float levelTimer = 0f;
     private float spawnTimer = 0f;
-    private int currentActiveEnemies = 0;
-    private int stage;
+    public int currentActiveEnemies = 0;
+    private int spawndEnemysThisWave;
+    private float stage = 1.0f;
     [SerializeField] private float distanceFromPlayer = 60f;
     [SerializeField] private UIControler uiControler;
     
@@ -32,52 +33,37 @@ public class EnemySpawner : MonoBehaviour
 
     private void HandleProgressionTimeline()
     {
-        if (currentActiveEnemies <= 0)
+        if (currentActiveEnemies <= 0 && spawndEnemysThisWave >= CurrentDifficulty.EnemiesToSpawn)
         {
-            currentDifficultyIndex++;
+            spawndEnemysThisWave = 0;
+            // Only increment if we haven't reached the end yet
+            if (currentDifficultyIndex < difficultyTimeline.Length - 1)
+            {
+                currentDifficultyIndex++;
+            }
+            else
+            {
+                currentDifficultyIndex = 0;
+                stage += 0.1f;
+                Debug.Log(stage);
+            }
         }
-
-        if (currentDifficultyIndex >= difficultyTimeline.Length && currentActiveEnemies > 0)
-        {
-            currentDifficultyIndex = 0;
-            stage++;
-            Console.WriteLine("stage " + stage);
-        }
-        
-        //levelTimer += Time.deltaTime; 
-       // // check if enaght time passed to move into a next faze 
-       // if (levelTimer >= CurrentDifficulty.durationInSeconds)
-       // {
-       //     if (currentDifficultyIndex < difficultyTimeline.Length - 1)
-       //     {
-       //         currentDifficultyIndex++;
-       //         levelTimer = 0f;
-       //         Debug.Log($"Difficulty scaled up automatically to: {CurrentDifficulty.difficultyName}");
-       //         
-       //     }
-       // }
-//
-       // if (levelTimer >= CurrentDifficulty.durationInSeconds &&
-       //     currentDifficultyIndex == difficultyTimeline.Length - 1)
-       // {
-       //     uiControler.Finish();
-       // }
     }
 
     private void HandleSpawningIntervals()
     {
         spawnTimer += Time.deltaTime;
-
-        if (spawnTimer >= CurrentDifficulty.spawnInterval)
-        {
-            spawnTimer = 0f;
-
-            // only spawn enemy's if there are less then the maximum amount of enemy's
-            //for (int i = 0; i < CurrentDifficulty.EnemiesToSpawn ; i++)
-            {
-                SpawnRandomEnemy();
-            }
+            
+        if (spawnTimer >= CurrentDifficulty.spawnInterval &&         //checks if the time between spawning passed
+            (CurrentDifficulty.EnemiesToSpawn >= spawndEnemysThisWave))//and if it didn't finished spawning the enemy's
+        { 
+            for (int i = 0; i < CurrentDifficulty.amountToSpawnEachSpawning ; i++) 
+            { 
+                spawnTimer = 0f;
+                SpawnRandomEnemy(); 
+            } 
         }
+        
     }
 
     private void SpawnRandomEnemy()
@@ -86,15 +72,23 @@ public class EnemySpawner : MonoBehaviour
 
         
         EnemyData selectedEnemyData = ChooseEnemyByWeight();
-        if (selectedEnemyData == null || selectedEnemyData.enemyPrefab == null) return; 
+        if (selectedEnemyData == null || selectedEnemyData.enemyPrefab == null) return;
 
-        //randomize the x value of the position that the enemy will spawn in
-        float randomX = Random.Range(-2.5f, 2.5f);
-        // set the spawn point to the randomized x and the z is the position of the player + distanse to spawn from the player
+        float leftSpawnMargin = 0.45f;
+        float rightSpawnMargin = 0.55f;
+
+        float targetZ = player.transform.position.z + distanceFromPlayer;
+
+        float distanceToCamera = targetZ - Camera.main.transform.position.z;
+
+        Vector3 leftSpawnBounds = Camera.main.ViewportToWorldPoint(new Vector3(leftSpawnMargin, 0.5f, distanceToCamera));
+        Vector3 rightSpawnBounds = Camera.main.ViewportToWorldPoint(new Vector3(rightSpawnMargin, 0.5f, distanceToCamera));
+
+        float randomX = Random.Range(leftSpawnBounds.x, rightSpawnBounds.x);
+
         float yOffset = 3.5f;
-        Vector3 spawnPosition = new Vector3(randomX, yOffset, player.transform.position.z + distanceFromPlayer);
-
-        // requese the poold object from the large pool
+        Vector3 spawnPosition = new Vector3(randomX, yOffset, targetZ);
+        
         GameObject spawnedEnemy = GenericObjectPooler.Instance.GetFromPool(
             selectedEnemyData.enemyType, 
             selectedEnemyData.enemyPrefab, 
@@ -102,15 +96,15 @@ public class EnemySpawner : MonoBehaviour
             selectedEnemyData.enemyPrefab.transform.rotation
         );
 
-        //  set the enemy script data to the disierd enemy settings
         if (spawnedEnemy.TryGetComponent<EnemyController>(out var enemyScript))
         {
-            enemyScript.Initialize(selectedEnemyData);
+            enemyScript.Initialize(selectedEnemyData,CurrentDifficulty,stage);
             currentActiveEnemies++;
+            spawndEnemysThisWave++;
         }
     }
 
-    private EnemyData ChooseEnemyByWeight()
+    private EnemyData ChooseEnemyByWeight()// choos a random enemy from the wave pool
     {
         float totalWeight = 0f;
         foreach (var enemyWeight in CurrentDifficulty.allowedEnemies) totalWeight += enemyWeight.weight; // adds the weight value of each enemy type in the wave.

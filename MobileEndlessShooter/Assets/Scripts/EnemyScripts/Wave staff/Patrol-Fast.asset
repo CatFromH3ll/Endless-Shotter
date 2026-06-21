@@ -12,10 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93b16797dd64f2742a03409a0b7f0231, type: 3}
   m_Name: Patrol-Fast
   m_EditorClassIdentifier: 
-  difficultyName: Easy - end
-  durationInSeconds: 5
-  spawnInterval: 2
-  maxActiveEnemies: 30
   allowedEnemies:
   - enemyData: {fileID: 11400000, guid: 3939e9f310eed47459529ec3392419d9, type: 2}
     weight: 1
+  chosenWaveType: 0
+  bossWave: 0
+  spawnInterval: 2
+  EnemiesToSpawn: 10
+  amountToSpawnEachSpawning: 1

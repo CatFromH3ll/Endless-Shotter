@@ -26,13 +26,14 @@ public class WeaponSpawner : MonoBehaviour
         {
             return;
         }
+        if(playerHealth.IsDead) return;
         Shoot();
         fireTimer = 0;
     }
     
-    public void Shoot()
+    public void Shoot() 
     {
-        if(playerHealth.IsDead) return;
+        
         GameObject projectile = GenericObjectPooler.Instance.GetFromPool(projectileHash, projectilePrefab, spawnPoint.position, Quaternion.identity);
         Projectile projectileScript = projectile.GetComponent<Projectile>();
         projectileScript.SetDamage(currentWeapon.projectileDamage);
