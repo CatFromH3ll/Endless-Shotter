@@ -14,9 +14,9 @@ public class UIControler : MonoBehaviour
    [SerializeField] private GameObject loadingPanel;
    [SerializeField] private Slider loadingSlider;
    [SerializeField] private float GameWidth;
-   private float easyDifficulty =  0.5f;
-   private float mediumDifficulty = 1.0f;
-   private float hardDifficulty = 1.5f;
+   private float easyDifficulty =  1.0f;
+   private float mediumDifficulty = 1.5f;
+   private float hardDifficulty = 2.0f;
    public static float selectedDifficultyModifier {get; private set;}
    
    public void StartGame()

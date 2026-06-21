@@ -8,6 +8,7 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] private Animator playerAnimator;
     [SerializeField] private UIControler uIControler;
     private bool isDead;
+    private bool isShielded;
 
     void Start()
     {
@@ -28,6 +29,18 @@ public class PlayerHealth : MonoBehaviour
             isDead = value;
         }
     }
+
+    public bool IsShielded
+    {
+        get
+        {
+            return isShielded;
+        }
+        set
+        {
+            isShielded = value;
+        }
+    }
     
     public float CurrentHealth => currentHealth;
 
@@ -37,12 +50,18 @@ public class PlayerHealth : MonoBehaviour
     public void TakeDamage(float damage)
     {
         if(isDead) return;
+        if (isShielded)
+        {
+            AudioManager.instance.ShieldHitSound();
+            return;
+        }
         Debug.Log("DAMGED " + damage);
         currentHealth -= damage;
         currentHealth = Mathf.Clamp(currentHealth, 0f, maxHealth);
         playerHealthBar.SetCurrentHealth(currentHealth);
         AudioManager.instance.PlayerHit();
         playerAnimator.SetTrigger("Hit");
+        
 
         if (currentHealth <= 0)
         {

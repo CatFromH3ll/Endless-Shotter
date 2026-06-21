@@ -16,5 +16,5 @@ MonoBehaviour:
   enemyType: Basic
   movementSpeed: 13
   health: 10
-  damageToPlayer: 1
+  damageToPlayer: 10
   scoreValue: 100

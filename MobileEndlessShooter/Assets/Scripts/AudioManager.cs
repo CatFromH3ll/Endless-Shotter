@@ -20,6 +20,10 @@ public class AudioManager : MonoBehaviour
    public AudioClip playerJump;
    public AudioClip collectCoin;
    public AudioClip repairSound;
+   public AudioClip shieldSound;
+   public AudioClip shieldHit;
+   public AudioClip shieldDeactivated;
+   public AudioClip shieldReady;
    
    [Header("Engine Settings")]
    [SerializeField] private float normalPitch = 1f;
@@ -47,6 +51,7 @@ public class AudioManager : MonoBehaviour
 
    public void Update()
    {
+      if(sfxSource.clip == shieldSound) return;
       //constantly smoothly transition the pitch of the engine
       engineSource.pitch = Mathf.MoveTowards(
          engineSource.pitch,
@@ -83,7 +88,7 @@ public class AudioManager : MonoBehaviour
 
    public void PlayerEngineMotor()
    {
-      engineSource.clip = playerEngineMotor;
+      SwitchEngineSound(playerEngineMotor);
       engineSource.pitch = normalPitch;
       engineSource.loop = true;
       engineSource.Play();
@@ -130,10 +135,40 @@ public class AudioManager : MonoBehaviour
    {
       sfxSource.PlayOneShot(collectCoin);
    }
+   
+   private void SwitchEngineSound(AudioClip newClip)
+   {
+      if (engineSource.clip == newClip) return;
+
+      engineSource.Stop();
+      engineSource.clip = newClip;
+      engineSource.loop = true;
+      engineSource.Play();
+   }
 
    public void RepairSound()
    {
       sfxSource.PlayOneShot(repairSound);
+   }
+
+   public void ShieldSound()
+   {
+      SwitchEngineSound(shieldSound);
+   }
+
+   public void ShieldHitSound()
+   {
+      sfxSource.PlayOneShot(shieldHit);
+   }
+
+   public void ShieldDeactivatedSound()
+   {
+      sfxSource.PlayOneShot(shieldDeactivated);
+   }
+
+   public void ShieldReadySound()
+   {
+      sfxSource.PlayOneShot(shieldReady);
    }
 
 }

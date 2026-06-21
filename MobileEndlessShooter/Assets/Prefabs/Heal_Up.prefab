@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2179989932510003659}
   - component: {fileID: -5323980255141245321}
   - component: {fileID: 4357126205922363093}
+  - component: {fileID: 4293665380124838393}
   m_Layer: 0
   m_Name: Heal_Up
   m_TagString: Heal
@@ -124,6 +125,21 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 6.0059614, y: 4.0000005, z: 1.0000002}
   m_Center: {x: 0.079185605, y: 0, z: 0.000000059604645}
+--- !u!114 &4293665380124838393
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 378334508266577950}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04c2aa4f86ca6384e9a9c6d234cdef24, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bounceSpeed: 8
+  bounceAmplitude: 0.5
+  rotationSpeed: 90
 --- !u!1001 &3084231291169256146
 PrefabInstance:
   m_ObjectHideFlags: 0
