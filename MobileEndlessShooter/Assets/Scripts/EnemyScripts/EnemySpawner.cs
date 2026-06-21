@@ -15,8 +15,7 @@ public class EnemySpawner : MonoBehaviour
     private float spawnTimer = 0f;
     public int currentActiveEnemies = 0;
     private int spawndEnemysThisWave;
-    private int stage;
-    private bool finishdSpawning = false;
+    private float stage = 1.0f;
     [SerializeField] private float distanceFromPlayer = 60f;
     [SerializeField] private UIControler uiControler;
     
@@ -45,7 +44,7 @@ public class EnemySpawner : MonoBehaviour
             else
             {
                 currentDifficultyIndex = 0;
-                stage++;
+                stage += 0.1f;
                 Debug.Log(stage);
             }
         }
@@ -58,7 +57,6 @@ public class EnemySpawner : MonoBehaviour
         if (spawnTimer >= CurrentDifficulty.spawnInterval &&         //checks if the time between spawning passed
             (CurrentDifficulty.EnemiesToSpawn >= spawndEnemysThisWave))//and if it didn't finished spawning the enemy's
         { 
-            Debug.Log(CurrentDifficulty.EnemiesToSpawn);
             for (int i = 0; i < CurrentDifficulty.amountToSpawnEachSpawning ; i++) 
             { 
                 spawnTimer = 0f;
@@ -76,8 +74,8 @@ public class EnemySpawner : MonoBehaviour
         EnemyData selectedEnemyData = ChooseEnemyByWeight();
         if (selectedEnemyData == null || selectedEnemyData.enemyPrefab == null) return;
 
-        float leftSpawnMargin = 0.4f;
-        float rightSpawnMargin = 0.6f;
+        float leftSpawnMargin = 0.45f;
+        float rightSpawnMargin = 0.55f;
 
         float targetZ = player.transform.position.z + distanceFromPlayer;
 
@@ -100,7 +98,7 @@ public class EnemySpawner : MonoBehaviour
 
         if (spawnedEnemy.TryGetComponent<EnemyController>(out var enemyScript))
         {
-            enemyScript.Initialize(selectedEnemyData,CurrentDifficulty);
+            enemyScript.Initialize(selectedEnemyData,CurrentDifficulty,stage);
             currentActiveEnemies++;
             spawndEnemysThisWave++;
         }

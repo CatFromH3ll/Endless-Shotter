@@ -8,17 +8,28 @@ using UnityEngine.UI;
 public class UIControler : MonoBehaviour
 {
    [SerializeField] private GameObject mainHUD;
+   [SerializeField] private GameObject selectDifficultyPanel;
    [SerializeField] private GameObject deathPanel;
    [SerializeField] private GameObject victoryPanel;
    [SerializeField] private GameObject loadingPanel;
    [SerializeField] private Slider loadingSlider;
    [SerializeField] private float GameWidth;
+   private float easyDifficulty =  0.5f;
+   private float mediumDifficulty = 1.0f;
+   private float hardDifficulty = 1.5f;
+   public static float selectedDifficultyModifier {get; private set;}
+   
    public void StartGame()
    {
       loadingPanel.SetActive(true); 
       StartCoroutine(LoadLevelAsync());
       ;
       Time.timeScale = 1;
+   }
+
+   public void enterSelectedDifficultyPanel()
+   {
+      selectedDifficultyModifier = easyDifficulty;
    }
    IEnumerator LoadLevelAsync()
    {
@@ -36,6 +47,7 @@ public class UIControler : MonoBehaviour
 
       
    }
+   
 
    private void Update()
    {
@@ -85,5 +97,28 @@ public class UIControler : MonoBehaviour
    {
       mainHUD.SetActive(false);
       victoryPanel.SetActive(true);
+   }
+
+   public void DifficultySelection(int difficulty)
+   {
+      switch (difficulty)
+      {
+         case 0:
+         {
+            selectedDifficultyModifier = easyDifficulty;
+            
+            break;
+         }
+         case 1:
+         {
+            selectedDifficultyModifier = mediumDifficulty;
+            break;
+         }
+         case 2:
+         {
+            selectedDifficultyModifier = hardDifficulty;
+            break;
+         }
+      }
    }
 }

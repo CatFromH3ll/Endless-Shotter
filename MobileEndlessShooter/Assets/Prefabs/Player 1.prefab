@@ -43,6 +43,7 @@ GameObject:
   - component: {fileID: 4018873134714082894}
   - component: {fileID: 1063603958696363418}
   - component: {fileID: 8349237980088678012}
+  - component: {fileID: 3948200014220306150}
   m_Layer: 0
   m_Name: Player 1
   m_TagString: Untagged
@@ -82,6 +83,7 @@ MonoBehaviour:
   currentHealth: 0
   playerHealthBar: {fileID: 0}
   playerAnimator: {fileID: 0}
+  uIControler: {fileID: 0}
 --- !u!114 &1063603958696363418
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -94,13 +96,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78056b3346e552749bfce4b05a311fe0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 8
-  sideSpeed: 4
-  jumpheight: 8
-  minX: -17
-  maxX: 12
+  rb: {fileID: 0}
+  joystick: {fileID: 0}
+  joyStickDeadzone: 0.15
+  jumpThreshold: 0.65
+  slowThreshold: -0.4
+  mainCamera: {fileID: 0}
   playerHealth: {fileID: 0}
   score: {fileID: 0}
+  speed: 8
+  slowSpeed: 8
+  sideSpeed: 4
+  jumpHeight: 8
 --- !u!54 &8349237980088678012
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -128,3 +135,24 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 116
   m_CollisionDetection: 1
+--- !u!65 &3948200014220306150
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8525020910995541846}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 3.5081468, y: 2.2540736, z: 8.524392}
+  m_Center: {x: 0, y: 1.51, z: 1.2540737}

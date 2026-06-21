@@ -9,7 +9,7 @@ public class EnemyController : MonoBehaviour
 {
     private EnemyData data;
     private float currentHealth;
-    private bool isDead = false;
+    public bool isDead { get; private set; }
     private const string DeadHash = "Dead";
     private PlayerMovement playerScript;
     private GameObject player;
@@ -18,6 +18,13 @@ public class EnemyController : MonoBehaviour
     private int scoreValue;
     private EnemySpawner enemySpawner;
     private float offset = 3.0f;
+    private EnemyShooter enemyShooter;
+    private Collider collider;
+    
+    float scaleMultyplayer = 1.5f;
+    private Vector3 originalScale;
+    private float difficultyModifire;
+
 
     private Vector3 pointA;
     private Vector3 pointB;
@@ -25,9 +32,12 @@ public class EnemyController : MonoBehaviour
     private Collider colliderEnemy;
     public DifficultyLevelData currentDifficulty;
     private WaveType waveType;
+    private float stageMultiplier;
     
     private float screenWidth = Screen.width;
     private float currentSpeed;
+    public float damageOnImpact {get; private set;}
+    private float impactModifire = 1.5f;
    
     private void Awake()
     {
@@ -37,19 +47,28 @@ public class EnemyController : MonoBehaviour
         animator = GetComponentInChildren<Animator>();
         colliderEnemy = GetComponent<Collider>();
         enemySpawner = GameObject.FindGameObjectWithTag("Spawner").GetComponent<EnemySpawner>();
-        
+        enemyShooter = GetComponent<EnemyShooter>();
+        originalScale = transform.localScale;
+
     }
 
-    public void Initialize(EnemyData data, DifficultyLevelData currentDifficulty) 
+    public void Initialize(EnemyData data, DifficultyLevelData currentDifficulty, float stageMult) 
     {
         //takes the data from the scriptable object and sets the enemy to it
         this.data = data;
         this.currentDifficulty = currentDifficulty;
-        currentHealth = data.health;
+        difficultyModifire = UIControler.selectedDifficultyModifier;
+        Debug.Log(difficultyModifire);
+        currentHealth = data.health * difficultyModifire * stageMult;
         scoreValue = data.scoreValue;
         isDead = false;
         waveType = currentDifficulty.chosenWaveType;
-        currentSpeed = data.movementSpeed;
+        currentSpeed = data.movementSpeed * difficultyModifire;
+        stageMultiplier = stageMult;
+        data.damageToPlayer = data.damageToPlayer * difficultyModifire * stageMult;
+        damageOnImpact = data.damageToPlayer * impactModifire * difficultyModifire * stageMult;
+       
+        
 
         switch (waveType)
         {
@@ -83,6 +102,7 @@ public class EnemyController : MonoBehaviour
             }
             case WaveType.Shooting:
             {
+                Debug.Log("inisialaize Shooting");
                 transform.rotation = Quaternion.LookRotation(player.transform.position);
                 break;
             }
@@ -90,9 +110,12 @@ public class EnemyController : MonoBehaviour
 
         if (currentDifficulty.bigVersion)
         {
-            float scaleMultyplayer = 1.5f;
             currentHealth *= scaleMultyplayer;
             transform.localScale = new Vector3(scaleMultyplayer, scaleMultyplayer, scaleMultyplayer);
+        }
+        else
+        {
+            transform.localScale = originalScale;
         }
         colliderEnemy.enabled = true;
     }
@@ -116,6 +139,7 @@ public class EnemyController : MonoBehaviour
             }
             case WaveType.Shooting:
             {
+                Debug.Log("Update Shooting");
                 HandleShootingBehavior();
                 break;
             }
@@ -129,16 +153,22 @@ public class EnemyController : MonoBehaviour
 
     private void HandleShootingBehavior()
     {
-        float offsetToPLayer = 100f;
+        float offsetToPLayer = 90f;
         transform.position = new Vector3(transform.position.x, transform.position.y, player.transform.position.z + offsetToPLayer);
+        if (enemyShooter != null)
+        {
+            Debug.Log("enterd tryShooting");
+            enemyShooter.TryShoot();
+        }
     }
+    
 
     private void HandleHorizontalMovement()
     {
         // Move ONLY the X axis value towards the target's X value
         float newX = Mathf.MoveTowards(transform.position.x, targetPoint.x, currentSpeed * Time.deltaTime); 
     
-        // Apply the new X, but keep the current Y and Z exactly as they are right now!
+        // Apply the new X, but keep the current Y and Z exactly as they are right now
         transform.position = new Vector3(newX, transform.position.y, transform.position.z);
 
         // Check if the enemy arrived at the destination X
@@ -162,12 +192,12 @@ public class EnemyController : MonoBehaviour
         currentHealth -= amount;
         AudioManager.instance.PlayerProjectileHitSound();
         if (currentHealth <= 0) Die();
-        Debug.Log(currentHealth);
     }
 
     private void Die() 
     {
         isDead = true;
+        damageOnImpact = 0;
        animator.SetTrigger(DeadHash);
        coinSpawnerScript.DropCoins(scoreValue, transform.position);
        colliderEnemy.enabled = false;

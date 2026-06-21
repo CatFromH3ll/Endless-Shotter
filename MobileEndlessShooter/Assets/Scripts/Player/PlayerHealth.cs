@@ -72,7 +72,10 @@ public class PlayerHealth : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Enemy"))
         {
-            TakeDamage(25);
+            GameObject enemy = collision.gameObject;
+            EnemyController controller = enemy.GetComponent<EnemyController>();
+            TakeDamage(controller.damageOnImpact);
+            
         }
         
     }

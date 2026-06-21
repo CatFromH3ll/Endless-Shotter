@@ -8,6 +8,7 @@ public class Projectile : MonoBehaviour
     [SerializeField]private float time = 3f;
     private Vector3 spinSpeed = new (0f, 800f, 0f);
     [SerializeField]private Transform rocketModel;
+    private bool isEnemy;
     
 
     void Awake()
@@ -37,12 +38,18 @@ public class Projectile : MonoBehaviour
 
     public void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Player") || collision.gameObject.CompareTag("Floor")) return;
+        if ( collision.gameObject.CompareTag("Floor") || (collision.gameObject.CompareTag("Player") && !isEnemy)) return;
         if (collision.gameObject.CompareTag("Enemy"))
         {
             EnemyController enemyController = collision.gameObject.GetComponent<EnemyController>();
             
             enemyController.TakeDamage(damage);
+        }
+
+        if (collision.gameObject.CompareTag("Player") && isEnemy)
+        {
+            PlayerHealth playerHealth = collision.gameObject.GetComponent<PlayerHealth>();
+           playerHealth.TakeDamage(damage);
         }
         ReturnToProjectilePool();
     }
@@ -53,8 +60,9 @@ public class Projectile : MonoBehaviour
         damage = newDamage;
     }
 
-    public void LaunchProjectile(Vector3 direction, float speed)
+    public void LaunchProjectile(Vector3 direction, float speed, bool isEnemy = false)
     {
+        this.isEnemy = isEnemy;
         rbProjectile.linearVelocity = direction.normalized * speed;
         
         rbProjectile.angularVelocity = Vector3.zero;

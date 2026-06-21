@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a462e7aac481084419bb4ab3009d6a18, type: 3}
-  m_Name: Rocket
+  m_Name: Enemy Rocket
   m_EditorClassIdentifier: 
   projectilePrefab: {fileID: 6993006707701002996, guid: 52a4d8cc33fccd24a85ad4cb2217a0b0, type: 3}
-  projectileSpeed: 100
-  projectileDamage: 15
-  fireRate: 1
+  projectileSpeed: 50
+  projectileDamage: 10
+  fireRate: 3

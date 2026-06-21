@@ -13,10 +13,11 @@ MonoBehaviour:
   m_Name: Shooting-Basic
   m_EditorClassIdentifier: 
   allowedEnemies:
-  - enemyData: {fileID: 11400000, guid: 3939e9f310eed47459529ec3392419d9, type: 2}
+  - enemyData: {fileID: 11400000, guid: a0f0d5d2ad514144fbda5fb65204aa0d, type: 2}
     weight: 1
-  chosenWaveType: 0
+  chosenWaveType: 2
   bossWave: 0
+  bigVersion: 0
   spawnInterval: 2
-  EnemiesToSpawn: 10
+  EnemiesToSpawn: 3
   amountToSpawnEachSpawning: 1
