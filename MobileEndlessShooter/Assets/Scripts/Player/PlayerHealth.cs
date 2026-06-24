@@ -94,9 +94,14 @@ public class PlayerHealth : MonoBehaviour
             GameObject enemy = collision.gameObject;
             EnemyController controller = enemy.GetComponent<EnemyController>();
             TakeDamage(controller.damageOnImpact);
-            
         }
-        
+
+        if (collision.gameObject.CompareTag("Hazard"))
+        {
+            GameObject hazard = collision.gameObject;
+            Hazards hazardScript = hazard.GetComponent<Hazards>();
+            TakeDamage(hazardScript.damage);
+        }
     }
     
    

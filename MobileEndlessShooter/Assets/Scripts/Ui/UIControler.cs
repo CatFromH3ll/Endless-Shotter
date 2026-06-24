@@ -2,29 +2,59 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class UIControler : MonoBehaviour
 {
+   [SerializeField] private AudioMixer audioMixer;
    [SerializeField] private GameObject mainHUD;
    [SerializeField] private GameObject selectDifficultyPanel;
    [SerializeField] private GameObject deathPanel;
    [SerializeField] private GameObject victoryPanel;
    [SerializeField] private GameObject loadingPanel;
    [SerializeField] private Slider loadingSlider;
+   [SerializeField] private Slider musicSlider;
+   [SerializeField] private Slider sfxSlider;
    [SerializeField] private float GameWidth;
    private float easyDifficulty =  1.0f;
    private float mediumDifficulty = 1.5f;
    private float hardDifficulty = 2.0f;
+   public float musicVolume;
+   public float sfxVolume;
    public static float selectedDifficultyModifier {get; private set;}
+
+   private const string audioMixerHash = "AudioMixer";
+   private const string musicVolumeHash = "MusicVolume";
+   private const string sfxVolumeHash = "SFXVolume";
+   
+   public void Start()
+   {
+      musicVolume = PlayerPrefs.GetFloat(musicVolumeHash);
+      sfxVolume = PlayerPrefs.GetFloat(sfxVolumeHash);
+      audioMixer.SetFloat(musicVolumeHash, musicVolume);
+      audioMixer.SetFloat(sfxVolumeHash,  sfxVolume);
+      
+      if (musicSlider != null)
+         loadingSlider.value = musicVolume;
+      if (sfxSlider != null)
+         loadingSlider.value = sfxVolume;
+      
+   }
    
    public void StartGame()
    {
       loadingPanel.SetActive(true); 
       StartCoroutine(LoadLevelAsync());
-      ;
       Time.timeScale = 1;
+      
+      audioMixer.GetFloat(musicVolumeHash, out float musicVol);
+      audioMixer.GetFloat(sfxVolumeHash, out float sfxVol);
+      PlayerPrefs.SetFloat(musicVolumeHash, musicVol);
+      PlayerPrefs.SetFloat(sfxVolumeHash, sfxVol);
+      
+      
    }
 
    public void enterSelectedDifficultyPanel()
@@ -47,8 +77,17 @@ public class UIControler : MonoBehaviour
 
       
    }
-   
 
+   public void MusicVolume(float volume)
+   {
+      audioMixer.SetFloat(musicVolumeHash, volume);
+   }
+   public void SfxVolume(float volume)
+   {
+      audioMixer.SetFloat(sfxVolumeHash, volume);
+   }
+   
+   
    private void Update()
    {
       GameWidth = Screen.width;
@@ -56,6 +95,12 @@ public class UIControler : MonoBehaviour
 
    public void QuitGame()
    {
+      audioMixer.GetFloat(musicVolumeHash, out float musicVol);
+      audioMixer.GetFloat(sfxVolumeHash, out float sfxVol);
+      PlayerPrefs.SetFloat(musicVolumeHash, musicVol);
+      PlayerPrefs.SetFloat(sfxVolumeHash, sfxVol);
+      
+      
       #if UNITY_EDITOR
       UnityEditor.EditorApplication.isPlaying = false;
       #else
@@ -81,7 +126,7 @@ public class UIControler : MonoBehaviour
       Time.timeScale = 1;
    }
 
-   public void LoadMenu()
+   public void MainMenu()
    {
       SceneManager.LoadScene(0);
    }
