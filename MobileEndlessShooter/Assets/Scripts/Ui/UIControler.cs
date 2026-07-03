@@ -12,6 +12,7 @@ public class UIControler : MonoBehaviour
    [SerializeField] private GameObject deathPanel;
    [SerializeField] private GameObject victoryPanel;
    [SerializeField] private GameObject loadingPanel;
+   [SerializeField] private GameObject boatSelectionPanel;
    [SerializeField] private Slider loadingSlider;
    [SerializeField] private float GameWidth;
    private float easyDifficulty =  1.0f;

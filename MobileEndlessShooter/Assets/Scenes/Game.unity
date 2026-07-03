@@ -2941,6 +2941,7 @@ MonoBehaviour:
   deathPanel: {fileID: 1274070479}
   victoryPanel: {fileID: 2019900365}
   loadingPanel: {fileID: 0}
+  boatSelectionPanel: {fileID: 0}
   loadingSlider: {fileID: 0}
   GameWidth: 0
 --- !u!1 &894157642
@@ -5835,6 +5836,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1939771293}
   m_CullTransparentMesh: 1
+--- !u!1 &1944106485 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 465112580094010112, guid: 9b82d009bc8d22f41b7c75c20afb08ba, type: 3}
+  m_PrefabInstance: {fileID: 908377183710080637}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1974890018
 GameObject:
   m_ObjectHideFlags: 0
@@ -6435,6 +6441,11 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -227.25092}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &2107109994 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5521652952474613933, guid: 9b82d009bc8d22f41b7c75c20afb08ba, type: 3}
+  m_PrefabInstance: {fileID: 908377183710080637}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &908377183710080637
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6443,6 +6454,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -7279140037009859630, guid: 9b82d009bc8d22f41b7c75c20afb08ba, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -7279140037009859630, guid: 9b82d009bc8d22f41b7c75c20afb08ba, type: 3}
+      propertyPath: 'boatModels.Array.data[0]'
+      value: 
+      objectReference: {fileID: 1944106485}
+    - target: {fileID: -7279140037009859630, guid: 9b82d009bc8d22f41b7c75c20afb08ba, type: 3}
+      propertyPath: 'boatModels.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2107109994}
+    - target: {fileID: -7279140037009859630, guid: 9b82d009bc8d22f41b7c75c20afb08ba, type: 3}
+      propertyPath: 'boatModels.Array.data[2]'
+      value: 
+      objectReference: {fileID: 908377183710080639}
+    - target: {fileID: 465112580094010112, guid: 9b82d009bc8d22f41b7c75c20afb08ba, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 848218704963372392, guid: 9b82d009bc8d22f41b7c75c20afb08ba, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -6491,6 +6522,14 @@ PrefabInstance:
       propertyPath: joystick
       value: 
       objectReference: {fileID: 1724723496}
+    - target: {fileID: 2028020467304752901, guid: 9b82d009bc8d22f41b7c75c20afb08ba, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3813092356467320441, guid: 9b82d009bc8d22f41b7c75c20afb08ba, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4018873134714082894, guid: 9b82d009bc8d22f41b7c75c20afb08ba, type: 3}
       propertyPath: uIControler
       value: 
@@ -6499,6 +6538,46 @@ PrefabInstance:
       propertyPath: playerHealthBar
       value: 
       objectReference: {fileID: 1734415799}
+    - target: {fileID: 5191179119390532212, guid: 9b82d009bc8d22f41b7c75c20afb08ba, type: 3}
+      propertyPath: weaponSpawner
+      value: 
+      objectReference: {fileID: 1173928935}
+    - target: {fileID: 5191179119390532212, guid: 9b82d009bc8d22f41b7c75c20afb08ba, type: 3}
+      propertyPath: boatModels.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5191179119390532212, guid: 9b82d009bc8d22f41b7c75c20afb08ba, type: 3}
+      propertyPath: 'boatModels.Array.data[0]'
+      value: 
+      objectReference: {fileID: 1944106485}
+    - target: {fileID: 5191179119390532212, guid: 9b82d009bc8d22f41b7c75c20afb08ba, type: 3}
+      propertyPath: 'boatModels.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2107109994}
+    - target: {fileID: 5191179119390532212, guid: 9b82d009bc8d22f41b7c75c20afb08ba, type: 3}
+      propertyPath: 'boatModels.Array.data[2]'
+      value: 
+      objectReference: {fileID: 908377183710080639}
+    - target: {fileID: 5191179119390532212, guid: 9b82d009bc8d22f41b7c75c20afb08ba, type: 3}
+      propertyPath: playerDataOptions.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5191179119390532212, guid: 9b82d009bc8d22f41b7c75c20afb08ba, type: 3}
+      propertyPath: 'playerDataOptions.Array.data[0]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 6769d54cb5e12e24f91292d332935c77, type: 2}
+    - target: {fileID: 5191179119390532212, guid: 9b82d009bc8d22f41b7c75c20afb08ba, type: 3}
+      propertyPath: 'playerDataOptions.Array.data[1]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 84768f26d4e297743b44b50e5444b6d7, type: 2}
+    - target: {fileID: 5191179119390532212, guid: 9b82d009bc8d22f41b7c75c20afb08ba, type: 3}
+      propertyPath: 'playerDataOptions.Array.data[2]'
+      value: 
+      objectReference: {fileID: 11400000, guid: c58d89401cb88aa408fd180ea162e53a, type: 2}
+    - target: {fileID: 5521652952474613933, guid: 9b82d009bc8d22f41b7c75c20afb08ba, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7200282110051078365, guid: 9b82d009bc8d22f41b7c75c20afb08ba, type: 3}
       propertyPath: shieldButton
       value: 
@@ -6523,6 +6602,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98595b65b6dceff4f9bbbe3a95484025, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &908377183710080639 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2028020467304752901, guid: 9b82d009bc8d22f41b7c75c20afb08ba, type: 3}
+  m_PrefabInstance: {fileID: 908377183710080637}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
