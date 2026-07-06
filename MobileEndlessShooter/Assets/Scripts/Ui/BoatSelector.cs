@@ -1,0 +1,132 @@
+using UnityEngine;
+using UnityEngine.UI;
+
+public class BoatSelector : MonoBehaviour
+{
+    
+    [Header("Boat Models In Menu")]
+    [SerializeField] private GameObject[] boatModels;
+    [SerializeField] private PlayerData[] playerData;
+    [SerializeField] private WeaponData[] weaponData;
+    [SerializeField] private Slider healthBar;
+    [SerializeField] private Slider shieldBar;
+    [SerializeField] private Slider damageBar;
+    [SerializeField] private Slider fireRateBar;
+    
+    [SerializeField] private float maxHealth = 200f;
+    [SerializeField] private float maxShieldDuration = 25f ;
+    [SerializeField] private float maxDamage = 30f;
+    [SerializeField] private float maxFireRate = 5f;
+
+    private int selectedIndex;
+
+    private void Start()
+    {
+        ShowBoat(0);
+    }
+
+    public void NextBoat()
+    {
+        selectedIndex++;
+
+        if (selectedIndex >= boatModels.Length)
+        {
+            selectedIndex = 0;
+        }
+
+        ShowBoat(selectedIndex);
+    }
+
+    public void PreviousBoat()
+    {
+        selectedIndex--;
+
+        if (selectedIndex < 0)
+        {
+            selectedIndex = boatModels.Length - 1;
+        }
+
+        ShowBoat(selectedIndex);
+    }
+
+    public void SelectBoat()
+    {
+        PlayerPrefs.SetInt("SelectedBoatIndex", selectedIndex);
+        PlayerPrefs.Save();
+
+        Debug.Log("Selected boat index: " + selectedIndex);
+    }
+
+    private void ShowBoat(int index)
+    {
+        for (int i = 0; i < boatModels.Length; i++)
+        {
+            UpdateStatBars(index);
+            boatModels[i].SetActive(i == index);
+        }
+    }
+    private void UpdateStatBars(int index)
+    {
+        // Safety check
+        if (playerData == null || playerData.Length == 0)
+        {
+            return;
+        }
+
+        if (index < 0 || index >= playerData.Length)
+        {
+            return;
+        }
+        
+        if (weaponData == null || weaponData.Length == 0)
+        {
+            return;
+        }
+
+        if (index < 0 || index >= weaponData.Length)
+        {
+            return;
+        }
+
+        
+        
+            
+        
+        //Player Data
+        PlayerData selectedPlayerData = playerData[index];
+        float healthPercent = selectedPlayerData.maxHealth / maxHealth;
+        float shieldPercent = selectedPlayerData.shieldDuration / maxShieldDuration;
+
+        healthPercent = Mathf.Clamp01(healthPercent);
+        shieldPercent = Mathf.Clamp01(shieldPercent);
+
+        if (healthBar != null)
+        {
+            healthBar.value = healthPercent;
+        }
+
+        if (shieldBar != null)
+        {
+            shieldBar.value = shieldPercent;
+        }
+        
+        //Weapon Data
+        WeaponData selectedWeaponData = weaponData[index];
+        float damagePercent = selectedWeaponData.projectileDamage / maxDamage;
+        float fireRatePercent = 1f - (selectedWeaponData.fireRate / maxFireRate);
+
+        damagePercent = Mathf.Clamp01(damagePercent);
+        fireRatePercent = Mathf.Clamp01(fireRatePercent);
+        fireRatePercent = Mathf.Max(0.1f, fireRatePercent);
+
+        if (damageBar != null)
+        {
+            damageBar.value = damagePercent;
+        }
+
+        if (fireRateBar != null)
+        {
+            fireRateBar.value = fireRatePercent;
+        }
+    }
+}

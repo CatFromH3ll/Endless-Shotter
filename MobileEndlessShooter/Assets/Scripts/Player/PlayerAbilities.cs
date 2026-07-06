@@ -6,7 +6,9 @@ using UnityEngine.Serialization;
 
 public class PlayerAbilities : MonoBehaviour
 {
-    [SerializeField] private float shieldDuration = 10.0f;
+    PlayerData playerData;
+    [SerializeField] private float shieldDuration = 15.0f;
+    [SerializeField] private float currentShieldDuration;
     [SerializeField] private float shieldCooldown = 30.0f;
     private bool canUseShield = true;
     [SerializeField] private Renderer shieldRenderer;
@@ -22,17 +24,32 @@ public class PlayerAbilities : MonoBehaviour
     {
         shieldRenderer.enabled = false;
         shieldButton.interactable = true;
-        
+        Debug.Log(shieldDuration);
+
     }
 
-    public void ActivateShield()
+    public float GetShieldDuration
+    {
+        get
+        {
+            return shieldDuration;
+        }
+        set
+        {
+            shieldDuration = value;
+        }
+    }
+    
+
+    private void ActivateShield()
     {
         if (canUseShield)
         {
             StartCoroutine(ShieldStart());
         }
-        
+
     }
+
     private void DeactivateShield()
     {
         AudioManager.instance.ShieldDeactivatedSound();
@@ -40,7 +57,13 @@ public class PlayerAbilities : MonoBehaviour
         playerHealth.IsShielded = false;
         AudioManager.instance.PlayerEngineMotor();
     }
-    
+
+    public void SetShieldDuration(float newDuration)
+    {
+        shieldDuration = Mathf.Max(0, newDuration);
+        currentShieldDuration = Mathf.Clamp(currentShieldDuration, 0f, shieldDuration);
+    }
+
 
     private IEnumerator ShieldStart()
     {
@@ -50,8 +73,8 @@ public class PlayerAbilities : MonoBehaviour
         playerHealth.IsShielded = true;
         shieldButton.interactable = false;
 
-        // Shield stays active for 10 seconds
-        yield return new WaitForSeconds(shieldDuration);
+        // Shield stays active for how long the character can
+        yield return new WaitForSeconds(currentShieldDuration);
 
         // Shield ends
         DeactivateShield();

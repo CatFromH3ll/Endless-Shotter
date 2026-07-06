@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 785a6dfa9dedbee46b695fc3f38ce53f, type: 3}
+  m_Name: Boat02
+  m_EditorClassIdentifier: 
+  boatModel: {fileID: 4780521653719905809, guid: c8a82431a5fa8024f912620d3b15d07f, type: 3}
+  weaponData: {fileID: 11400000, guid: 74dd0ae8cbac9c54089e7cf533a117ac, type: 2}
+  boatName: Tank
+  boatIndex: 1
+  maxHealth: 150
+  shieldDuration: 5

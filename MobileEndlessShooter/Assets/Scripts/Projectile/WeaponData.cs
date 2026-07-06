@@ -3,8 +3,9 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "WeaponData", menuName = "Scriptable Objects/WeaponData")]
 public class WeaponData : ScriptableObject
 {
-    public Projectile projectilePrefab;
-    
+    public GameObject projectilePrefab;
+    public string poolKey;
+    public string projectileName;
     public float projectileSpeed = 20f;
     public float projectileDamage = 20f;
     public float fireRate = 0.5f;

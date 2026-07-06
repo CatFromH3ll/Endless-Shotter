@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class PlayerHealth : MonoBehaviour
@@ -15,8 +16,10 @@ public class PlayerHealth : MonoBehaviour
         currentHealth = maxHealth;
         if(playerHealthBar != null)playerHealthBar.SetMaxHealth(maxHealth);
         playerAnimator = GetComponentInChildren<Animator>();
+        Debug.Log("HEALTH " + currentHealth);
         
     }
+    
 
     public bool IsDead
     {
@@ -41,10 +44,46 @@ public class PlayerHealth : MonoBehaviour
             isShielded = value;
         }
     }
-    
-    public float CurrentHealth => currentHealth;
 
-    public float MaxHealth => maxHealth;
+
+    public float CurrentHealth
+    {
+        get
+        {
+            return currentHealth;
+        } 
+        set
+        {
+            currentHealth = value;
+        }
+    }
+
+    public float MaxHealth
+    {
+        get
+        {
+            return maxHealth;
+        }
+        set
+        {
+            maxHealth = value;
+        }
+    }
+    
+    
+    public void SetHealthData(float newMaxHealth)
+    {
+        maxHealth = Mathf.Max(1f, newMaxHealth);
+
+        // Current health cannot be higher than this boat's max health.
+        currentHealth = Mathf.Clamp(currentHealth, 0f, maxHealth);
+
+        // Usually when selecting a boat, you want to start full health.
+        currentHealth = maxHealth;
+        playerHealthBar.SetMaxHealth(maxHealth);
+        playerHealthBar.SetCurrentHealth(currentHealth);
+        
+    }
     
 
     public void TakeDamage(float damage)

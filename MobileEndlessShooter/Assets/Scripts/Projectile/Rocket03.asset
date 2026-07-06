@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a462e7aac481084419bb4ab3009d6a18, type: 3}
-  m_Name: Rocket
+  m_Name: Rocket03
   m_EditorClassIdentifier: 
-  projectilePrefab: {fileID: 7157361695242897671, guid: 52a4d8cc33fccd24a85ad4cb2217a0b0, type: 3}
-  poolKey: Basic
-  projectileName: BasicProjectile
+  projectilePrefab: {fileID: 3750094978773791180, guid: 6a442a461a81ddd4c8faa294462ddd5b, type: 3}
+  poolKey: Fast
+  projectileName: FastProjectile
   projectileSpeed: 100
-  projectileDamage: 18
-  fireRate: 1
+  projectileDamage: 10
+  fireRate: 0.7
