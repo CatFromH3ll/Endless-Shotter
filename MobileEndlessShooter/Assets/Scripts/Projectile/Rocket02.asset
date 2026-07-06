@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Rocket02
   m_EditorClassIdentifier: 
   projectilePrefab: {fileID: 1429417475946500622, guid: 1089c79c73ce98a4e8dd8ac23691f099, type: 3}
-  poolKey: Tank
+  poolKey: TankWeapon
   projectileName: TankProjectile
   projectileSpeed: 100
   projectileDamage: 23

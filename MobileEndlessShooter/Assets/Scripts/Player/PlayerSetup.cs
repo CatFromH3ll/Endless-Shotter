@@ -31,6 +31,7 @@ public class PlayerSetup : MonoBehaviour
         
         playerAbilities.SetShieldDuration(data.shieldDuration);
         
+        
         weaponSpawner.SetWeaponData(data.weaponData);
         
         
