@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Rocket
   m_EditorClassIdentifier: 
   projectilePrefab: {fileID: 7157361695242897671, guid: 52a4d8cc33fccd24a85ad4cb2217a0b0, type: 3}
-  poolKey: Basic
+  poolKey: BasicWeapon
   projectileName: BasicProjectile
   projectileSpeed: 100
   projectileDamage: 18
