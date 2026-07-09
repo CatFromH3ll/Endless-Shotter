@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boatModel: {fileID: 140495441791899698, guid: ed35a7ab8ac43e445baa07c5b4c2b3d4, type: 3}
   weaponData: {fileID: 11400000, guid: 4bdd2d02e6a2fd14a94eb80914e09535, type: 2}
-  boatName: Basic
+  boatName: BasicBoat
   boatIndex: 0
   maxHealth: 100
   shieldDuration: 10

@@ -21,7 +21,6 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float slowSpeed = 8.0f;
     [SerializeField] private float sideSpeed = 4.0f;
     [SerializeField] private float jumpHeight = 8.0f;
-    //[SerializeField] private float screenMargin = 1.5f;
     
     private bool isGrounded = true;
     private bool requestJump;

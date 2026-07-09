@@ -1,5 +1,3 @@
-using System;
-using System.Numerics;
 using UnityEngine;
 using Quaternion = UnityEngine.Quaternion;
 using Random = UnityEngine.Random;
@@ -19,7 +17,7 @@ public class EnemyController : MonoBehaviour
     private EnemySpawner enemySpawner;
     private float offset = 3.0f;
     private EnemyShooter enemyShooter;
-    private Collider collider;
+   
     
     float scaleMultyplayer = 1.5f;
     private Vector3 originalScale;
@@ -34,7 +32,6 @@ public class EnemyController : MonoBehaviour
     private WaveType waveType;
     private float stageMultiplier;
     
-    private float screenWidth = Screen.width;
     private float currentSpeed;
     public float damageOnImpact {get; private set;}
     private float impactModifire = 1.5f;
@@ -52,19 +49,17 @@ public class EnemyController : MonoBehaviour
 
     }
 
-    public void Initialize(EnemyData data, DifficultyLevelData currentDifficulty, float stageMult) 
+    public void Initialize(EnemyData enemyData, DifficultyLevelData currentDifficulty, float stageMult) 
     {
         //takes the data from the scriptable object and sets the enemy to it
-        this.data = data;
+        this.data = enemyData;
         this.currentDifficulty = currentDifficulty;
         difficultyModifire = UIControler.selectedDifficultyModifier;
-        Debug.Log(difficultyModifire);
         currentHealth = data.health * difficultyModifire * stageMult;
         scoreValue = data.scoreValue;
         isDead = false;
         waveType = currentDifficulty.chosenWaveType;
         currentSpeed = data.movementSpeed * difficultyModifire;
-        stageMultiplier = stageMult;
         data.damageToPlayer = data.damageToPlayer * difficultyModifire * stageMult;
         damageOnImpact = data.damageToPlayer * impactModifire * difficultyModifire * stageMult;
        
@@ -85,7 +80,7 @@ public class EnemyController : MonoBehaviour
             
                 float leftMargin = 0.4f;
                 float rightMargin = 0.6f;
-            
+                
                 Vector3 leftPoint = Camera.main.ViewportToWorldPoint
                     (new Vector3(leftMargin,0.5f, transform.position.z - Camera.main.transform.position.z));
             

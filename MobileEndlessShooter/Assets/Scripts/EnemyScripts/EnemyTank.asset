@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: EnemyTank
   m_EditorClassIdentifier: 
   enemyPrefab: {fileID: 5520315929068677284, guid: 795c744c5a67c914ebeded54057ebe98, type: 3}
-  enemyType: Tank
+  enemyType: TankEnemy
   movementSpeed: 7
   health: 20
   damageToPlayer: 10

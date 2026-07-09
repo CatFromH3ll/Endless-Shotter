@@ -9,6 +9,15 @@ public class GameTimer : MonoBehaviour
     private float time = 0f;
     private bool isTimerRunninng;
     [SerializeField] private PlayerHealth playerHealth;
+    public float CurrentTime
+    {
+        get { return time; }
+        set 
+        { 
+            time = value; 
+            DisplayTimer(); // Instantly update the text display when loaded
+        }
+    }
 
     void Start()
     {

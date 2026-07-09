@@ -10,17 +10,22 @@ public class EnemySpawner : MonoBehaviour
     [Header("Progression Timeline Data")]
     [SerializeField] private DifficultyLevelData[] difficultyTimeline;
 
-    private int currentDifficultyIndex = 0;
+    public int currentDifficultyIndex { get; set; }
    // private float levelTimer = 0f;
     private float spawnTimer = 0f;
     public int currentActiveEnemies = 0;
     private int spawndEnemysThisWave;
-    private float stage = 1.0f;
+    public float stageMult { get; set; }
     [SerializeField] private float distanceFromPlayer = 60f;
     [SerializeField] private UIControler uiControler;
     
     //a short way (using the lambda) to set the current difficulty to the desired difficulty by time
     private DifficultyLevelData CurrentDifficulty => difficultyTimeline[currentDifficultyIndex];
+
+    private void Start()
+    {
+        stageMult = 1f;
+    }
 
     private void Update()
     {
@@ -44,8 +49,7 @@ public class EnemySpawner : MonoBehaviour
             else
             {
                 currentDifficultyIndex = 0;
-                stage += 0.1f;
-                Debug.Log(stage);
+                stageMult += 0.1f;
             }
         }
     }
@@ -98,7 +102,7 @@ public class EnemySpawner : MonoBehaviour
 
         if (spawnedEnemy.TryGetComponent<EnemyController>(out var enemyScript))
         {
-            enemyScript.Initialize(selectedEnemyData,CurrentDifficulty,stage);
+            enemyScript.Initialize(selectedEnemyData,CurrentDifficulty,stageMult);
             currentActiveEnemies++;
             spawndEnemysThisWave++;
         }
