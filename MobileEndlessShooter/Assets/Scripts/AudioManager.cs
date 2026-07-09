@@ -46,7 +46,7 @@ public class AudioManager : MonoBehaviour
    public void Start()
    {
       PlayMenuMusic();
-      sfxSource.Play();
+      //sfxSource.Play();
    }
 
    public void Update()
@@ -65,6 +65,7 @@ public class AudioManager : MonoBehaviour
       musicSource.clip = menuMusicClip;
       musicSource.loop = true;
       musicSource.Play();
+      engineSource.Stop();
    }
 
    public void GameMusic()

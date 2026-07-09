@@ -74,17 +74,21 @@ public class UIControler : MonoBehaviour
 
    public void PauseGame()
    {
+      AudioManager.instance.engineSource.Stop();
       Time.timeScale = 0;
+      
    }
 
    public void ResumeGame()
    {
+      AudioManager.instance.engineSource.Play();
       Time.timeScale = 1;
    }
 
    public void LoadMenu()
    {
       SceneManager.LoadScene(0);
+      AudioManager.instance.PlayMenuMusic();
    }
 
    public void Death()
