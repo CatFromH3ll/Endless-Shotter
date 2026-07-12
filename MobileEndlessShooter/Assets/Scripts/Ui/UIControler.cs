@@ -122,11 +122,7 @@ public class UIControler : MonoBehaviour
         
       StartGame();
    }
-
-   public void enterSelectedDifficultyPanel()
-   {
-      selectedDifficultyModifier = easyDifficultyMult;
-   }
+   
    IEnumerator LoadLevelAsync()
    {
       AsyncOperation op = SceneManager.LoadSceneAsync(1);
@@ -148,11 +144,11 @@ public class UIControler : MonoBehaviour
    {
       audioMixer.SetFloat(musicVolumeHash, volume);
    }
+   
    public void SfxVolume(float volume)
    {
       audioMixer.SetFloat(sfxVolumeHash, volume);
    }
-   
    
    private void Update()
    {
@@ -184,17 +180,20 @@ public class UIControler : MonoBehaviour
 
    public void PauseGame()
    {
+      AudioManager.instance.engineSource.Stop();
       Time.timeScale = 0;
    }
 
    public void ResumeGame()
    {
+      AudioManager.instance.engineSource.Play();
       Time.timeScale = 1;
    }
 
    public void MainMenu()
    {
       SceneManager.LoadScene(0);
+      AudioManager.instance.PlayMenuMusic();
    }
 
    public void Death()

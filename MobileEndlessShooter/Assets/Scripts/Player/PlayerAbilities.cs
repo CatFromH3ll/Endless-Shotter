@@ -24,16 +24,9 @@ public class PlayerAbilities : MonoBehaviour
     {
         shieldGameObject.SetActive(false);
         shieldButton.interactable = true;
-        Debug.Log(shieldDuration);
 
-    }
-
-    public float GetShieldDuration()
-    {
-        return shieldDuration;
     }
     
-
     private void ActivateShield()
     {
         if (canUseShield)
@@ -55,7 +48,6 @@ public class PlayerAbilities : MonoBehaviour
     {
         shieldDuration = Mathf.Max(0, newDuration);
     }
-
 
     private IEnumerator ShieldStart()
     {

@@ -16,7 +16,6 @@ public class PlayerHealth : MonoBehaviour
         currentHealth = maxHealth;
         if(playerHealthBar != null)playerHealthBar.SetMaxHealth(maxHealth);
         playerAnimator = GetComponentInChildren<Animator>();
-        Debug.Log("HEALTH " + currentHealth);
         
     }
     
@@ -94,7 +93,6 @@ public class PlayerHealth : MonoBehaviour
             AudioManager.instance.ShieldHitSound();
             return;
         }
-        Debug.Log("DAMGED " + damage);
         currentHealth -= damage;
         currentHealth = Mathf.Clamp(currentHealth, 0f, maxHealth);
         playerHealthBar.SetCurrentHealth(currentHealth);

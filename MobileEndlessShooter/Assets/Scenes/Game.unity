@@ -980,7 +980,6 @@ GameObject:
   - component: {fileID: 272085722}
   - component: {fileID: 272085721}
   - component: {fileID: 272085720}
-  - component: {fileID: 272085719}
   m_Layer: 0
   m_Name: PauseButton
   m_TagString: Untagged
@@ -1008,35 +1007,6 @@ RectTransform:
   m_AnchoredPosition: {x: -254, y: -142}
   m_SizeDelta: {x: 167.81592, y: 38.72876}
   m_Pivot: {x: 1, y: 1}
---- !u!114 &272085719
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 272085717}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Delegates:
-  - eventID: 2
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1465997471}
-          m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
-          m_MethodName: Jump
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
 --- !u!114 &272085720
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3740,7 +3710,6 @@ GameObject:
   - component: {fileID: 1093033555}
   - component: {fileID: 1093033554}
   - component: {fileID: 1093033553}
-  - component: {fileID: 1093033552}
   m_Layer: 0
   m_Name: QuitButton
   m_TagString: Untagged
@@ -3768,35 +3737,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -170}
   m_SizeDelta: {x: 167.81592, y: 38.72876}
   m_Pivot: {x: 0.5, y: 0}
---- !u!114 &1093033552
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1093033550}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Delegates:
-  - eventID: 2
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1465997471}
-          m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
-          m_MethodName: Jump
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
 --- !u!114 &1093033553
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3915,7 +3855,6 @@ GameObject:
   - component: {fileID: 1173928933}
   - component: {fileID: 1173928934}
   - component: {fileID: 1173928935}
-  - component: {fileID: 1173928936}
   - component: {fileID: 1173928937}
   m_Layer: 0
   m_Name: Spawner
@@ -3988,18 +3927,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnPoint: {fileID: 933065377}
   currentWeapon: {fileID: 11400000, guid: 4bdd2d02e6a2fd14a94eb80914e09535, type: 2}
---- !u!114 &1173928936
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1173928931}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 41a8649cd14a57c4da160dd0984207db, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1173928937
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5511,7 +5438,6 @@ GameObject:
   - component: {fileID: 1870491678}
   - component: {fileID: 1870491677}
   - component: {fileID: 1870491676}
-  - component: {fileID: 1870491675}
   m_Layer: 0
   m_Name: ResumeButton
   m_TagString: Untagged
@@ -5539,35 +5465,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 170}
   m_SizeDelta: {x: 167.81592, y: 38.72876}
   m_Pivot: {x: 0.5, y: 0}
---- !u!114 &1870491675
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1870491673}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Delegates:
-  - eventID: 2
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1465997471}
-          m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
-          m_MethodName: Jump
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
 --- !u!114 &1870491676
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6096,7 +5993,6 @@ GameObject:
   - component: {fileID: 2081888849}
   - component: {fileID: 2081888848}
   - component: {fileID: 2081888847}
-  - component: {fileID: 2081888846}
   m_Layer: 0
   m_Name: MainMenuButton
   m_TagString: Untagged
@@ -6124,35 +6020,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 167.81592, y: 38.72876}
   m_Pivot: {x: 0.5, y: 0}
---- !u!114 &2081888846
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2081888844}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Delegates:
-  - eventID: 2
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1465997471}
-          m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
-          m_MethodName: Jump
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
 --- !u!114 &2081888847
 MonoBehaviour:
   m_ObjectHideFlags: 0

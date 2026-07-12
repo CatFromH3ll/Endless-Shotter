@@ -6,7 +6,11 @@ public class BoatPreviewRotate : MonoBehaviour, IDragHandler
     
     
     [SerializeField] private Transform previewRoot;
-    
+    [SerializeField] private float zoomDeadZone = 10;
+    [SerializeField] private Vector3 zoomAmount =  new (5.0f, 5.0f, 5.0f);
+    [SerializeField] private Vector3 startingScale;
+    [SerializeField] private float maxScale = 84.0f;
+    [SerializeField] private float minScale = 50.0f;
     // How fast the boat rotates when dragging, Higher value = faster rotation.
     [SerializeField] private float rotationSpeed = 0.3f;
     
@@ -16,15 +20,56 @@ public class BoatPreviewRotate : MonoBehaviour, IDragHandler
     // Stores the current left/right rotation.
     private float yRotation;
 
+
+    private void Start()
+    {
+        startingScale = previewRoot.localScale;
+    }
+    private void Update()
+    {
+        
+        if(Input.touchCount == 2)
+        {
+            Touch touch1 =  Input.GetTouch(0);
+            Touch touch2 =  Input.GetTouch(1);
+            Vector2 currentDist = touch1.position - touch2.position;
+            Vector2 previousDist = (touch1.position - touch1.deltaPosition) - (touch2.position - touch2.deltaPosition);
+            float delta = currentDist.magnitude - previousDist.magnitude;
+            
+            //if two fingers are dragging away zoom in
+            if (delta > zoomDeadZone)
+            {
+                ClampScale();
+                startingScale +=  zoomAmount;
+                previewRoot.localScale = startingScale;
+            }
+            //if two fingers are dragging in, zoom out
+            else if (delta < -zoomDeadZone)
+            {
+                ClampScale();
+                startingScale -= zoomAmount;
+                previewRoot.localScale = startingScale;
+            }
+            
+        }
+    }
+
+    public void ClampScale()
+    {
+        startingScale.x = Mathf.Clamp(startingScale.x, minScale, maxScale);
+        startingScale.y = Mathf.Clamp(startingScale.y, minScale, maxScale);
+        startingScale.z = Mathf.Clamp(startingScale.z, minScale, maxScale);
+    }
+
     // This function is called automatically while the player drags, on the UI object that has this script.
     public void OnDrag(PointerEventData eventData)
     {
         // If the player uses 2 fingers, do not rotate.
-        // We save 2 fingers for pinch zoom later.
         if (Input.touchCount > 1)
         {
             return;
         }
+        
 
         // eventData.delta tells us how much the finger/mouse moved, since the last frame.
         Vector2 dragDelta = eventData.delta;

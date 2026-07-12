@@ -63,8 +63,6 @@ public class IO_System : MonoBehaviour
         SaveGameSlot(currentSlot);
     }
     
-   
-    
     public void SetBaseDifficulty(int difficultyIndex)
     {
         activeSelectedDifficultyIndex = difficultyIndex;

@@ -54,7 +54,7 @@ public class EnemyController : MonoBehaviour
         //takes the data from the scriptable object and sets the enemy to it
         this.data = enemyData;
         this.currentDifficulty = currentDifficulty;
-        difficultyModifire = UIControler.selectedDifficultyModifier;
+        difficultyModifire = UIControler.selectedDifficultyModifier + 1;
         currentHealth = data.health * difficultyModifire * stageMult;
         scoreValue = data.scoreValue;
         isDead = false;
@@ -62,7 +62,7 @@ public class EnemyController : MonoBehaviour
         currentSpeed = data.movementSpeed * difficultyModifire;
         data.damageToPlayer = data.damageToPlayer * difficultyModifire * stageMult;
         damageOnImpact = data.damageToPlayer * impactModifire * difficultyModifire * stageMult;
-       
+      
         
 
         switch (waveType)
@@ -90,6 +90,9 @@ public class EnemyController : MonoBehaviour
                 pointA = new Vector3(rightPoint.x, transform.position.y, transform.position.z);
                 pointB = new Vector3(leftPoint.x, transform.position.y, transform.position.z);
             
+                
+                
+                Debug.Log($"point a {pointA},point b {pointB},left point {leftPoint},right point {rightPoint}");
                 //randomize starting position to move to
                 targetPoint = (Random.Range(0, 2) == 0) ? pointA : pointB;
 
@@ -97,7 +100,6 @@ public class EnemyController : MonoBehaviour
             }
             case WaveType.Shooting:
             {
-                Debug.Log("inisialaize Shooting");
                 transform.rotation = Quaternion.LookRotation(player.transform.position);
                 break;
             }
@@ -134,7 +136,6 @@ public class EnemyController : MonoBehaviour
             }
             case WaveType.Shooting:
             {
-                Debug.Log("Update Shooting");
                 HandleShootingBehavior();
                 break;
             }
@@ -152,11 +153,9 @@ public class EnemyController : MonoBehaviour
         transform.position = new Vector3(transform.position.x, transform.position.y, player.transform.position.z + offsetToPLayer);
         if (enemyShooter != null)
         {
-            Debug.Log("enterd tryShooting");
             enemyShooter.TryShoot();
         }
     }
-    
 
     private void HandleHorizontalMovement()
     {
@@ -171,6 +170,8 @@ public class EnemyController : MonoBehaviour
         {
             targetPoint = (targetPoint == pointB) ? pointA : pointB; // switch points
         }
+        
+        Debug.Log($"transform {transform.position},newX {newX},target point {targetPoint},current speed {currentSpeed},time scale {Time.timeScale}");
     }
 
     private void HandleFollowMovement()
