@@ -29,6 +29,7 @@ public class UIControler : MonoBehaviour
    [SerializeField] private Slider musicSlider;
    [SerializeField] private Slider sfxSlider;
    [SerializeField] private float GameWidth;
+   [SerializeField] private GameOverAnalytics gameOverAnalytics;
    private float easyDifficultyMult =  1.0f;
    private float mediumDifficultyMult = 1.5f;
    private float hardDifficultyMult = 2.0f;
@@ -157,10 +158,12 @@ public class UIControler : MonoBehaviour
 
    public void QuitGame()
    {
+      gameOverAnalytics.GameOverAnalyse();
       audioMixer.GetFloat(musicVolumeHash, out float musicVol);
       audioMixer.GetFloat(sfxVolumeHash, out float sfxVol);
       PlayerPrefs.SetFloat(musicVolumeHash, musicVol);
       PlayerPrefs.SetFloat(sfxVolumeHash, sfxVol);
+      
       
       
       #if UNITY_EDITOR
@@ -172,6 +175,7 @@ public class UIControler : MonoBehaviour
 
    public void RestartGame()
    {
+      gameOverAnalytics.GameOverAnalyse();
       SceneManager.LoadScene(SceneManager.GetActiveScene().name);
       AudioManager.instance.GameMusic();
       AudioManager.instance.PlayerEngineMotor();
@@ -192,12 +196,14 @@ public class UIControler : MonoBehaviour
 
    public void MainMenu()
    {
+      gameOverAnalytics.GameOverAnalyse();
       SceneManager.LoadScene(0);
       AudioManager.instance.PlayMenuMusic();
    }
 
    public void Death()
    {
+      gameOverAnalytics.GameOverAnalyse();
       mainHUD.SetActive(false);
       deathPanel.SetActive(true);
       AudioManager.instance.GameOver();

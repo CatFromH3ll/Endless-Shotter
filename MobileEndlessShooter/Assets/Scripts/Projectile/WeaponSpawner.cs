@@ -6,6 +6,9 @@ public class WeaponSpawner : MonoBehaviour
     [SerializeField] private Transform spawnPoint;
     
     [SerializeField] private WeaponData currentWeapon;
+    
+    public int ShotsFired{get; private set;}
+    
     PlayerHealth playerHealth;
     private float fireTimer;
 
@@ -45,6 +48,7 @@ public class WeaponSpawner : MonoBehaviour
         projectileScript.SetDamage(currentWeapon.projectileDamage);
         projectileScript.LaunchProjectile(spawnPoint.forward, currentWeapon.projectileSpeed);
         AudioManager.instance.PlayerBasicShotSound();
+        ShotsFired++;
     }
 
     

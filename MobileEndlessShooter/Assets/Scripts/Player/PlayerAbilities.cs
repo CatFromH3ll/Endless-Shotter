@@ -7,6 +7,7 @@ using UnityEngine.Serialization;
 public class PlayerAbilities : MonoBehaviour
 {
     PlayerData playerData;
+    public int AbilityUsed{get; private set;}
     [SerializeField] private float shieldDuration = 15.0f;
     [SerializeField] private float currentShieldDuration;
     [SerializeField] private float shieldCooldown = 30.0f;
@@ -56,6 +57,7 @@ public class PlayerAbilities : MonoBehaviour
         shieldGameObject.SetActive(true);
         playerHealth.IsShielded = true;
         shieldButton.interactable = false;
+        AbilityUsed++;
 
         // Shield stays active for how long the character can
         yield return new WaitForSeconds(shieldDuration);

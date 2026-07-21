@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class GameTimer : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI  timeText;
-    private float time = 0f;
+    public float time{get; private set;}
     private bool isTimerRunninng;
     [SerializeField] private PlayerHealth playerHealth;
     public float CurrentTime

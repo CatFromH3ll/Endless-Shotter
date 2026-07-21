@@ -22,7 +22,7 @@ public class BoatSelector : MonoBehaviour
     [SerializeField] private float maxDamage = 30f;
     [SerializeField] private float maxFireRate = 5f;
 
-    private int selectedIndex;
+    public int selectedIndex { get; private set; }
 
     private void Start()
     {

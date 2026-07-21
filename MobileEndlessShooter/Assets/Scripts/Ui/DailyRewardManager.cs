@@ -179,11 +179,13 @@ public class DailyRewardManager : MonoBehaviour
     public void ClaimReward()
     {
         int currentDay = PlayerPrefs.GetInt(ConsecutiveDaysKey, 1);
+        int rewardIndex = currentDay - 1;
         
         // Unlock boats up to the current day count, capped at your maximum limit
         int unlockedBoats = Mathf.Min(currentDay, totalUnlockableBoats);
         PlayerPrefs.SetInt(UnlockedBoatsKey, unlockedBoats);
         Debug.Log($"Success! Unlocked up to boat index {unlockedBoats - 1}!");
+        AnalyticsManager.Instance.AnalyseRewardClaimed(rewardIndex);
 
         // Increment the day counter for tomorrow
         currentDay++;
@@ -191,6 +193,7 @@ public class DailyRewardManager : MonoBehaviour
 
         PlayerPrefs.SetString(LastClaimTimeKey, DateTime.Now.ToString());
         PlayerPrefs.Save();
+        
 
         HideAllRewardBoats();
         dailyRewardPanel.SetActive(false);

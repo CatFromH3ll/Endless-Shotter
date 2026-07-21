@@ -22,6 +22,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float sideSpeed = 4.0f;
     [SerializeField] private float jumpHeight = 8.0f;
     
+    public int JumpsMade { get; private set; }
     private bool isGrounded = true;
     private bool requestJump;
     private bool joyStickUpPressed;
@@ -186,6 +187,7 @@ public class PlayerMovement : MonoBehaviour
         AudioManager.instance.PlayerJump();
 
         isGrounded = false;
+        JumpsMade++;
     }
 
     private void OnCollisionEnter(Collision other)
