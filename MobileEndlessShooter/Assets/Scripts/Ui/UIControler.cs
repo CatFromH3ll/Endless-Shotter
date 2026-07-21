@@ -203,7 +203,6 @@ public class UIControler : MonoBehaviour
 
    public void Death()
    {
-      gameOverAnalytics.GameOverAnalyse();
       mainHUD.SetActive(false);
       deathPanel.SetActive(true);
       AudioManager.instance.GameOver();
