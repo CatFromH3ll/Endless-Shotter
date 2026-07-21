@@ -171,7 +171,6 @@ public class EnemyController : MonoBehaviour
             targetPoint = (targetPoint == pointB) ? pointA : pointB; // switch points
         }
         
-        Debug.Log($"transform {transform.position},newX {newX},target point {targetPoint},current speed {currentSpeed},time scale {Time.timeScale}");
     }
 
     private void HandleFollowMovement()
