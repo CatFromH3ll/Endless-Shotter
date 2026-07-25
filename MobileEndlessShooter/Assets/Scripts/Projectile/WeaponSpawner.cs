@@ -1,8 +1,10 @@
 using System;
 using UnityEngine;
+using Random = System.Random;
 
 public class WeaponSpawner : MonoBehaviour
 {
+    
     [SerializeField] private Transform spawnPoint;
     
     [SerializeField] private WeaponData currentWeapon;
@@ -40,9 +42,9 @@ public class WeaponSpawner : MonoBehaviour
         fireTimer = 0;
     }
     
-    public void Shoot() 
+    
+    public void Shoot()
     {
-        
         GameObject projectile = GenericObjectPooler.Instance.GetFromPool(currentWeapon.poolKey, currentWeapon.projectilePrefab, spawnPoint.position, Quaternion.identity);
         Projectile projectileScript = projectile.GetComponent<Projectile>();
         projectileScript.SetDamage(currentWeapon.projectileDamage);

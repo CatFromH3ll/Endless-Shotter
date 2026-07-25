@@ -180,6 +180,11 @@ public class EnemyController : MonoBehaviour
         transform.position = new Vector3(targetX, transform.position.y, targetZ);
     }
 
+    public bool WillDieFromDamage(float incomingDamage)
+    {
+        return !isDead && incomingDamage >= currentHealth;
+    }
+    
     public void TakeDamage(float amount)
     {
         if (isDead) return;

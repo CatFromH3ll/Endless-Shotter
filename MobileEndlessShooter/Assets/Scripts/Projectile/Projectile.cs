@@ -2,6 +2,13 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
+    [SerializeField] private float executionLookAheadTime = 0.2f;
+    [SerializeField] private int minExecutionNum = 0;
+    [SerializeField] private int maxExecutionNum = 50;
+    private TimelineManager timelineManager;
+    private bool executionTriggered;
+    
+    
     [SerializeField] private Rigidbody rbProjectile;
     [SerializeField]private float damage;
     [SerializeField]private float projectileTimer;
@@ -14,12 +21,19 @@ public class Projectile : MonoBehaviour
     void Awake()
     {
         rbProjectile = GetComponent<Rigidbody>();
+        
+        timelineManager = FindObjectOfType<TimelineManager>();
     }
 
     private void OnEnable()
     {
-        
         projectileTimer = 0f;
+        executionTriggered = false;
+    }
+
+    private void FixedUpdate()
+    {
+        CheckForLethalImpact();
     }
 
     public void Update()
@@ -52,6 +66,63 @@ public class Projectile : MonoBehaviour
            playerHealth.TakeDamage(damage);
         }
         ReturnToProjectilePool();
+    }
+
+    private void CheckForLethalImpact()
+    {
+        if (isEnemy)
+            return;
+
+        if (executionTriggered)
+            return;
+
+        if (timelineManager == null)
+            return;
+
+        Vector3 velocity = rbProjectile.linearVelocity;
+
+        if (velocity.sqrMagnitude <= 0.001f)
+            return;
+
+        Vector3 direction = velocity.normalized;
+
+        float checkDistance =
+            velocity.magnitude * executionLookAheadTime;
+
+        bool aboutToHitSomething = rbProjectile.SweepTest(
+            direction,
+            out RaycastHit hit,
+            checkDistance,
+            QueryTriggerInteraction.Ignore
+        );
+
+        if (!aboutToHitSomething)
+            return;
+
+        EnemyController enemy =
+            hit.collider.GetComponentInParent<EnemyController>();
+
+        if (enemy == null)
+            return;
+
+        if (!enemy.WillDieFromDamage(damage))
+            return;
+        bool started = timelineManager.StartExecution(
+            gameObject,
+            enemy.transform
+        );
+
+        if (started)
+        {
+            executionTriggered = true;
+        }
+        /*int random =  Random.Range(minExecutionNum, maxExecutionNum);
+        if (random <= 5)
+        {
+            
+        }*/
+        
+        
     }
     
     
