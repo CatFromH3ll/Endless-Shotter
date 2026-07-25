@@ -1875,9 +1875,12 @@ MonoBehaviour:
   executionTimeline: {fileID: 11400000, guid: e586146a89af8d54b99f4e7d637e3d35, type: 2}
   signalReceiver: {fileID: 419762471}
   executionCamera: {fileID: 509800121}
+  playerCamera: {fileID: 330585545}
+  followPlayer: {fileID: 330585548}
   mainCameraBrain: {fileID: 330585549}
+  playerControlScripts: []
   gameUI: {fileID: 882201891}
-  slowMotionScale: 0.15
+  slowMotionScale: 0.684
   bulletTrackName: Bullet Track
   cameraTrackName: Camera Track
   signalTrackName: Signal Track
@@ -6993,7 +6996,7 @@ PrefabInstance:
       propertyPath: joystick
       value: 
       objectReference: {fileID: 1724723496}
-    - target: {fileID: 3221372583523611443, guid: 9b82d009bc8d22f41b7c75c20afb08ba, type: 3}
+    - target: {fileID: 3399877381589161275, guid: 9b82d009bc8d22f41b7c75c20afb08ba, type: 3}
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
@@ -7002,6 +7005,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 882201893}
     - target: {fileID: 4018873134714082894, guid: 9b82d009bc8d22f41b7c75c20afb08ba, type: 3}
+      propertyPath: modelSelector
+      value: 
+      objectReference: {fileID: 908377183710080640}
+    - target: {fileID: 4018873134714082894, guid: 9b82d009bc8d22f41b7c75c20afb08ba, type: 3}
+      propertyPath: playerAnimator
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4018873134714082894, guid: 9b82d009bc8d22f41b7c75c20afb08ba, type: 3}
       propertyPath: playerHealthBar
       value: 
       objectReference: {fileID: 1734415799}
@@ -7009,17 +7020,21 @@ PrefabInstance:
       propertyPath: weaponSpawner
       value: 
       objectReference: {fileID: 1173928935}
-    - target: {fileID: 5521652952474613933, guid: 9b82d009bc8d22f41b7c75c20afb08ba, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 7200282110051078365, guid: 9b82d009bc8d22f41b7c75c20afb08ba, type: 3}
       propertyPath: shieldButton
       value: 
       objectReference: {fileID: 194503719}
+    - target: {fileID: 7348318785225100950, guid: 9b82d009bc8d22f41b7c75c20afb08ba, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8525020910995541846, guid: 9b82d009bc8d22f41b7c75c20afb08ba, type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 9199422145247464083, guid: 9b82d009bc8d22f41b7c75c20afb08ba, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

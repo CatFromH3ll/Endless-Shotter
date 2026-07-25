@@ -129,6 +129,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a34e653277b791c44842780e8858a0ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  executionLookAheadTime: 2
+  minExecutionNum: 0
+  maxExecutionNum: 50
   rbProjectile: {fileID: 0}
   damage: 0
   projectileTimer: 0

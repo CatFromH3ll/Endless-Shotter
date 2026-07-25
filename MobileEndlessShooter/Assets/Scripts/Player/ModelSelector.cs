@@ -3,6 +3,7 @@ using UnityEngine;
 public class ModelSelector : MonoBehaviour
 {
     [SerializeField] private GameObject[] boatModels;
+    [SerializeField] public Animator PlayerAnimator { get; set; }
     
     void Start()
     {
@@ -20,6 +21,9 @@ public class ModelSelector : MonoBehaviour
         for (int i = 0; i < boatModels.Length; i++)
         {
             boatModels[i].SetActive(i == selectedBoatIndex);
+            PlayerAnimator = GetComponentInChildren<Animator>();
+            if (PlayerAnimator == null)
+                Debug.LogError("No active child Animator found.");
         }
 
         Debug.Log("Gameplay boat model loaded: " + selectedBoatIndex);

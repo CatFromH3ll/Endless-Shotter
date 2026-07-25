@@ -16,7 +16,6 @@ public class TimelineManager : MonoBehaviour
     [SerializeField] private CinemachineBrain mainCameraBrain;
 
     [Header("Player Control Scripts")]
-    //[SerializeField] private MonoBehaviour[] playerControlScripts;
     [SerializeField] private GameObject gameUI;
 
     [Header("Slow Motion")]
@@ -29,7 +28,6 @@ public class TimelineManager : MonoBehaviour
     [SerializeField] private string signalTrackName = "Signal Track";
 
     private GameObject currentBullet;
-    
     private Transform currentEnemy;
 
     private float previousTimeScale;
@@ -149,8 +147,8 @@ public class TimelineManager : MonoBehaviour
          * - Explosion particles
          * - Impact sound
          * - Camera shake
-         * - Enemy death effect
-         */
+         * - Enemy death effect*/
+         
     }
 
     // Connect this to the End Execution Signal.
@@ -204,14 +202,6 @@ public class TimelineManager : MonoBehaviour
         
         if(gameUI != null) gameUI.SetActive(enabled);
         
-        /*foreach (MonoBehaviour controlScript
-                 in playerControlScripts)
-        {
-            if (controlScript != null)
-            {
-                controlScript.enabled = enabled;
-            }
-        }*/
     }
     public void ForceStopExecution()
     {

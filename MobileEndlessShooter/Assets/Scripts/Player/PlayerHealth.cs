@@ -6,7 +6,8 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] private float maxHealth = 100f;
     [SerializeField] private float currentHealth;
     [SerializeField] private PlayerHealthBar playerHealthBar;
-    [SerializeField] private Animator playerAnimator;
+    [SerializeField] private ModelSelector modelSelector;
+    //[SerializeField] private Animator playerAnimator;
     [SerializeField] private UIControler uIControler;
     private bool isDead;
     private bool isShielded;
@@ -15,8 +16,10 @@ public class PlayerHealth : MonoBehaviour
     {
         currentHealth = maxHealth;
         if(playerHealthBar != null)playerHealthBar.SetMaxHealth(maxHealth);
-        playerAnimator = GetComponentInChildren<Animator>();
         
+        /*playerAnimator = GetComponentInChildren<Animator>();
+        if (playerAnimator == null)
+            Debug.LogError("No active child Animator found.");*/
     }
     
 
@@ -97,6 +100,7 @@ public class PlayerHealth : MonoBehaviour
         currentHealth = Mathf.Clamp(currentHealth, 0f, maxHealth);
         playerHealthBar.SetCurrentHealth(currentHealth);
         AudioManager.instance.PlayerHit();
+        Animator playerAnimator = modelSelector.PlayerAnimator;
         playerAnimator.SetTrigger("Hit");
         
 
@@ -118,6 +122,7 @@ public class PlayerHealth : MonoBehaviour
     public void Die()
     {
         AudioManager.instance.PlayerDeath();
+        Animator playerAnimator = modelSelector.PlayerAnimator;
         playerAnimator.SetTrigger("Death");
         uIControler.Death();
         Debug.Log("DEAD");
