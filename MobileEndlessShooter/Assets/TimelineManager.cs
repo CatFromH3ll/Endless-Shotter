@@ -66,18 +66,7 @@ public class TimelineManager : MonoBehaviour
 
             return false;
         }
-
-        Animator bulletAnimator =
-            bullet.GetComponentInChildren<Animator>();
-
-        if (bulletAnimator == null)
-        {
-            Debug.LogError(
-                "The bullet requires an Animator for Timeline binding.");
-
-            return false;
-        }
-
+        
         TrackAsset bulletTrack = FindTrack(bulletTrackName);
         TrackAsset cameraTrack = FindTrack(cameraTrackName);
         TrackAsset signalTrack = FindTrack(signalTrackName);
@@ -99,10 +88,7 @@ public class TimelineManager : MonoBehaviour
         executionCamera.LookAt = enemy;
 
         // Required dynamic Timeline bindings.
-        director.SetGenericBinding(
-            bulletTrack,
-            bulletAnimator);
-
+        
         director.SetGenericBinding(
             cameraTrack,
             mainCameraBrain);
@@ -226,5 +212,29 @@ public class TimelineManager : MonoBehaviour
                 controlScript.enabled = enabled;
             }
         }*/
+    }
+    public void ForceStopExecution()
+    {
+        if (executionPlaying)
+        {
+            // 1. Instantly restore normal time
+            Time.timeScale = 1f;
+            Time.fixedDeltaTime = 0.02f; // Unity's default fixed time
+
+            // 2. Stop the timeline from running in the background
+            if (director != null && director.state == UnityEngine.Playables.PlayState.Playing)
+            {
+                director.Stop();
+            }
+
+            // 3. Clear the camera targets so it doesn't look at a destroyed object
+            if (executionCamera != null)
+            {
+                executionCamera.Follow = null;
+                executionCamera.LookAt = null;
+            }
+
+            executionPlaying = false;
+        }
     }
 }

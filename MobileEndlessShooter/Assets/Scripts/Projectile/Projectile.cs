@@ -49,6 +49,21 @@ public class Projectile : MonoBehaviour
             projectileTimer = 0f;
         }
     }
+    void OnTriggerEnter(Collider other) // (or OnCollisionEnter, depending on your setup)
+    {
+        if (other.CompareTag("Enemy"))
+        {
+            // Find your manager script and force the execution to stop instantly
+            TimelineManager timelineManager = FindObjectOfType<TimelineManager>(); // Replace 'TimelineManager' with the actual name of your script!
+            if (timelineManager != null)
+            {
+                timelineManager.ForceStopExecution();
+            }
+
+            // Now it is safe to destroy the bullet!
+            Destroy(gameObject);
+        }
+    }
 
     public void OnCollisionEnter(Collision collision)
     {
