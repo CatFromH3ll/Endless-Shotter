@@ -86,9 +86,7 @@ public class TimelineManager : MonoBehaviour
     {
         if (executionPlaying)
             return false;
-
-        if (!ValidateReferences())
-            return false;
+        
 
         if (bullet == null || enemy == null)
         {
@@ -148,6 +146,7 @@ public class TimelineManager : MonoBehaviour
         executionPlaying = true;
 
         director.time = 0;
+        executionPlaying = true;
         director.Play();
 
         return true;
@@ -258,6 +257,8 @@ public class TimelineManager : MonoBehaviour
     {
         if (!executionPlaying && !slowMotionActive)
             return;
+
+        executionPlaying = false;
 
         if (director != null &&
             director.state == PlayState.Playing)

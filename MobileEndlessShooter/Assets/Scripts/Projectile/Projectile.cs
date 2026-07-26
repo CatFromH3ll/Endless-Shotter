@@ -40,8 +40,7 @@ public class Projectile : MonoBehaviour
         distanceTravelled +=
             rbProjectile.linearVelocity.magnitude *
             Time.fixedDeltaTime;
-        Debug.Log($"Bullet travel time: {distanceTravelled}");
-        Debug.Log($"Velocity magnitude: {rbProjectile.linearVelocity.magnitude}");
+        
         CheckForLethalImpact();
     }
 
