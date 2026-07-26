@@ -11,9 +11,8 @@ public class TimelineManager : MonoBehaviour
     [SerializeField] private TimelineAsset executionTimeline;
     [SerializeField] private SignalReceiver signalReceiver;
 
-    [Header("Cinemachine")]
-    [SerializeField] private CinemachineCamera executionCamera;
-    [SerializeField] private CinemachineBrain mainCameraBrain;
+    [Header("Camera")]
+    [SerializeField] private FollowProjectile followprojectileCamera;
 
     [Header("Player Control Scripts")]
     [SerializeField] private GameObject gameUI;
@@ -24,7 +23,6 @@ public class TimelineManager : MonoBehaviour
 
     [Header("Timeline Track Names")]
     [SerializeField] private string bulletTrackName = "Bullet Track";
-    [SerializeField] private string cameraTrackName = "Camera Track";
     [SerializeField] private string signalTrackName = "Signal Track";
 
     private GameObject currentBullet;
@@ -66,11 +64,9 @@ public class TimelineManager : MonoBehaviour
         }
         
         TrackAsset bulletTrack = FindTrack(bulletTrackName);
-        TrackAsset cameraTrack = FindTrack(cameraTrackName);
         TrackAsset signalTrack = FindTrack(signalTrackName);
 
         if (bulletTrack == null ||
-            cameraTrack == null ||
             signalTrack == null)
         {
             return false;
@@ -80,16 +76,13 @@ public class TimelineManager : MonoBehaviour
         currentEnemy = enemy;
 
         director.playableAsset = executionTimeline;
-
+        followprojectileCamera.UpdateProjectile(bullet);
         // Make the execution camera follow this specific bullet.
-        executionCamera.Follow = bullet.transform;
-        executionCamera.LookAt = enemy;
+        
+        
 
         // Required dynamic Timeline bindings.
-        
-        director.SetGenericBinding(
-            cameraTrack,
-            mainCameraBrain);
+      
 
         director.SetGenericBinding(
             signalTrack,
@@ -175,9 +168,7 @@ public class TimelineManager : MonoBehaviour
 
         RestoreGameplay();
 
-        executionCamera.Follow = null;
-        executionCamera.LookAt = null;
-
+       
         currentBullet = null;
         currentEnemy = null;
 
@@ -186,6 +177,8 @@ public class TimelineManager : MonoBehaviour
 
     private void RestoreGameplay()
     {
+        followprojectileCamera.EndOfExecution();
+        
         if (!slowMotionActive)
             return;
 
@@ -218,12 +211,7 @@ public class TimelineManager : MonoBehaviour
             }
 
             // 3. Clear the camera targets so it doesn't look at a destroyed object
-            if (executionCamera != null)
-            {
-                executionCamera.Follow = null;
-                executionCamera.LookAt = null;
-            }
-
+            
             executionPlaying = false;
         }
     }
