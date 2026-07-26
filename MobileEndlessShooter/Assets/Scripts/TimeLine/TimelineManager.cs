@@ -11,22 +11,32 @@ public class TimelineManager : MonoBehaviour
     [SerializeField] private TimelineAsset executionTimeline;
     [SerializeField] private SignalReceiver signalReceiver;
 
-    [Header("Camera")]
-    [SerializeField] private FollowProjectile followprojectileCamera;
+    [Header("Cinemachine")]
+    [SerializeField] private CinemachineCamera executionCamera;
+    [SerializeField] private CinemachineBrain mainCameraBrain;
+    [SerializeField] private FollowPlayer mainCameraFollowPlayer;
+    private Vector3 previousCameraPosition;
+    private Quaternion previousCameraRotation;
 
-    [Header("Player Control Scripts")]
+    [Header("Player Control")]
     [SerializeField] private GameObject gameUI;
 
     [Header("Slow Motion")]
     [SerializeField, Range(0.01f, 1f)]
-    private float slowMotionScale = 0.15f;
+    private float slowMotionScale = 0.05f;
 
     [Header("Timeline Track Names")]
     [SerializeField] private string bulletTrackName = "Bullet Track";
+    [SerializeField] private string cameraTrackName = "Camera Track";
     [SerializeField] private string signalTrackName = "Signal Track";
 
     private GameObject currentBullet;
     private Transform currentEnemy;
+    
+
+    private TrackAsset bulletTrack;
+    private TrackAsset cameraTrack;
+    private TrackAsset signalTrack;
 
     private float previousTimeScale;
     private float previousFixedDeltaTime;
@@ -34,39 +44,67 @@ public class TimelineManager : MonoBehaviour
     private bool executionPlaying;
     private bool slowMotionActive;
 
-    public bool ExecutionPlaying => executionPlaying;
+    public float SlowMotionScale => slowMotionScale;
+    public bool ExecutionPlaying { get; private set; }
 
     private void Awake()
     {
-        // Timeline continues normally while gameplay is slowed.
-        director.timeUpdateMode = DirectorUpdateMode.UnscaledGameTime;
+        if (director == null)
+        {
+            Debug.LogError("PlayableDirector is not assigned.", this);
+            enabled = false;
+            return;
+        }
 
-        // Safety cleanup when the Timeline stops.
+        director.timeUpdateMode =
+            DirectorUpdateMode.UnscaledGameTime;
+
         director.stopped += OnTimelineStopped;
+
+        // Normal camera controls the game initially.
+        if (mainCameraBrain != null)
+            mainCameraBrain.enabled = false;
+
+        if (executionCamera != null)
+            executionCamera.enabled = false;
+
+        if (mainCameraFollowPlayer != null)
+            mainCameraFollowPlayer.enabled = true;
     }
 
     private void OnDestroy()
     {
-        director.stopped -= OnTimelineStopped;
+        if (director != null)
+        {
+            director.stopped -= OnTimelineStopped;
+        }
     }
 
-    public bool StartExecution(GameObject bullet, Transform enemy)
+    public bool StartExecution(
+        GameObject bullet,
+        Transform enemy)
     {
         if (executionPlaying)
+            return false;
+
+        if (!ValidateReferences())
             return false;
 
         if (bullet == null || enemy == null)
         {
             Debug.LogWarning(
-                "Execution requires a bullet and an enemy.");
+                "Execution requires a bullet and an enemy.",
+                this);
 
             return false;
         }
-        
-        TrackAsset bulletTrack = FindTrack(bulletTrackName);
-        TrackAsset signalTrack = FindTrack(signalTrackName);
+
+        bulletTrack = FindTrack(bulletTrackName);
+        cameraTrack = FindTrack(cameraTrackName);
+        signalTrack = FindTrack(signalTrackName);
 
         if (bulletTrack == null ||
+            cameraTrack == null ||
             signalTrack == null)
         {
             return false;
@@ -76,17 +114,36 @@ public class TimelineManager : MonoBehaviour
         currentEnemy = enemy;
 
         director.playableAsset = executionTimeline;
-        followprojectileCamera.UpdateProjectile(bullet);
-        // Make the execution camera follow this specific bullet.
-        
-        
 
-        // Required dynamic Timeline bindings.
-      
+        // Give the execution camera its runtime targets.
+        executionCamera.Follow = currentBullet.transform;
+        executionCamera.LookAt = currentEnemy;
+
+        // Dynamically bind Timeline tracks.
+        director.SetGenericBinding(
+            bulletTrack,
+            currentBullet);
+
+        director.SetGenericBinding(
+            cameraTrack,
+            mainCameraBrain);
 
         director.SetGenericBinding(
             signalTrack,
             signalReceiver);
+        
+        previousCameraPosition =
+            mainCameraBrain.transform.position;
+
+        previousCameraRotation =
+            mainCameraBrain.transform.rotation;
+
+        // Stop normal camera script from moving the Main Camera.
+        mainCameraFollowPlayer.enabled = false;
+
+        // Enable Cinemachine control.
+        executionCamera.enabled = true;
+        mainCameraBrain.enabled = true;
 
         executionPlaying = true;
 
@@ -96,7 +153,64 @@ public class TimelineManager : MonoBehaviour
         return true;
     }
 
-    private TrackAsset FindTrack(string trackName)
+    private bool ValidateReferences()
+    {
+        if (director == null)
+        {
+            Debug.LogError(
+                "PlayableDirector is not assigned.",
+                this);
+
+            return false;
+        }
+
+        if (executionTimeline == null)
+        {
+            Debug.LogError(
+                "Execution Timeline is not assigned.",
+                this);
+
+            return false;
+        }
+
+        if (signalReceiver == null)
+        {
+            Debug.LogError(
+                "Signal Receiver is not assigned.",
+                this);
+
+            return false;
+        }
+
+        if (executionCamera == null)
+        {
+            Debug.LogError(
+                "Execution Cinemachine Camera is not assigned.",
+                this);
+
+            return false;
+        }
+
+        if (mainCameraBrain == null)
+        {
+            Debug.LogError(
+                "Main Camera Cinemachine Brain is not assigned.",
+                this);
+
+            return false;
+        }
+
+        if (mainCameraFollowPlayer == null)
+        {
+            Debug.LogError(
+                "Main Camera FollowPlayer is not assigned.",
+                this);
+        }
+
+        return true;
+    }
+
+     TrackAsset FindTrack(string trackName)
     {
         TrackAsset track = executionTimeline
             .GetOutputTracks()
@@ -107,20 +221,19 @@ public class TimelineManager : MonoBehaviour
         if (track == null)
         {
             Debug.LogError(
-                $"Timeline track '{trackName}' was not found.");
+                $"Timeline track '{trackName}' was not found.",
+                this);
         }
 
         return track;
     }
 
-    // Connect this to the Begin Execution Signal.
-    public void BeginExecution()
+    // First Timeline Signal.
+    void BeginExecution()
     {
-        if (slowMotionActive)
+        if (!executionPlaying || slowMotionActive)
             return;
-
-        slowMotionActive = true;
-
+        ExecutionPlaying = true;
         previousTimeScale = Time.timeScale;
         previousFixedDeltaTime = Time.fixedDeltaTime;
 
@@ -129,90 +242,125 @@ public class TimelineManager : MonoBehaviour
         Time.timeScale = slowMotionScale;
         Time.fixedDeltaTime =
             previousFixedDeltaTime * slowMotionScale;
+
+        slowMotionActive = true;
     }
 
-    // Connect this to the Impact Signal.
-    public void ExecutionImpact()
+    // Impact Timeline Signal.
+     void ExecutionImpact()
     {
-        /*
-         * Add cinematic impact effects here later:
-         *
-         * - Explosion particles
-         * - Impact sound
-         * - Camera shake
-         * - Enemy death effect*/
-         
+        // Add particles, sound or camera shake later.
+        
     }
 
-    // Connect this to the End Execution Signal.
-    public void EndExecution()
+    // Final Timeline Signal.
+     public void EndExecution()
     {
-        FinishExecution();
+        if (!executionPlaying && !slowMotionActive)
+            return;
 
-        if (director.state == PlayState.Playing)
+        if (director != null &&
+            director.state == PlayState.Playing)
         {
             director.Stop();
         }
-    }
-
-    private void OnTimelineStopped(
-        PlayableDirector stoppedDirector)
-    {
+        
         FinishExecution();
     }
 
-    private void FinishExecution()
+    void OnTimelineStopped(
+        PlayableDirector stoppedDirector)
+    {
+        if (stoppedDirector != director)
+            return;
+
+        FinishExecution();
+    }
+
+     void FinishExecution()
     {
         if (!executionPlaying && !slowMotionActive)
             return;
 
         RestoreGameplay();
 
-       
+        // Remove the previous bullet and enemy targets.
+        if (executionCamera != null)
+        {
+            executionCamera.Follow = null;
+            executionCamera.LookAt = null;
+        }
+
+        // Remove old Timeline bindings.
+        if (director != null)
+        {
+            if (bulletTrack != null)
+                director.ClearGenericBinding(bulletTrack);
+
+            if (cameraTrack != null)
+                director.ClearGenericBinding(cameraTrack);
+
+            if (signalTrack != null)
+                director.ClearGenericBinding(signalTrack);
+        }
+
         currentBullet = null;
         currentEnemy = null;
+
+        bulletTrack = null;
+        cameraTrack = null;
+        signalTrack = null;
 
         executionPlaying = false;
     }
 
-    private void RestoreGameplay()
+     void RestoreGameplay()
     {
-        followprojectileCamera.EndOfExecution();
-        
-        if (!slowMotionActive)
-            return;
+        // Remove the execution targets.
+        if (executionCamera != null)
+        {
+            executionCamera.Follow = null;
+            executionCamera.LookAt = null;
+            executionCamera.enabled = false;
+        }
 
-        Time.timeScale = previousTimeScale;
-        Time.fixedDeltaTime = previousFixedDeltaTime;
+        // Stop Cinemachine from controlling the Main Camera.
+        if (mainCameraBrain != null)
+        {
+            mainCameraBrain.enabled = false;
+            
+            mainCameraBrain.transform.SetPositionAndRotation(
+                previousCameraPosition,
+                previousCameraRotation
+            );
+        }
+
+        // Return control to the normal camera-follow script.
+        if (mainCameraFollowPlayer != null)
+        {
+            mainCameraFollowPlayer.enabled = true;
+        }
+
+        if (slowMotionActive)
+        {
+            Time.timeScale = previousTimeScale;
+            Time.fixedDeltaTime =
+                previousFixedDeltaTime;
+
+            slowMotionActive = false;
+        }
 
         SetPlayerControls(true);
-
-        slowMotionActive = false;
     }
 
-    private void SetPlayerControls(bool enabled)
+     void SetPlayerControls(bool controlsEnabled)
     {
-        
-        if(gameUI != null) gameUI.SetActive(enabled);
-        
-    }
-    public void ForceStopExecution()
-    {
-        if (executionPlaying)
+        if (gameUI != null)
         {
-            // 1. Instantly restore normal time
-            Time.timeScale = 1f;
-            Time.fixedDeltaTime = 0.02f; // Unity's default fixed time
-
-            // 2. Stop the timeline from running in the background
-            if (director != null && director.state == UnityEngine.Playables.PlayState.Playing)
-            {
-                director.Stop();
-            }
-
-            // 3. Clear the camera targets so it doesn't look at a destroyed object
-            
-            executionPlaying = false;
+            gameUI.SetActive(controlsEnabled);
         }
     }
+
+     
+    
 }

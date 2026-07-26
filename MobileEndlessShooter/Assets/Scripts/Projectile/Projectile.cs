@@ -7,6 +7,8 @@ public class Projectile : MonoBehaviour
     [SerializeField] private int maxExecutionNum = 50;
     private TimelineManager timelineManager;
     private bool executionTriggered;
+    [SerializeField] private float minimumExecutionDistance = 40f;
+    private float distanceTravelled;
     
     
     [SerializeField] private Rigidbody rbProjectile;
@@ -29,10 +31,17 @@ public class Projectile : MonoBehaviour
     {
         projectileTimer = 0f;
         executionTriggered = false;
+        distanceTravelled = 0f;
     }
 
     private void FixedUpdate()
     {
+        // Count the actual distance travelled by the projectile.
+        distanceTravelled +=
+            rbProjectile.linearVelocity.magnitude *
+            Time.fixedDeltaTime;
+        Debug.Log($"Bullet travel time: {distanceTravelled}");
+        Debug.Log($"Velocity magnitude: {rbProjectile.linearVelocity.magnitude}");
         CheckForLethalImpact();
     }
 
@@ -49,21 +58,7 @@ public class Projectile : MonoBehaviour
             projectileTimer = 0f;
         }
     }
-    void OnTriggerEnter(Collider other) // (or OnCollisionEnter, depending on your setup)
-    {
-        if (other.CompareTag("Enemy"))
-        {
-            // Find your manager script and force the execution to stop instantly
-            TimelineManager timelineManager = FindObjectOfType<TimelineManager>(); // Replace 'TimelineManager' with the actual name of your script!
-            if (timelineManager != null)
-            {
-                timelineManager.ForceStopExecution();
-            }
-
-            // Now it is safe to destroy the bullet!
-            Destroy(gameObject);
-        }
-    }
+    
 
     public void OnCollisionEnter(Collision collision)
     {
@@ -73,14 +68,26 @@ public class Projectile : MonoBehaviour
             EnemyController enemyController = collision.gameObject.GetComponent<EnemyController>();
             
             enemyController.TakeDamage(damage);
+            if (executionTriggered && timelineManager.ExecutionPlaying)
+            {
+                timelineManager.EndExecution();
+            }
+            ReturnToProjectilePool();
+            
         }
 
         if (collision.gameObject.CompareTag("Player") && isEnemy)
         {
             PlayerHealth playerHealth = collision.gameObject.GetComponent<PlayerHealth>();
            playerHealth.TakeDamage(damage);
+           ReturnToProjectilePool();
         }
-        ReturnToProjectilePool();
+
+        if (collision.gameObject.CompareTag("Hazard"))
+        {
+            ReturnToProjectilePool();
+        }
+        
     }
 
     private void CheckForLethalImpact()
@@ -93,6 +100,11 @@ public class Projectile : MonoBehaviour
 
         if (timelineManager == null)
             return;
+        
+        if(timelineManager.ExecutionPlaying)
+            return;
+        
+        
 
         Vector3 velocity = rbProjectile.linearVelocity;
 
@@ -102,7 +114,7 @@ public class Projectile : MonoBehaviour
         Vector3 direction = velocity.normalized;
 
         float checkDistance =
-            velocity.magnitude * executionLookAheadTime;
+            velocity.magnitude * timelineManager.SlowMotionScale * executionLookAheadTime;
 
         bool aboutToHitSomething = rbProjectile.SweepTest(
             direction,
@@ -110,8 +122,11 @@ public class Projectile : MonoBehaviour
             checkDistance,
             QueryTriggerInteraction.Ignore
         );
-
+        
         if (!aboutToHitSomething)
+            return;
+        
+        if (distanceTravelled <= minimumExecutionDistance)
             return;
 
         EnemyController enemy =
@@ -120,17 +135,21 @@ public class Projectile : MonoBehaviour
         if (enemy == null)
             return;
 
-        if (!enemy.WillDieFromDamage(damage))
-            return;
-        bool started = timelineManager.StartExecution(
-            gameObject,
-            enemy.transform
-        );
-
-        if (started)
+        if (enemy.WillDieFromDamage(damage))
         {
-            executionTriggered = true;
+            bool started = timelineManager.StartExecution(
+                gameObject,
+                enemy.transform
+            );
+            if (started)
+            {
+                executionTriggered = true;
+            }
         }
+            
+        
+
+        
         /*int random =  Random.Range(minExecutionNum, maxExecutionNum);
         if (random <= 5)
         {

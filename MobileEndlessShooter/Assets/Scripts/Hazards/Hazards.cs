@@ -22,9 +22,10 @@ public class Hazards : MonoBehaviour
 
     public void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "Player")
+        if (collision.gameObject.tag == "Player" || collision.gameObject.tag == "Bullet")
         {
             gameObject.SetActive(false);
+            AudioManager.instance.PlayerProjectileHitSound();
         }
     }
 }
