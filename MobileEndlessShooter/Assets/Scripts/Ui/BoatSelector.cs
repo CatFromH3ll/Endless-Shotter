@@ -24,7 +24,7 @@ public class BoatSelector : MonoBehaviour
 
     public int selectedIndex { get; private set; }
 
-    private void Start()
+    private void OnEnable()
     {
         ShowBoat(0);
     }
