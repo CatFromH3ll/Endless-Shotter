@@ -4201,8 +4201,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: c38df38d9d8e2e04ab59623773452ab8, type: 2}
   player: {fileID: 0}
   distanceFromPlayer: 250
-  timeToSpawn: 5
-  timeInterval: 5
+  timeToSpawn: 10
+  timeInterval: 10
 --- !u!114 &1173928938
 MonoBehaviour:
   m_ObjectHideFlags: 0

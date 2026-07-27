@@ -102,6 +102,7 @@ public class PlayerHealth : MonoBehaviour
         AudioManager.instance.PlayerHit();
         Animator playerAnimator = modelSelector.PlayerAnimator;
         playerAnimator.SetTrigger("Hit");
+        Debug.Log("DAMAGE TAKEN " + damage);
         
 
         if (currentHealth <= 0)

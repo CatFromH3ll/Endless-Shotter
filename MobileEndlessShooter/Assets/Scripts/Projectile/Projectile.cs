@@ -4,11 +4,10 @@ public class Projectile : MonoBehaviour
 {
     [SerializeField] private float executionLookAheadTime = 0.2f;
     [SerializeField] private int minExecutionNum = 0;
-    [SerializeField] private int maxExecutionNum = 50;
+    [SerializeField] private int maxExecutionNum = 100;
     private TimelineManager timelineManager;
     private bool executionTriggered;
     [SerializeField] private float minimumExecutionDistance = 1.5f;
-    //private float distanceTravelled;
     
     
     [SerializeField] private Rigidbody rbProjectile;
@@ -31,19 +30,12 @@ public class Projectile : MonoBehaviour
     {
         projectileTimer = 0f;
         executionTriggered = false;
-        //distanceTravelled = 0f;
+        
     }
 
     private void FixedUpdate()
     {
         // Count the actual distance travelled by the projectile.
-        //distanceTravelled += Time.fixedDeltaTime;
-        Vector3 velocity = rbProjectile.linearVelocity;
-        Debug.Log("slowmoscale " + timelineManager.SlowMotionScale);
-        Debug.Log("velocity magni" + velocity.magnitude);
-        Debug.Log("execution look ahead tme " + executionLookAheadTime);
-        Debug.Log("checkDistance " + velocity.magnitude * timelineManager.SlowMotionScale * executionLookAheadTime);
-        
         CheckForLethalImpact();
     }
 
@@ -107,15 +99,7 @@ public class Projectile : MonoBehaviour
         if (projectileTimer <= minimumExecutionDistance)
             return;
         
-        /*if (executionTriggered)
-            return;*/
-
         
-        
-        
-        
-        
-
         Vector3 velocity = rbProjectile.linearVelocity;
 
         if (velocity.sqrMagnitude <= 0.001f)
@@ -145,6 +129,12 @@ public class Projectile : MonoBehaviour
 
         if (enemy == null)
             return;
+        if(enemy.waveType == WaveType.Shooting)return;
+        int random =  Random.Range(minExecutionNum, maxExecutionNum);
+        if (random >= 10)
+        {
+            return;
+        }
 
         if (enemy.WillDieFromDamage(damage))
         {
@@ -152,20 +142,13 @@ public class Projectile : MonoBehaviour
                 gameObject,
                 enemy.transform
             );
-            /*if (started)
-            {
-                executionTriggered = true;
-            }*/
+            
         }
             
         
 
         
-        /*int random =  Random.Range(minExecutionNum, maxExecutionNum);
-        if (random <= 5)
-        {
-            
-        }*/
+        
         
         
     }

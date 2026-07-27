@@ -20,6 +20,7 @@ public class EnemyController : MonoBehaviour
    
     
     float scaleMultyplayer = 1.5f;
+    private float damageToPlayer;
     private Vector3 originalScale;
     private float difficultyModifire;
 
@@ -29,7 +30,7 @@ public class EnemyController : MonoBehaviour
     private Vector3 targetPoint;
     private Collider colliderEnemy;
     public DifficultyLevelData currentDifficulty;
-    private WaveType waveType;
+    public WaveType waveType { get; private set; }
     private float stageMultiplier;
     
     private float currentSpeed;
@@ -54,14 +55,17 @@ public class EnemyController : MonoBehaviour
         //takes the data from the scriptable object and sets the enemy to it
         this.data = enemyData;
         this.currentDifficulty = currentDifficulty;
-        difficultyModifire = UIControler.selectedDifficultyModifier + 1;
+        difficultyModifire = UIControler.selectedDifficultyModifier;
         currentHealth = data.health * difficultyModifire * stageMult;
+        Debug.Log(" dificulti modifier second try "+ difficultyModifire);
         scoreValue = data.scoreValue;
         isDead = false;
         waveType = currentDifficulty.chosenWaveType;
         currentSpeed = data.movementSpeed * difficultyModifire;
-        data.damageToPlayer = data.damageToPlayer * difficultyModifire * stageMult;
-        damageOnImpact = data.damageToPlayer * impactModifire * difficultyModifire * stageMult;
+        damageToPlayer = data.damageToPlayer * difficultyModifire * stageMult;
+        damageOnImpact = damageToPlayer * impactModifire;
+        Debug.Log($"damage on impact {damageOnImpact} data damage to player {data.damageToPlayer}" +
+                  $"impact modifier {impactModifire} dificulty modifer { difficultyModifire} stage mult {stageMult}");
       
         
 
