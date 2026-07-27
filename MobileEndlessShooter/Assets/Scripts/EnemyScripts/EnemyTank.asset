@@ -16,5 +16,5 @@ MonoBehaviour:
   enemyType: TankEnemy
   movementSpeed: 7
   health: 20
-  damageToPlayer: 8
+  damageToPlayer: 16
   scoreValue: 200

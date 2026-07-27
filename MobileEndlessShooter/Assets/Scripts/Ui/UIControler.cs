@@ -36,13 +36,14 @@ public class UIControler : MonoBehaviour
    public float musicVolume;
    public float sfxVolume;
    public static float selectedDifficultyModifier {get; private set;}
-
+   private bool isDificultySelected = false;
    private const string audioMixerHash = "AudioMixer";
    private const string musicVolumeHash = "MusicVolume";
    private const string sfxVolumeHash = "SFXVolume";
    
    public void Start()
    {
+      
       musicVolume = PlayerPrefs.GetFloat(musicVolumeHash);
       sfxVolume = PlayerPrefs.GetFloat(sfxVolumeHash);
       audioMixer.SetFloat(musicVolumeHash, musicVolume);
@@ -69,6 +70,7 @@ public class UIControler : MonoBehaviour
    
    public void StartGame()
    {
+      if(!isDificultySelected) selectedDifficultyModifier = easyDifficultyMult;
       loadingPanel.SetActive(true); 
       StartCoroutine(LoadLevelAsync());
       Time.timeScale = 1;
@@ -115,14 +117,7 @@ public class UIControler : MonoBehaviour
       }
    }
    
-   public void OnDifficultySelected(int chosenDifficultyIndex)
-   {
-      // FIXED: Route this through your existing DifficultySelection method 
-      // so your selectedDifficultyModifier multiplier rules are set up properly!
-      DifficultySelection(chosenDifficultyIndex);
-        
-      StartGame();
-   }
+   
    
    IEnumerator LoadLevelAsync()
    {
@@ -216,13 +211,13 @@ public class UIControler : MonoBehaviour
 
    public void DifficultySelection(int difficulty)
    {
+      isDificultySelected = true;
       ioSystem.SetBaseDifficulty(difficulty);
       switch (difficulty)
       {
          case 0:
          {
             selectedDifficultyModifier = easyDifficultyMult;
-            
             break;
          }
          case 1:
@@ -236,5 +231,6 @@ public class UIControler : MonoBehaviour
             break;
          }
       }  
+      Debug.Log($"Difficulty selected: {selectedDifficultyModifier}");
    }
 }

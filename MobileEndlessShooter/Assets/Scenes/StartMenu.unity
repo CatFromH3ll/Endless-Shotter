@@ -1430,18 +1430,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 298136835}
-        m_TargetAssemblyTypeName: UIControler, Assembly-CSharp
-        m_MethodName: OnDifficultySelected
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
   m_AlphaFadeSpeed: 0.15
 --- !u!114 &143965568
 MonoBehaviour:
@@ -2600,9 +2588,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   previewRoot: {fileID: 376393191}
+  zoomSpeed: 0.05
   zoomDeadZone: 10
-  zoomAmount: {x: 5, y: 5, z: 5}
-  startingScale: {x: 0, y: 0, z: 0}
   maxScale: 84
   minScale: 50
   rotationSpeed: 0.2
