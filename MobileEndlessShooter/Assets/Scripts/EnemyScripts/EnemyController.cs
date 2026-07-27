@@ -92,7 +92,7 @@ public class EnemyController : MonoBehaviour
             
                 
                 
-                Debug.Log($"point a {pointA},point b {pointB},left point {leftPoint},right point {rightPoint}");
+               
                 //randomize starting position to move to
                 targetPoint = (Random.Range(0, 2) == 0) ? pointA : pointB;
 

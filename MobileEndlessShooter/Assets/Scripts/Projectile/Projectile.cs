@@ -7,7 +7,7 @@ public class Projectile : MonoBehaviour
     [SerializeField] private int maxExecutionNum = 50;
     private TimelineManager timelineManager;
     private bool executionTriggered;
-    [SerializeField] private float minimumExecutionDistance = 40f;
+    [SerializeField] private float minimumExecutionDistance = 20f;
     private float distanceTravelled;
     
     
@@ -67,7 +67,7 @@ public class Projectile : MonoBehaviour
             EnemyController enemyController = collision.gameObject.GetComponent<EnemyController>();
             
             enemyController.TakeDamage(damage);
-            if (executionTriggered && timelineManager.ExecutionPlaying)
+            if (executionTriggered && timelineManager.executionPlaying)
             {
                 timelineManager.EndExecution();
             }
@@ -91,24 +91,38 @@ public class Projectile : MonoBehaviour
 
     private void CheckForLethalImpact()
     {
+        Debug.Log("checking for leathal");
         if (isEnemy)
+        {
+            Debug.Log("faild isEnemy");
             return;
+        }
 
         if (executionTriggered)
+        {
+            Debug.Log("faild executionTriggered");
             return;
+        }
 
         if (timelineManager == null)
+        {
+            Debug.Log("faild, timelineManager = null");
             return;
+        }
         
-        if(timelineManager.ExecutionPlaying)
+        if(timelineManager.executionPlaying)
+        {
+            Debug.Log("faild timelineManager.ExecutionPlaying is true");
             return;
-        
-        
+        }
 
         Vector3 velocity = rbProjectile.linearVelocity;
 
         if (velocity.sqrMagnitude <= 0.001f)
+        {
+            Debug.Log("faild, velocity.sqrMagnitude is bigger then 0.001f");
             return;
+        }
 
         Vector3 direction = velocity.normalized;
 
@@ -123,19 +137,29 @@ public class Projectile : MonoBehaviour
         );
         
         if (!aboutToHitSomething)
+        {
+            Debug.Log("faild, it is not about to hit something ");
             return;
+        }
         
         if (distanceTravelled <= minimumExecutionDistance)
+        {
+            Debug.Log("faild distanceTravelled is bigger then minimumExecutionDistance");
             return;
+        }
 
         EnemyController enemy =
             hit.collider.GetComponentInParent<EnemyController>();
 
         if (enemy == null)
+        {
+            Debug.Log("faild, enemy is null");
             return;
+        }
 
         if (enemy.WillDieFromDamage(damage))
         {
+            Debug.Log("pass leathal Check");
             bool started = timelineManager.StartExecution(
                 gameObject,
                 enemy.transform

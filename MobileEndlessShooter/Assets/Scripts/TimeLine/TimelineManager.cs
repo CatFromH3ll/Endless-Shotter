@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Unity.Cinemachine;
 using UnityEngine;
@@ -41,11 +42,10 @@ public class TimelineManager : MonoBehaviour
     private float previousTimeScale;
     private float previousFixedDeltaTime;
 
-    private bool executionPlaying;
     private bool slowMotionActive;
 
     public float SlowMotionScale => slowMotionScale;
-    public bool ExecutionPlaying { get; private set; }
+    public bool executionPlaying { get; private set; }
 
     private void Awake()
     {
@@ -72,6 +72,11 @@ public class TimelineManager : MonoBehaviour
             mainCameraFollowPlayer.enabled = true;
     }
 
+    private void Update()
+    {
+        Time.fixedDeltaTime = 0.02f * Time.timeScale;
+    }
+
     private void OnDestroy()
     {
         if (director != null)
@@ -86,7 +91,7 @@ public class TimelineManager : MonoBehaviour
     {
         if (executionPlaying)
             return false;
-        
+        Debug.Log("started execution");
 
         if (bullet == null || enemy == null)
         {
@@ -147,6 +152,7 @@ public class TimelineManager : MonoBehaviour
 
         director.time = 0;
         executionPlaying = true;
+        Debug.Log("pass start execution");
         director.Play();
 
         return true;
@@ -232,7 +238,8 @@ public class TimelineManager : MonoBehaviour
     {
         if (!executionPlaying || slowMotionActive)
             return;
-        ExecutionPlaying = true;
+        Debug.Log("begin execution");
+        executionPlaying = true;
         previousTimeScale = Time.timeScale;
         previousFixedDeltaTime = Time.fixedDeltaTime;
 
@@ -257,7 +264,7 @@ public class TimelineManager : MonoBehaviour
     {
         if (!executionPlaying && !slowMotionActive)
             return;
-
+        Debug.Log("end execution");
         executionPlaying = false;
 
         if (director != null &&
@@ -280,9 +287,10 @@ public class TimelineManager : MonoBehaviour
 
      void FinishExecution()
     {
+        Debug.Log($"execution is playing? {executionPlaying}");
         if (!executionPlaying && !slowMotionActive)
             return;
-
+        Debug.Log("finishd execution");
         RestoreGameplay();
 
         // Remove the previous bullet and enemy targets.
@@ -317,6 +325,7 @@ public class TimelineManager : MonoBehaviour
 
      void RestoreGameplay()
     {
+        Debug.Log("restored gameplay");
         // Remove the execution targets.
         if (executionCamera != null)
         {
