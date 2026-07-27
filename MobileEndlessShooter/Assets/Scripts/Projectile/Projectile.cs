@@ -7,8 +7,8 @@ public class Projectile : MonoBehaviour
     [SerializeField] private int maxExecutionNum = 50;
     private TimelineManager timelineManager;
     private bool executionTriggered;
-    [SerializeField] private float minimumExecutionDistance = 40f;
-    private float distanceTravelled;
+    [SerializeField] private float minimumExecutionDistance = 1.5f;
+    //private float distanceTravelled;
     
     
     [SerializeField] private Rigidbody rbProjectile;
@@ -31,15 +31,18 @@ public class Projectile : MonoBehaviour
     {
         projectileTimer = 0f;
         executionTriggered = false;
-        distanceTravelled = 0f;
+        //distanceTravelled = 0f;
     }
 
     private void FixedUpdate()
     {
         // Count the actual distance travelled by the projectile.
-        distanceTravelled +=
-            rbProjectile.linearVelocity.magnitude *
-            Time.fixedDeltaTime;
+        //distanceTravelled += Time.fixedDeltaTime;
+        Vector3 velocity = rbProjectile.linearVelocity;
+        Debug.Log("slowmoscale " + timelineManager.SlowMotionScale);
+        Debug.Log("velocity magni" + velocity.magnitude);
+        Debug.Log("execution look ahead tme " + executionLookAheadTime);
+        Debug.Log("checkDistance " + velocity.magnitude * timelineManager.SlowMotionScale * executionLookAheadTime);
         
         CheckForLethalImpact();
     }
@@ -91,17 +94,25 @@ public class Projectile : MonoBehaviour
 
     private void CheckForLethalImpact()
     {
+        
         if (isEnemy)
             return;
-
-        if (executionTriggered)
-            return;
-
+        
         if (timelineManager == null)
             return;
         
         if(timelineManager.ExecutionPlaying)
             return;
+        
+        if (projectileTimer <= minimumExecutionDistance)
+            return;
+        
+        /*if (executionTriggered)
+            return;*/
+
+        
+        
+        
         
         
 
@@ -114,6 +125,7 @@ public class Projectile : MonoBehaviour
 
         float checkDistance =
             velocity.magnitude * timelineManager.SlowMotionScale * executionLookAheadTime;
+        Debug.Log("checkDistance " + velocity.magnitude * timelineManager.SlowMotionScale * executionLookAheadTime);
 
         bool aboutToHitSomething = rbProjectile.SweepTest(
             direction,
@@ -121,12 +133,12 @@ public class Projectile : MonoBehaviour
             checkDistance,
             QueryTriggerInteraction.Ignore
         );
+        Debug.DrawRay(rbProjectile.position, direction * checkDistance, Color.red);
         
         if (!aboutToHitSomething)
             return;
         
-        if (distanceTravelled <= minimumExecutionDistance)
-            return;
+        
 
         EnemyController enemy =
             hit.collider.GetComponentInParent<EnemyController>();
@@ -136,14 +148,14 @@ public class Projectile : MonoBehaviour
 
         if (enemy.WillDieFromDamage(damage))
         {
-            bool started = timelineManager.StartExecution(
+            timelineManager.StartExecution(
                 gameObject,
                 enemy.transform
             );
-            if (started)
+            /*if (started)
             {
                 executionTriggered = true;
-            }
+            }*/
         }
             
         

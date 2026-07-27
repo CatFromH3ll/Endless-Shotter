@@ -40,8 +40,7 @@ public class TimelineManager : MonoBehaviour
 
     private float previousTimeScale;
     private float previousFixedDeltaTime;
-
-    private bool executionPlaying;
+    
     private bool slowMotionActive;
 
     public float SlowMotionScale => slowMotionScale;
@@ -84,7 +83,7 @@ public class TimelineManager : MonoBehaviour
         GameObject bullet,
         Transform enemy)
     {
-        if (executionPlaying)
+        if (ExecutionPlaying)
             return false;
         
 
@@ -143,10 +142,10 @@ public class TimelineManager : MonoBehaviour
         executionCamera.enabled = true;
         mainCameraBrain.enabled = true;
 
-        executionPlaying = true;
+        ExecutionPlaying = true;
 
         director.time = 0;
-        executionPlaying = true;
+        ExecutionPlaying = true;
         director.Play();
 
         return true;
@@ -230,7 +229,7 @@ public class TimelineManager : MonoBehaviour
     // First Timeline Signal.
     void BeginExecution()
     {
-        if (!executionPlaying || slowMotionActive)
+        if (!ExecutionPlaying || slowMotionActive)
             return;
         ExecutionPlaying = true;
         previousTimeScale = Time.timeScale;
@@ -255,10 +254,10 @@ public class TimelineManager : MonoBehaviour
     // Final Timeline Signal.
      public void EndExecution()
     {
-        if (!executionPlaying && !slowMotionActive)
+        if (!ExecutionPlaying && !slowMotionActive)
             return;
 
-        executionPlaying = false;
+        ExecutionPlaying = false;
 
         if (director != null &&
             director.state == PlayState.Playing)
@@ -280,7 +279,7 @@ public class TimelineManager : MonoBehaviour
 
      void FinishExecution()
     {
-        if (!executionPlaying && !slowMotionActive)
+        if (!ExecutionPlaying && !slowMotionActive)
             return;
 
         RestoreGameplay();
@@ -312,7 +311,7 @@ public class TimelineManager : MonoBehaviour
         cameraTrack = null;
         signalTrack = null;
 
-        executionPlaying = false;
+        ExecutionPlaying = false;
     }
 
      void RestoreGameplay()
