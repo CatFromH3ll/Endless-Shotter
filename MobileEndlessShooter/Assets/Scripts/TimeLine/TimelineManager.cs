@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using Unity.Cinemachine;
 using UnityEngine;
@@ -41,11 +40,11 @@ public class TimelineManager : MonoBehaviour
 
     private float previousTimeScale;
     private float previousFixedDeltaTime;
-
+    
     private bool slowMotionActive;
 
     public float SlowMotionScale => slowMotionScale;
-    public bool executionPlaying { get; private set; }
+    public bool ExecutionPlaying { get; private set; }
 
     private void Awake()
     {
@@ -72,11 +71,6 @@ public class TimelineManager : MonoBehaviour
             mainCameraFollowPlayer.enabled = true;
     }
 
-    private void Update()
-    {
-        Time.fixedDeltaTime = 0.02f * Time.timeScale;
-    }
-
     private void OnDestroy()
     {
         if (director != null)
@@ -89,9 +83,9 @@ public class TimelineManager : MonoBehaviour
         GameObject bullet,
         Transform enemy)
     {
-        if (executionPlaying)
+        if (ExecutionPlaying)
             return false;
-        Debug.Log("started execution");
+        
 
         if (bullet == null || enemy == null)
         {
@@ -148,11 +142,10 @@ public class TimelineManager : MonoBehaviour
         executionCamera.enabled = true;
         mainCameraBrain.enabled = true;
 
-        executionPlaying = true;
+        ExecutionPlaying = true;
 
         director.time = 0;
-        executionPlaying = true;
-        Debug.Log("pass start execution");
+        ExecutionPlaying = true;
         director.Play();
 
         return true;
@@ -236,10 +229,9 @@ public class TimelineManager : MonoBehaviour
     // First Timeline Signal.
     void BeginExecution()
     {
-        if (!executionPlaying || slowMotionActive)
+        if (!ExecutionPlaying || slowMotionActive)
             return;
-        Debug.Log("begin execution");
-        executionPlaying = true;
+        ExecutionPlaying = true;
         previousTimeScale = Time.timeScale;
         previousFixedDeltaTime = Time.fixedDeltaTime;
 
@@ -262,10 +254,10 @@ public class TimelineManager : MonoBehaviour
     // Final Timeline Signal.
      public void EndExecution()
     {
-        if (!executionPlaying && !slowMotionActive)
+        if (!ExecutionPlaying && !slowMotionActive)
             return;
-        Debug.Log("end execution");
-        executionPlaying = false;
+
+        ExecutionPlaying = false;
 
         if (director != null &&
             director.state == PlayState.Playing)
@@ -287,10 +279,9 @@ public class TimelineManager : MonoBehaviour
 
      void FinishExecution()
     {
-        Debug.Log($"execution is playing? {executionPlaying}");
-        if (!executionPlaying && !slowMotionActive)
+        if (!ExecutionPlaying && !slowMotionActive)
             return;
-        Debug.Log("finishd execution");
+
         RestoreGameplay();
 
         // Remove the previous bullet and enemy targets.
@@ -320,12 +311,11 @@ public class TimelineManager : MonoBehaviour
         cameraTrack = null;
         signalTrack = null;
 
-        executionPlaying = false;
+        ExecutionPlaying = false;
     }
 
      void RestoreGameplay()
     {
-        Debug.Log("restored gameplay");
         // Remove the execution targets.
         if (executionCamera != null)
         {

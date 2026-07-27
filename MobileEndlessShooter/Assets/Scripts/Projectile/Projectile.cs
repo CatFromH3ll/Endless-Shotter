@@ -7,8 +7,8 @@ public class Projectile : MonoBehaviour
     [SerializeField] private int maxExecutionNum = 50;
     private TimelineManager timelineManager;
     private bool executionTriggered;
-    [SerializeField] private float minimumExecutionDistance = 20f;
-    private float distanceTravelled;
+    [SerializeField] private float minimumExecutionDistance = 1.5f;
+    //private float distanceTravelled;
     
     
     [SerializeField] private Rigidbody rbProjectile;
@@ -31,15 +31,18 @@ public class Projectile : MonoBehaviour
     {
         projectileTimer = 0f;
         executionTriggered = false;
-        distanceTravelled = 0f;
+        //distanceTravelled = 0f;
     }
 
     private void FixedUpdate()
     {
         // Count the actual distance travelled by the projectile.
-        distanceTravelled +=
-            rbProjectile.linearVelocity.magnitude *
-            Time.fixedDeltaTime;
+        //distanceTravelled += Time.fixedDeltaTime;
+        Vector3 velocity = rbProjectile.linearVelocity;
+        Debug.Log("slowmoscale " + timelineManager.SlowMotionScale);
+        Debug.Log("velocity magni" + velocity.magnitude);
+        Debug.Log("execution look ahead tme " + executionLookAheadTime);
+        Debug.Log("checkDistance " + velocity.magnitude * timelineManager.SlowMotionScale * executionLookAheadTime);
         
         CheckForLethalImpact();
     }
@@ -67,7 +70,7 @@ public class Projectile : MonoBehaviour
             EnemyController enemyController = collision.gameObject.GetComponent<EnemyController>();
             
             enemyController.TakeDamage(damage);
-            if (executionTriggered && timelineManager.executionPlaying)
+            if (executionTriggered && timelineManager.ExecutionPlaying)
             {
                 timelineManager.EndExecution();
             }
@@ -91,43 +94,38 @@ public class Projectile : MonoBehaviour
 
     private void CheckForLethalImpact()
     {
-        Debug.Log("checking for leathal");
-        if (isEnemy)
-        {
-            Debug.Log("faild isEnemy");
-            return;
-        }
-
-        if (executionTriggered)
-        {
-            Debug.Log("faild executionTriggered");
-            return;
-        }
-
-        if (timelineManager == null)
-        {
-            Debug.Log("faild, timelineManager = null");
-            return;
-        }
         
-        if(timelineManager.executionPlaying)
-        {
-            Debug.Log("faild timelineManager.ExecutionPlaying is true");
+        if (isEnemy)
             return;
-        }
+        
+        if (timelineManager == null)
+            return;
+        
+        if(timelineManager.ExecutionPlaying)
+            return;
+        
+        if (projectileTimer <= minimumExecutionDistance)
+            return;
+        
+        /*if (executionTriggered)
+            return;*/
+
+        
+        
+        
+        
+        
 
         Vector3 velocity = rbProjectile.linearVelocity;
 
         if (velocity.sqrMagnitude <= 0.001f)
-        {
-            Debug.Log("faild, velocity.sqrMagnitude is bigger then 0.001f");
             return;
-        }
 
         Vector3 direction = velocity.normalized;
 
         float checkDistance =
             velocity.magnitude * timelineManager.SlowMotionScale * executionLookAheadTime;
+        Debug.Log("checkDistance " + velocity.magnitude * timelineManager.SlowMotionScale * executionLookAheadTime);
 
         bool aboutToHitSomething = rbProjectile.SweepTest(
             direction,
@@ -135,39 +133,29 @@ public class Projectile : MonoBehaviour
             checkDistance,
             QueryTriggerInteraction.Ignore
         );
+        Debug.DrawRay(rbProjectile.position, direction * checkDistance, Color.red);
         
         if (!aboutToHitSomething)
-        {
-            Debug.Log("faild, it is not about to hit something ");
             return;
-        }
         
-        if (distanceTravelled <= minimumExecutionDistance)
-        {
-            Debug.Log("faild distanceTravelled is bigger then minimumExecutionDistance");
-            return;
-        }
+        
 
         EnemyController enemy =
             hit.collider.GetComponentInParent<EnemyController>();
 
         if (enemy == null)
-        {
-            Debug.Log("faild, enemy is null");
             return;
-        }
 
         if (enemy.WillDieFromDamage(damage))
         {
-            Debug.Log("pass leathal Check");
-            bool started = timelineManager.StartExecution(
+            timelineManager.StartExecution(
                 gameObject,
                 enemy.transform
             );
-            if (started)
+            /*if (started)
             {
                 executionTriggered = true;
-            }
+            }*/
         }
             
         
