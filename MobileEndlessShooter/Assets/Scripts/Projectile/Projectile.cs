@@ -5,6 +5,8 @@ public class Projectile : MonoBehaviour
     [SerializeField] private float executionLookAheadTime = 0.2f;
     [SerializeField] private int minExecutionNum = 0;
     [SerializeField] private int maxExecutionNum = 100;
+    [SerializeField] private GameObject explosionPrefab;
+    [SerializeField] private ParticleSystem smokeParticles;
     private TimelineManager timelineManager;
     private bool executionTriggered;
     [SerializeField] private float minimumExecutionDistance = 1.5f;
@@ -22,7 +24,7 @@ public class Projectile : MonoBehaviour
     void Awake()
     {
         rbProjectile = GetComponent<Rigidbody>();
-        
+        smokeParticles = GetComponentInChildren<ParticleSystem>();
         timelineManager = FindObjectOfType<TimelineManager>();
     }
 
@@ -30,7 +32,7 @@ public class Projectile : MonoBehaviour
     {
         projectileTimer = 0f;
         executionTriggered = false;
-        
+        smokeParticles.Play();
     }
 
     private void FixedUpdate()
@@ -60,7 +62,9 @@ public class Projectile : MonoBehaviour
         if (collision.gameObject.CompareTag("Enemy"))
         {
             EnemyController enemyController = collision.gameObject.GetComponent<EnemyController>();
-            
+            ContactPoint contact = collision.contacts[0];
+
+            SpawnExplosion(contact.point, contact.normal);
             enemyController.TakeDamage(damage);
             if (executionTriggered && timelineManager.ExecutionPlaying)
             {
@@ -71,7 +75,7 @@ public class Projectile : MonoBehaviour
         }
 
         if (collision.gameObject.CompareTag("Player") && isEnemy)
-        {
+        { 
             PlayerHealth playerHealth = collision.gameObject.GetComponent<PlayerHealth>();
            playerHealth.TakeDamage(damage);
            ReturnToProjectilePool();
@@ -80,8 +84,26 @@ public class Projectile : MonoBehaviour
         if (collision.gameObject.CompareTag("Hazard"))
         {
             ReturnToProjectilePool();
+            ContactPoint contact = collision.contacts[0];
+
+            SpawnExplosion(contact.point, contact.normal);
         }
         
+        smokeParticles.Stop();
+    }
+    
+    private void SpawnExplosion(Vector3 position, Vector3 surfaceNormal)
+    {
+        Quaternion rotation = Quaternion.LookRotation(surfaceNormal);
+
+        GameObject explosion = Instantiate(
+            explosionPrefab,
+            position,
+            rotation
+        );
+
+        // Remove the explosion after its particles finish.
+        Destroy(explosion, 5f);
     }
 
     private void CheckForLethalImpact()
