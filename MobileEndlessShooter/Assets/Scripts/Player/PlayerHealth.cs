@@ -7,6 +7,7 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] private float currentHealth;
     [SerializeField] private PlayerHealthBar playerHealthBar;
     [SerializeField] private ModelSelector modelSelector;
+    [SerializeField] private GameOverAnalytics gameOverAnalytics;
     //[SerializeField] private Animator playerAnimator;
     [SerializeField] private UIControler uIControler;
     private bool isDead;
@@ -122,6 +123,7 @@ public class PlayerHealth : MonoBehaviour
 
     public void Die()
     {
+        gameOverAnalytics.GameOverAnalyse();
         AudioManager.instance.PlayerDeath();
         Animator playerAnimator = modelSelector.PlayerAnimator;
         playerAnimator.SetTrigger("Death");

@@ -11,7 +11,7 @@ public class UIControler : MonoBehaviour
    [Header("Panels")]
    [SerializeField] private GameObject startPanel;       // The panel with the "Play" button
    [SerializeField] private GameObject saveSlotsPanel;   // The new panel holding the 3 slots
-   [SerializeField] private GameObject difficultyPanel;  // The original difficulty selection screen
+   [SerializeField] private GameObject modelPreviewPanel;  // The original model selection screen
 
    [Header("Slots Setup")]
    [SerializeField] private SaveSlotUI[] saveSlots;
@@ -113,7 +113,7 @@ public class UIControler : MonoBehaviour
 
          // Proceed to difficulty selection panel
          saveSlotsPanel.SetActive(false);
-         difficultyPanel.SetActive(true);
+         modelPreviewPanel.SetActive(true);
       }
    }
    
@@ -159,13 +159,7 @@ public class UIControler : MonoBehaviour
       PlayerPrefs.SetFloat(musicVolumeHash, musicVol);
       PlayerPrefs.SetFloat(sfxVolumeHash, sfxVol);
       
-      
-      
-      #if UNITY_EDITOR
-      UnityEditor.EditorApplication.isPlaying = false;
-      #else
       Application.Quit();
-      #endif
    }
 
    public void RestartGame()

@@ -24,6 +24,9 @@ public class AudioManager : MonoBehaviour
    public AudioClip shieldHit;
    public AudioClip shieldDeactivated;
    public AudioClip shieldReady;
+   public AudioClip spotlightTurnOn;
+   public AudioClip spotlightTurnOff;
+   public AudioClip splashSound;
    
    [Header("Engine Settings")]
    [SerializeField] private float normalPitch = 1f;
@@ -31,6 +34,7 @@ public class AudioManager : MonoBehaviour
    [SerializeField] private float pitchChangeSpeed = 2f;
 
    private float targetEnginePitch;
+   private bool spotlightOn = false;
 
 
 
@@ -170,6 +174,25 @@ public class AudioManager : MonoBehaviour
    public void ShieldReadySound()
    {
       sfxSource.PlayOneShot(shieldReady);
+   }
+
+   public void TogglePlayerHeadlights()
+   {
+      if (spotlightOn)
+      {
+         sfxSource.PlayOneShot(spotlightTurnOff);
+         spotlightOn = false;
+      }
+      else
+      {
+         sfxSource.PlayOneShot(spotlightTurnOn);
+         spotlightOn = true;
+      }
+   }
+
+   public void Splash()
+   {
+      sfxSource.PlayOneShot(splashSound);
    }
 
 }

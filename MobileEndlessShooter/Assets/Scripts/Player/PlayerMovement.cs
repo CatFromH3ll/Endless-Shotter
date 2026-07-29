@@ -203,7 +203,9 @@ public class PlayerMovement : MonoBehaviour
         if (other.gameObject.CompareTag("Floor") && !isGrounded)
         {
             isGrounded = true;
+            AudioManager.instance.Splash();
             splooshParticles.Play();
+            
         }
     }
 }
