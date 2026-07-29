@@ -16,6 +16,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] Camera mainCamera;
     [SerializeField] private PlayerHealth playerHealth;
     [SerializeField] Score score;
+    [SerializeField] ParticleSystem splooshParticles;
     
     [SerializeField] private float speed = 8.0f;
     [SerializeField] private float slowSpeed = 8.0f;
@@ -202,6 +203,7 @@ public class PlayerMovement : MonoBehaviour
         if (other.gameObject.CompareTag("Floor") && !isGrounded)
         {
             isGrounded = true;
+            splooshParticles.Play();
         }
     }
 }

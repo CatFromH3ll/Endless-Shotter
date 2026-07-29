@@ -75,6 +75,7 @@ public class IO_System : MonoBehaviour
         // Serialize data structure to JSON format string
         string json = JsonUtility.ToJson(freshData, true);
         string savePath = Path.Combine(Application.persistentDataPath, $"save_slot_{slotId}.json");
+        Debug.Log(savePath);
 
         // Execute file I/O operations
         File.WriteAllText(savePath, json);

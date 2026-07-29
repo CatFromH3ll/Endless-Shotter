@@ -4,11 +4,12 @@ public class Projectile : MonoBehaviour
 {
     [SerializeField] private float executionLookAheadTime = 0.2f;
     [SerializeField] private int minExecutionNum = 0;
-    [SerializeField] private int maxExecutionNum = 50;
+    [SerializeField] private int maxExecutionNum = 100;
+    [SerializeField] private GameObject explosionPrefab;
+    [SerializeField] private ParticleSystem smokeParticles;
     private TimelineManager timelineManager;
     private bool executionTriggered;
     [SerializeField] private float minimumExecutionDistance = 1.5f;
-    //private float distanceTravelled;
     
     
     [SerializeField] private Rigidbody rbProjectile;
@@ -23,7 +24,7 @@ public class Projectile : MonoBehaviour
     void Awake()
     {
         rbProjectile = GetComponent<Rigidbody>();
-        
+        smokeParticles = GetComponentInChildren<ParticleSystem>();
         timelineManager = FindObjectOfType<TimelineManager>();
     }
 
@@ -31,19 +32,12 @@ public class Projectile : MonoBehaviour
     {
         projectileTimer = 0f;
         executionTriggered = false;
-        //distanceTravelled = 0f;
+        smokeParticles.Play();
     }
 
     private void FixedUpdate()
     {
         // Count the actual distance travelled by the projectile.
-        //distanceTravelled += Time.fixedDeltaTime;
-        Vector3 velocity = rbProjectile.linearVelocity;
-        Debug.Log("slowmoscale " + timelineManager.SlowMotionScale);
-        Debug.Log("velocity magni" + velocity.magnitude);
-        Debug.Log("execution look ahead tme " + executionLookAheadTime);
-        Debug.Log("checkDistance " + velocity.magnitude * timelineManager.SlowMotionScale * executionLookAheadTime);
-        
         CheckForLethalImpact();
     }
 
@@ -68,7 +62,9 @@ public class Projectile : MonoBehaviour
         if (collision.gameObject.CompareTag("Enemy"))
         {
             EnemyController enemyController = collision.gameObject.GetComponent<EnemyController>();
-            
+            ContactPoint contact = collision.contacts[0];
+
+            SpawnExplosion(contact.point, contact.normal);
             enemyController.TakeDamage(damage);
             if (executionTriggered && timelineManager.ExecutionPlaying)
             {
@@ -79,7 +75,7 @@ public class Projectile : MonoBehaviour
         }
 
         if (collision.gameObject.CompareTag("Player") && isEnemy)
-        {
+        { 
             PlayerHealth playerHealth = collision.gameObject.GetComponent<PlayerHealth>();
            playerHealth.TakeDamage(damage);
            ReturnToProjectilePool();
@@ -88,8 +84,26 @@ public class Projectile : MonoBehaviour
         if (collision.gameObject.CompareTag("Hazard"))
         {
             ReturnToProjectilePool();
+            ContactPoint contact = collision.contacts[0];
+
+            SpawnExplosion(contact.point, contact.normal);
         }
         
+        smokeParticles.Stop();
+    }
+    
+    private void SpawnExplosion(Vector3 position, Vector3 surfaceNormal)
+    {
+        Quaternion rotation = Quaternion.LookRotation(surfaceNormal);
+
+        GameObject explosion = Instantiate(
+            explosionPrefab,
+            position,
+            rotation
+        );
+
+        // Remove the explosion after its particles finish.
+        Destroy(explosion, 5f);
     }
 
     private void CheckForLethalImpact()
@@ -107,15 +121,7 @@ public class Projectile : MonoBehaviour
         if (projectileTimer <= minimumExecutionDistance)
             return;
         
-        /*if (executionTriggered)
-            return;*/
-
         
-        
-        
-        
-        
-
         Vector3 velocity = rbProjectile.linearVelocity;
 
         if (velocity.sqrMagnitude <= 0.001f)
@@ -145,6 +151,12 @@ public class Projectile : MonoBehaviour
 
         if (enemy == null)
             return;
+        if(enemy.waveType == WaveType.Shooting)return;
+        int random =  Random.Range(minExecutionNum, maxExecutionNum);
+        if (random >= 10)
+        {
+            return;
+        }
 
         if (enemy.WillDieFromDamage(damage))
         {
@@ -152,20 +164,13 @@ public class Projectile : MonoBehaviour
                 gameObject,
                 enemy.transform
             );
-            /*if (started)
-            {
-                executionTriggered = true;
-            }*/
+            
         }
             
         
 
         
-        /*int random =  Random.Range(minExecutionNum, maxExecutionNum);
-        if (random <= 5)
-        {
-            
-        }*/
+        
         
         
     }
