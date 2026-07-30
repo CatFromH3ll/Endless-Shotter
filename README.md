@@ -1,3 +1,4 @@
+<img width="945" height="2048" alt="WhatsApp Image 2026-07-30 at 06 08 22" src="https://github.com/user-attachments/assets/95067e4e-4c87-4aaa-a555-b31450d3ac0e" />
 
 
 Chosen advanced feature: Timeline Orchestrator
