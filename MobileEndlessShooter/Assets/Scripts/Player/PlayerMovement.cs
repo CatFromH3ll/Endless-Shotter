@@ -17,6 +17,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private PlayerHealth playerHealth;
     [SerializeField] Score score;
     [SerializeField] ParticleSystem splooshParticles;
+    [SerializeField] TimelineManager timelineManager;
     
     [SerializeField] private float speed = 8.0f;
     [SerializeField] private float slowSpeed = 8.0f;
@@ -90,10 +91,9 @@ public class PlayerMovement : MonoBehaviour
     }
     
     
-/* Shoots a raycast from the camera and plane to the left and right side,
- then makes clamp variables to use in the player movement */
     private void MovementClamp(out float minX, out float maxX)
     {
+        
         // Set the left and right screen margins
         float leftPlayerMargin = 0.1f;
         float rightPlayerMargin = 0.9f;
@@ -132,19 +132,30 @@ public class PlayerMovement : MonoBehaviour
         }
         AudioManager.instance.SetEngineThrottle(sideInput);
 
-        // Calculate horizontal movement speed
-        float xVelocity = sideInput * sideSpeed;
 
-        // Calculate the player's next X position
-        float nextX =
-            rb.position.x + xVelocity * Time.fixedDeltaTime;
+        float xVelocity;
+        
+        if (!timelineManager.ExecutionPlaying)
+        {
+            // Calculate horizontal movement speed
+            xVelocity = sideInput * sideSpeed;
 
-        // Keep the next X position inside the screen limits
-        float clampedX = Mathf.Clamp(nextX, minX, maxX);
+            // Calculate the player's next X position
+            float nextX =
+                rb.position.x + xVelocity * Time.fixedDeltaTime;
+            
+            // Keep the next X position inside the screen limits
+            float clampedX = Mathf.Clamp(nextX, minX, maxX);
 
-        // Convert the clamped position back into velocity
-        xVelocity =
-            (clampedX - rb.position.x) / Time.fixedDeltaTime;
+            // Convert the clamped position back into velocity
+            xVelocity = (clampedX - rb.position.x) / Time.fixedDeltaTime;
+        }
+        else
+        {
+            xVelocity = 0;
+        }
+        
+        
 
         // Get the current Rigidbody velocity
         Vector3 velocity = rb.linearVelocity;
@@ -160,6 +171,7 @@ public class PlayerMovement : MonoBehaviour
             velocity.z = speed;
         }
 
+        
         // Apply horizontal movement
         velocity.x = xVelocity;
         

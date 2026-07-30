@@ -153,7 +153,6 @@ public class UIControler : MonoBehaviour
 
    public void QuitGame()
    {
-      gameOverAnalytics.GameOverAnalyse();
       audioMixer.GetFloat(musicVolumeHash, out float musicVol);
       audioMixer.GetFloat(sfxVolumeHash, out float sfxVol);
       PlayerPrefs.SetFloat(musicVolumeHash, musicVol);
