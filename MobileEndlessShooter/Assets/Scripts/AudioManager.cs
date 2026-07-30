@@ -50,7 +50,6 @@ public class AudioManager : MonoBehaviour
    public void Start()
    {
       PlayMenuMusic();
-      //sfxSource.Play();
    }
 
    public void Update()
@@ -102,12 +101,12 @@ public class AudioManager : MonoBehaviour
    }
    
    public void SetEngineThrottle(float horizontalInput)
-   {
-      // Converts both left and right input into a positive 0–1 value,Based on joystick input
-      float throttleAmount = Mathf.Clamp01(
-         Mathf.Abs(horizontalInput) //if the value is -1, it will count as 1 regardless
-      );
-      
+         {
+            // Converts both left and right input into a positive 0–1 value,Based on joystick input
+            float throttleAmount = Mathf.Clamp01(
+               Mathf.Abs(horizontalInput) //if the value is -1, it will count as 1 regardless
+            );
+            
       targetEnginePitch = Mathf.Lerp(
          normalPitch,
          throttlePitch,

@@ -1900,7 +1900,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 5000
   m_UseColorTemperature: 1
-  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_BoundingSphereOverride: {x: 9.1835e-41, y: 2.0387486e-38, z: 4.5697343e-37, w: 4.1326e-40}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ForceVisible: 0
@@ -8174,6 +8174,10 @@ PrefabInstance:
       propertyPath: InitialModule.startSize.minScalar
       value: 50
       objectReference: {fileID: 0}
+    - target: {fileID: 7195234619883787152, guid: c96e92d263bcfb8408a414bcc671e53d, type: 3}
+      propertyPath: m_Intensity
+      value: 700
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -8199,9 +8203,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 161bb06e6b14824479c97de5cd644936, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  explosionLight: {fileID: 0}
-  startingIntensity: 6
-  lightDuration: 0.25
+  explosionLight: {fileID: 3458026850870963365}
+  startingIntensity: 700
+  lightDuration: 1
+--- !u!108 &3458026850870963365 stripped
+Light:
+  m_CorrespondingSourceObject: {fileID: 7195234619883787152, guid: c96e92d263bcfb8408a414bcc671e53d, type: 3}
+  m_PrefabInstance: {fileID: 3458026850870963362}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

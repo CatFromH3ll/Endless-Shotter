@@ -17,7 +17,7 @@ public class Sun : MonoBehaviour
     {
         explosionLights = FindFirstObjectByType<ExplosionLights>();
 
-        isNight = transform.position.y < nightStartY;
+        //isNight = transform.position.y < nightStartY;
         playerLights.SetActive(isNight);
     }
 

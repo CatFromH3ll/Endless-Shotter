@@ -53,9 +53,7 @@ public class IO_System : MonoBehaviour
         }
     }
 
-    // =========================================================================
-    // HOOK THIS METHOD TO YOUR IN-GAME PAUSE MENU "SAVE GAME" BUTTON!
-    // =========================================================================
+    
     public void SaveCurrentSession()
     {
         int currentSlot = PlayerPrefs.GetInt("ActiveSaveSlot", 1);
